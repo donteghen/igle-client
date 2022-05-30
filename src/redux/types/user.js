@@ -1,0 +1,7 @@
+export const FETCH_USER = 'FETCH_USER';
+export const LOG_OUT_USER = 'LOG_OUT_USER';
+export const LOG_IN_USER = 'LOG_IN_USER';
+export const SIGN_UP_USER = 'SIGN_UP_USER'
+export const UPLOAD_USER_AVATAR = 'UPLOAD_USER_AVATAR';
+export const UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE';
+export const CHANGE_USER_PASSWORD = 'CHANGE_USER_PASSWORD';

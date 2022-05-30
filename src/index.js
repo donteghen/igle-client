@@ -2,22 +2,29 @@
 import 'simplebar/src/simplebar.css';
 
 import ReactDOM from 'react-dom';
+import {StrictMode} from 'react'
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-
+import { Provider } from 'react-redux';
 //
 import App from './App';
+import {store} from './redux/store'
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+
 
 // ----------------------------------------------------------------------
 
 ReactDOM.render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </HelmetProvider>,
+  <StrictMode>
+    <Provider store={store}>
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>
+    </Provider>
+  </StrictMode>,
   document.getElementById('root')
 );
 

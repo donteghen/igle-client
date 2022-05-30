@@ -3,18 +3,20 @@ import { Helmet } from 'react-helmet-async';
 import { forwardRef } from 'react';
 // @mui
 import { Box } from '@mui/material';
+import Footer from './footer';
 
 // ----------------------------------------------------------------------
 
 const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => (
   <>
     <Helmet>
-      <title>{`${title} | Minimal-UI`}</title>
+      <title>{`${title} | Igle`}</title>
       {meta}
     </Helmet>
 
     <Box ref={ref} {...other}>
       {children}
+      <Footer />
     </Box>
   </>
 ));

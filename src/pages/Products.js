@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {connect} from 'react-redux'
 // material
 import { Container, Stack, Typography } from '@mui/material';
 // components
@@ -6,12 +7,15 @@ import Page from '../components/Page';
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
 // mock
 import PRODUCTS from '../_mock/products';
+import * as actions from '../redux/actions'
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceShop() {
+function EcommerceShop({user, fetchUser}) {
   const [openFilter, setOpenFilter] = useState(false);
-
+  useEffect(() => {
+    fetchUser().then(res => console.log(res)).catch(e => console.log(e))
+  }, [])
   const handleOpenFilter = () => {
     setOpenFilter(true);
   };
@@ -24,7 +28,7 @@ export default function EcommerceShop() {
     <Page title="Dashboard: Products">
       <Container>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Products
+          Products {user ? user.name : 'no auth'}
         </Typography>
 
         <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
@@ -44,3 +48,6 @@ export default function EcommerceShop() {
     </Page>
   );
 }
+
+const mapStateToProps = (state) => ({user : state.user})
+export default connect(mapStateToProps, actions)(EcommerceShop);
