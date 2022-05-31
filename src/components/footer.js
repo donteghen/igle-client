@@ -76,6 +76,7 @@ function MobileFooter () {
 function DesktopFooter () {
     return (
         <Box sx={{px:2}}>
+            <Divider sx={{my:4}} />
             <Grid container spacing={2} justifyContent='start-left' >
                 <img src='/static/logo.svg' alt='logo' width={64} height={64} style={{paddingLeft:'16px'}} />
             </Grid>

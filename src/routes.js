@@ -12,6 +12,10 @@ import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Contact from './pages/Contact';
 import About from './pages/About';
+import Faqs from './pages/Faqs';
+import PrivacyPolicy from './pages/Privacy';
+import TermsOfUse from './pages/Terms';
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -30,6 +34,9 @@ export default function Router() {
       path: '/',
       element: <LogoOnlyLayout />,
       children: [
+        {path: '/terms-of-use', element: <TermsOfUse />},
+        {path: '/privacy-policy', element: <PrivacyPolicy />},
+        {path: '/faqs', element: <Faqs />},
         {path: '/about', element: <About />},
         {path: '/contact', element: <Contact />},
         { path: '/', element: <Navigate to="/dashboard/app" /> },

@@ -1,7 +1,7 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import styled from '@emotion/styled';
-import { Divider, Typography, Box, Stack} from '@mui/material';
+import { Typography, Box, Stack} from '@mui/material';
 import { ValueWidgets } from '../components/ValueWidgets';
 import { LinearProgressWithLabel } from '../components/LinearProgressWithLabel';
 import Page from '../components/Page'
@@ -15,7 +15,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundImage: 'url(/static/preview.jpg),linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,1))',
+    backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,1)), url(/static/preview.jpg)',
     justifyContent: 'center',
     [theme.breakpoints.up('md')]: {
       alignItems: 'flex-start',
@@ -43,7 +43,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
   }
 
 export default function About () {
-    const smUp = useResponsive('up', 'sm');
+    // const smUp = useResponsive('up', 'sm');
 
     const mdUp = useResponsive('up', 'md');
     return (
@@ -97,7 +97,6 @@ export default function About () {
             </ContentStyle>
             <ValueWidgets />
             <IntroVideoWidget />
-            <Divider sx={{py:2}} />
         </Page>
     )
 }

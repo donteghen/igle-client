@@ -1,7 +1,7 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import styled from '@emotion/styled';
-import { Divider, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import ContactForm from '../sections/feedback/contactForm';
 import Page from '../components/Page'
 import useResponsive from '../hooks/useResponsive';
@@ -39,7 +39,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     paddingLeft: '20px'
   }
 export default function Contact () {
-    const smUp = useResponsive('up', 'sm');
+    // const smUp = useResponsive('up', 'sm');
 
     const mdUp = useResponsive('up', 'md');
     return (
@@ -72,7 +72,6 @@ export default function Contact () {
                     
                 </Typography>
             </ContentStyle>
-            <Divider sx={{py:2}} />
         </Page>
     )
 }
