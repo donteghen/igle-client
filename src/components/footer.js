@@ -150,7 +150,7 @@ function DesktopFooter () {
 export default function Footer () {
     const isMobile = useResponsive('down', 'md')
     return (
-        <Box sx={{pt:'100px'}}>
+        <Box sx={{pt:'100px', position:'absolute'}}>
             {isMobile ? <MobileFooter /> : <DesktopFooter />}
         </Box>
     )

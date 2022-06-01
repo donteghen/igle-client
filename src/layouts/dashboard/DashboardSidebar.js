@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
@@ -13,7 +14,8 @@ import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 //
-import navConfig from './NavConfig';
+import {userNavConfig, adminNavConfig} from './NavConfig';
+
 
 // ----------------------------------------------------------------------
 
@@ -39,9 +41,10 @@ const AccountStyle = styled('div')(({ theme }) => ({
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
+  user: PropTypes.object
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+ function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -52,7 +55,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-
+  useEffect(() => {
+    console.log(user)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
   const renderContent = (
     <Scrollbar
       sx={{
@@ -80,7 +86,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
 
-      <NavSection navConfig={navConfig} />
+      <NavSection navConfig={user?.isAdmin? adminNavConfig : userNavConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
 
@@ -141,3 +147,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     </RootStyle>
   );
 }
+
+const mapStateToProps = ({user}) => ({user})
+export default connect(mapStateToProps, null)(DashboardSidebar)
