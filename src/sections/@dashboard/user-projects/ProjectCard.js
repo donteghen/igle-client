@@ -17,6 +17,7 @@ import Iconify from '../../../components/Iconify';
 // import utils functions
 import {getActiveColor, getPlanColor, getStatusColor} from '../../../utils/getColor'
 import {capitalizeFirstLetter} from '../../../utils/formatString'
+import { fDateTime } from '../../../utils/formatTime';
 
 ProjectCard.propTypes = {
     project: PropTypes.object.isRequired
@@ -24,11 +25,9 @@ ProjectCard.propTypes = {
 
 export default function ProjectCard ({project}) {
 
-    
-    
   return (
-    <Card sx={{ maxWidth: 345}}>
-      <CardContent sx={{}}>
+    <Card sx={{ maxWidth: 345, }}>
+      <CardContent sx={{px:1}}>
         <Box sx={{display:'flex', justifyContent:'space-between'}}>
             <Chip label={capitalizeFirstLetter(project?.plan)} color={getPlanColor(project?.plan)} size='small' /> 
             <Chip label={capitalizeFirstLetter(project?.status)} color={getStatusColor(project?.status)} size='small' />
@@ -39,7 +38,7 @@ export default function ProjectCard ({project}) {
           {project?.name.substr(0, 40)}...
         </Typography>
         <Typography component='p' color="text.secondary" sx={{fontSize:'12px', mt:1,'& > span': {fontWeight:'bold'}}} >
-            Last Update: <span>{project?.updatedAt}</span>
+            {fDateTime(project?.updatedAt)}
         </Typography>
       </CardContent>
       <Divider sx={{mt:1}} />

@@ -33,3 +33,18 @@ export const getActiveColor = (active) => {
     }
     return 'warning'   
 }
+// Request related ////////////////////////////////////////////////////////////////////////////
+
+// Get project status color
+export const getRequestStatusColor = (status) => {
+    switch (status) {
+        case 'RECIEVED':
+            return 'default'
+        case 'IN_PROGRESS':
+            return 'success'
+        case 'PROCESSED':
+            return 'info'
+        default:
+            return 'default';
+    }
+}

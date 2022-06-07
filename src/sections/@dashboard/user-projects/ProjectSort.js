@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types'
 // material
 import { Menu, Button, MenuItem, Typography } from '@mui/material';
 // component
@@ -7,11 +8,14 @@ import Iconify from '../../../components/Iconify';
 // ----------------------------------------------------------------------
 
 const SORT_BY_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
+  { value: 'Ascending', label: 'Newest First' },
+  { value: 'Descending', label: 'Oldest First' },
 ];
 
-export default function ProjectSort() {
+ProjectSort.propTypes = {
+  onSortList: PropTypes.func
+}
+export default function ProjectSort({onSortList}) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -47,7 +51,7 @@ export default function ProjectSort() {
           <MenuItem
             key={option.value}
             selected={option.value === 'newest'}
-            onClick={handleClose}
+            onClick={() => onSortList(option.value)}
             sx={{ typography: 'body2' }}
           >
             {option.label}

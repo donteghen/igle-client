@@ -19,7 +19,7 @@ import TermsOfUse from './pages/Terms';
 // user protected imports
 import UserProjects from './pages/UserProject'
 import UserRequests from './pages/UserRequest';
-
+import ProjectDetail from './pages/ProjectDetail'
 // admin protected imports
 import Users from './pages/User';
 import Projects from './pages/Project';
@@ -38,9 +38,11 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'app', element: <DashboardApp /> },
+        { path: 'user-projects/:id', element: <ProjectDetail /> },
         { path: 'user-projects', element: <UserProjects /> },
         { path: 'user-requests', element: <UserRequests /> },
         { path: 'users', element: <Users /> },
+
         { path: 'projects', element: <Projects /> },
         { path: 'reports', element: <Reports /> },
         { path: 'requests', element: <Requests /> },

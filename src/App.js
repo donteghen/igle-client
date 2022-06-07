@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import {connect} from 'react-redux'
-
+import PropTypes from 'prop-types'
 // routes
 import Router from './routes';
 // theme
@@ -16,7 +16,11 @@ import * as actions from './redux/actions'
 // ----------------------------------------------------------------------
 
 
- function App({fetchUser, user}) {
+App.propTypes = {
+  fetchUser: PropTypes.func
+}
+
+ function App({fetchUser}) {
   useEffect(() => {
     fetchUser().then(result => console.log(result))
   }, [])
@@ -33,5 +37,4 @@ import * as actions from './redux/actions'
   );
 }
 
-const mapStateToProps = (state) => ({user : state.user})
-export default connect(mapStateToProps, actions)(App);
+export default connect(null, actions)(App);

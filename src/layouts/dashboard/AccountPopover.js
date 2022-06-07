@@ -1,36 +1,40 @@
 import { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@mui/material';
+
+// redux actions
+import * as actions from '../../redux/actions'
 // components
 import MenuPopover from '../../components/MenuPopover';
-// mocks_
-import account from '../../_mock/account';
+import Iconify from '../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
     label: 'Home',
-    icon: 'eva:home-fill',
+    icon: 'ant-design:home-filled',
     linkTo: '/',
   },
   {
     label: 'Profile',
     icon: 'eva:person-fill',
-    linkTo: '#',
+    linkTo: '/profile',
   },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-    linkTo: '#',
-  },
+
 ];
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+AccountPopover.propTypes = {
+  user: PropTypes.object
+}
+
+function AccountPopover({user}) {
   const anchorRef = useRef(null);
 
   const [open, setOpen] = useState(null);
@@ -63,7 +67,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={user?.avatar} alt="avatar" />
       </IconButton>
 
       <MenuPopover
@@ -82,10 +86,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user?.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user?.email}
           </Typography>
         </Box>
 
@@ -94,7 +98,7 @@ export default function AccountPopover() {
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
             <MenuItem key={option.label} to={option.linkTo} component={RouterLink} onClick={handleClose}>
-              {option.label}
+              <Iconify icon={option.icon} sx={{mr: 2}} /> {option.label}
             </MenuItem>
           ))}
         </Stack>
@@ -102,9 +106,11 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleClose} sx={{ m: 1 }}>
-          Logout
+          <Iconify icon='heroicons-outline:logout' sx={{mr:1}} /> Logout
         </MenuItem>
       </MenuPopover>
     </>
   );
 }
+const mapStateToProps = ({user}) => ({user})
+export default connect(mapStateToProps, actions)(AccountPopover)
