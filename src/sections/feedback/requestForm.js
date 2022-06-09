@@ -146,6 +146,8 @@ export default function RequestForm({onCloseForm, openForm}) {
 
                     <TextField
                         fullWidth
+                        multiline
+                        rows={10}
                         autoComplete="detail"
                         type="text"
                         label="Detail"
@@ -154,7 +156,7 @@ export default function RequestForm({onCloseForm, openForm}) {
                         helperText={touched.detail && errors.detail}
                     />
                     <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-                        Register
+                        Submit
                     </LoadingButton>
                     </Stack>
                 </Form>

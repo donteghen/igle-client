@@ -1,15 +1,29 @@
 import { useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import PropTypes from 'prop-types'
 // material
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
-
+import UserDetail from '../../../components/UserDetail'
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu() {
+UserMoreMenu.propTypes = {
+  user: PropTypes.object.isRequired
+}
+
+export default function UserMoreMenu({user}) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [openDetail, setOpenDetail] = useState(false)
+
+  
+  const handleOpenDetail = () => {
+      setIsOpen(false)
+      setOpenDetail(true)
+  }
+  const handleCloseDetail = () => {
+    setOpenDetail(false)
+  }
 
   return (
     <>
@@ -34,13 +48,14 @@ export default function UserMoreMenu() {
           <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
 
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+        <MenuItem  sx={{ color: 'text.secondary' }} onClick={handleOpenDetail}>
           <ListItemIcon>
-            <Iconify icon="eva:edit-fill" width={24} height={24} />
+            <Iconify icon="eva:eye-fill" width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+          <ListItemText primary="View" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
       </Menu>
+      {<UserDetail open={openDetail} onCloseDetail={handleCloseDetail} user={user} />}
     </>
   );
 }

@@ -1,39 +1,30 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-alert */
 import { filter } from 'lodash';
-import { useState, useEffect } from 'react';
+import { sentenceCase } from 'change-case';
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types'
 // material
-import {
-  Card,
-  Table,
-  Stack,
-  Avatar,
-  Checkbox,
-  TableRow,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  TableContainer,
-  TablePagination,
-} from '@mui/material';
+import { Card, Table, Checkbox, TableRow, TableBody, TableCell, Container,
+  TableContainer, TablePagination} from '@mui/material';
 // components
-import Page from '../components/Page';
-import Label from '../components/Label';
-import Scrollbar from '../components/Scrollbar';
-import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
-// api functions
-import { getAllUsers } from '../services/api/user';
+import Label from '../../../components/Label';
+import Scrollbar from '../../../components/Scrollbar';
+import SearchNotFound from '../../../components/SearchNotFound';
+import RequestListHead  from './RequestListHead';
+import RequestMoreMenu  from './RequestMenuMore';
+
+// function
+import { getRequestStatusColor} from '../../../utils/getColor'
+import {getAllRequests} from '../../../services/api/request'
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'email', label: 'Company', alignRight: false },
-  { id: 'phone_number', label: 'Number', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'isAdmin', label: 'Admin', alignRight: false },
+  { id: 'sender', label: 'Sender', alignRight: false },
+  { id: 'project', label: 'Project', alignRight: false },
+  { id: 'request_type', label: 'Request Type', alignRight: false },
+  { id: 'detail', label: 'Detail', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
@@ -63,17 +54,21 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_project) => _project.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function Users() {
+RequestTable.propTypes = {
+    queryString: PropTypes.string,
+}
+
+export default function RequestTable({queryString}) {
   const [page, setPage] = useState(0);
 
-  const [users, setUsers] = useState([])
-
   const [order, setOrder] = useState('asc');
+
+  const [requests, setRequests] = useState([])
 
   const [selected, setSelected] = useState([]);
 
@@ -83,23 +78,29 @@ export default function Users() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+
+
+
   useEffect(() => {
-    fetchUsers()
-    return () => {
-      setUsers([])
+    if (queryString) {
+        fetchRequests(queryString)
+    }
+    else {
+        fetchRequests()
     }
   }, [])
+
   
-  const fetchUsers = () => {
-    getAllUsers().then(result => {
+  const fetchRequests = (queryString) => {
+      getAllRequests(queryString).then(result => {
       if (!result.ok) {
-        window.alert(`${result.errorMessage}`)
-        return 
+        // eslint-disable-next-line no-alert
+        window.alert('error')
+        return
       }
-      setUsers(result.data)
+      setRequests(result.data)
     })
   }
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -108,7 +109,7 @@ export default function Users() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = requests?.map((n) => n.sender.name);
       setSelected(newSelecteds);
       return;
     }
@@ -139,44 +140,32 @@ export default function Users() {
     setPage(0);
   };
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - requests?.length) : 0;
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+  const filteredRequests = applySortFilter(requests, getComparator(order, orderBy), filterName);
 
-  const filteredUsers = applySortFilter(users, getComparator(order, orderBy), filterName);
-
-  const isUserNotFound = filteredUsers.length === 0;
+  const isProjectNotFound = filteredRequests.length === 0;
 
   return (
-    <Page title="Users">
+    <>
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Users
-          </Typography>
-        </Stack>
-
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <RequestListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={users.length}
+                  rowCount={requests?.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, email, phone_number, avatar, isVerified, isAdmin } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
+                  {filteredRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { id, detail, request_type, status, sender:{name}, project } = row;
+                    const isItemSelected = selected.indexOf(id) !== -1;
 
                     return (
                       <TableRow
@@ -188,31 +177,32 @@ export default function Users() {
                         aria-checked={isItemSelected}
                       >
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                         </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatar} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">{email}</TableCell>
-                        <TableCell align="left">{phone_number}</TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={(isVerified  && 'success') || 'error'}>
-                            {(isVerified  && 'Yes') || 'No'}
+                            {name}
+                        </TableCell>
+                        <TableCell align="left">
+                            {project.name}
+                        </TableCell>
+                        <TableCell align="left">
+                          <Label variant="ghost" >
+                            {request_type}
                           </Label>
                         </TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={(isAdmin  && 'success') || 'error'}>
-                            {(isAdmin  && 'Yes') || 'No'}
+                          <Label variant="ghost" >
+                            {detail.substr(0,40)}...
+                          </Label>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Label variant="ghost" color={getRequestStatusColor(status)}>
+                            {sentenceCase(status)}
                           </Label>
                         </TableCell>
 
                         <TableCell align="right">
-                          <UserMoreMenu user={row}/>
+                          <RequestMoreMenu request={row} />
                         </TableCell>
                       </TableRow>
                     );
@@ -224,7 +214,7 @@ export default function Users() {
                   )}
                 </TableBody>
 
-                {isUserNotFound && (
+                {isProjectNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -240,7 +230,7 @@ export default function Users() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={users.length}
+            count={requests?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -248,6 +238,8 @@ export default function Users() {
           />
         </Card>
       </Container>
-    </Page>
+    </>
   );
 }
+
+
