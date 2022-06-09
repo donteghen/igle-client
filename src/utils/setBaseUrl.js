@@ -1,5 +1,5 @@
 export const setBaseUrl = () => {
-    console.log(process.env.NODE_ENV)
+    // console.log(process.env.NODE_ENV)
     let baseUrl = null
 if (process.env.NODE_ENV === 'production') {
     baseUrl = 'api/';

@@ -1,28 +1,23 @@
 import * as React from 'react';
-import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import Rating from '@mui/material/Rating';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import  Divider  from '@mui/material/Divider';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { capitalizeFirstLetter } from '../utils/formatString';
 
-
-RequestDetail.propTypes = {
+TestimonialDetail.propTypes = {
   open:PropTypes.bool,
   onCloseDetail: PropTypes.func,
-  request: PropTypes.object, 
-  user: PropTypes.object
+  testimonial: PropTypes.object, 
 }
 
-function RequestDetail({onCloseDetail, open, request, user}) {
+export default function TestimonialDetail({onCloseDetail, open, testimonial}) {
 //   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -36,55 +31,45 @@ function RequestDetail({onCloseDetail, open, request, user}) {
         fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
+        aria-labelledby="testimonial-id"
       >
         <DialogTitle id="testimonial-id" sx={{'&.MuiDialogTitle-root':{fontSize:{xs:'20px', md:'30px'}}}}>
           {'Testimonial Quick Detail Preview'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText > 
-          <p>The information below contains all the details of the selected request.</p>
+          <p>The information below contains all the details of the selected testimonial.</p>
             <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
-              <h6>Sender's Name</h6>
-              <p>{request?.sender.name}</p>
+              <h6>Author's Name</h6>
+              <p>{testimonial?.author.name}</p>
             </Typography>
             <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
-              <h6>Sender's Email</h6>
-              <p>{request?.sender.email}</p>
+              <h6> Author's Email</h6>
+              <p>{testimonial?.author.email}</p>
             </Typography>
             <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
-              <h6>Related Project</h6>
-              <p>{request?.project.name}</p>
+              <h6>Rating</h6>
+              <p><Rating name="rating" value={testimonial?.rating} readOnly /></p>
             </Typography>
             <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
-              <h6>Request Type</h6>
-              <p>{request?.request_type}</p>
+              <h6>Comment</h6>
+              <p>{testimonial?.comment}</p>
             </Typography>
             <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
-              <h6>Detail</h6>
-              <p>{request?.detail}</p>
-            </Typography>
-            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
-              <h6>Status</h6>
+              <h6>Vissible</h6>
               <p>
               <Typography component='span' 
-              sx={{padding: '4px 8px', backgroundColor:'primary.light', borderRadius:'4px'}}>
-              {capitalizeFirstLetter(request?.status)}
+              sx={{padding: '4px 8px', backgroundColor:`${testimonial?.show ? 'success.main' : 'warning.main'}`, borderRadius:'4px'}}>
+              {`${testimonial?.show ? 'Vissible' : 'Hidden'}`}
               </Typography>
               </p>
-              {user.isAdmin && <div style={{margin:'20px 0'}}>
-              <span>Update Status: </span>
-              <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                <Button color='inherit'>Recieved</Button>
-                <Button color='warning'>In-progress</Button>
-                <Button color='success'>Processed</Button>
-              </ButtonGroup>
-              </div>}
             </Typography>
-            <Divider sx={{mb:2}}/>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+         { !testimonial?.show && <Button>
+            Update Vissibility
+          </Button>}
           <Button onClick={handleClose} autoFocus>
             Close
           </Button>
@@ -92,5 +77,3 @@ function RequestDetail({onCloseDetail, open, request, user}) {
       </Dialog>
   )
 }
-const mapStateToProps = ({user}) => ({user})
-export default connect(mapStateToProps, null)(RequestDetail)

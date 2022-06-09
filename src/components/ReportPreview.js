@@ -23,7 +23,7 @@ import { capitalizeFirstLetter } from '../utils/formatString';
 // components
 import ImageReport from './report-content/ImageReport'
 import VideoReport from './report-content/VideoReport'
-import virtualtourReport from './report-content/VirtualtourReport'
+import VirtualtourReport from './report-content/VirtualtourReport'
 import Iconify from './Iconify';
 
 
@@ -37,8 +37,6 @@ ReportPreview.propTypes = {
 
 export default function ReportPreview({onClosePreview, openPreview, report}) {
 
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClose = () => {
     onClosePreview();
@@ -51,11 +49,11 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
       }
       switch (report?.file?.file_type) {
           case 'IMAGES' :
-              return <ImageReport />
+              return <ImageReport images={report?.file.file_content} />
           case 'VIDEO' :
               return <VideoReport />
           case '360VR' :
-              return <virtualtourReport />
+              return <VirtualtourReport />
           default :
               return     
       }
@@ -70,6 +68,9 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
       >
       <AppBar sx={{ position: 'relative' }}>
           <Toolbar>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            {capitalizeFirstLetter(report?.file.file_type)} Report
+            </Typography>
             <IconButton
               edge="end"
               color="inherit"
@@ -78,21 +79,11 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
             >
               <Iconify icon='gridicons:cross-circle' />
             </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            {capitalizeFirstLetter(report?.file.file_type)} Report
-            </Typography>
-            
           </Toolbar>
         </AppBar>
         <DialogContent>
          {renderContent()}
         </DialogContent>
-        {/* <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            Close
-          </Button>
-        </DialogActions> */}
       </Dialog>
   )
 }
-const mapStateToProps = ({user}) => ({user})

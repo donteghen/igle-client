@@ -250,7 +250,7 @@ export default function Reports({projectId}) {
           />
         </Card>
       </Container>
-      {<ReportForm openPreview={openForm} onClosePreview={handleFormClose} />}
+      {<ReportForm openForm={openForm} onCloseForm={handleFormClose} />}
     </Page>
   );
 }

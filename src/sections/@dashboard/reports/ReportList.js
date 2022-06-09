@@ -18,7 +18,7 @@ ReportList.propTypes = {
 const pageSize = 8
 
 export default function ReportList({ reports, ...other }) {
-    const [DisplayedReports, setDisplayedReports] = useState([])
+    const [displayedReports, setDisplayedReports] = useState([])
     const [page, setPage] = useState(1)
    const [count, setCount] = useState(1)
    useEffect(() => {
@@ -37,7 +37,7 @@ const handlePageChange = (e, value) => {
     <>{(reports && reports?.length !== 0) ? 
     <Box>
         <Grid container spacing={3} {...other}>
-        {reports?.map((report) => (
+        {displayedReports?.map((report) => (
             <Grid key={report.id} item xs={12} sm={6} md={3}>
             <ReportCard report={report} />
             </Grid>

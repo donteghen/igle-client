@@ -17,11 +17,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import {capitalizeFirstLetter} from '../../utils/formatString'
-import {getUserProjects} from '../../services/api/project'
-import {addNewProjectRequest} from '../../services/api/request'
+import {getAllProjects} from '../../services/api/project'
+import { addNewProjectReport } from '../../services/api/report';
 
-const typeOptions = [
- '360VR', 'PLAN UPGRADE', 'UPDATED REPORT', 'OTHERS'
+const fileTypeOptions = [
+ 'IMAGES', 'VIDEO', '360VR'
 ]
 
 ReportForm.propTypes = {
@@ -30,53 +30,57 @@ ReportForm.propTypes = {
 }
 
 export default function ReportForm({onCloseForm, openForm}) {
-//   const [projectList, setProjectList] = useState([])
-  const theme = useTheme();
+ const [projectList, setProjectList] = useState([])
+ const theme = useTheme();
  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-//     useEffect(() => {
-//         getUserProjects().then(result => {
-//             console.log(result)
-//             if (!result.ok || result.data?.length < 1) {
-//                 window.alert('No project availiable yet! Please add a project first.') 
-//             }
-//             setProjectList(result.data)
-//         })
+    useEffect(() => {
+        getAllProjects().then(result => {
+            console.log(result)
+            if (!result.ok || result.data?.length < 1) {
+                window.alert('Error fecthing projects') 
+            }
+            setProjectList(result.data)
+        })
     
-//       return () => {
-//         setProjectList([])
-//       }
-//     }, [])
+      return () => {
+        setProjectList([])
+      }
+    }, [])
     
-//   const RequestSchema = Yup.object().shape({
-//     request_type: Yup.string().required('Please select a request type'),
-//     project: Yup.string().required('Please select a project'),
-//     detail: Yup.string().required('Detail is required'),
-//   });
-//   const formik = useFormik({
-//     initialValues: {
-//       request_type: '',
-//       project: '',
-//       detail: '',
-//     },
-//     validationSchema: RequestSchema,
-//     onSubmit: (values) => {
-//       setTimeout(() => {
-//         addNewProjectRequest(values.project, {request_type:values.request_type, detail:values.detail}).then(result => {
-//             if (!result.ok) {
-//                 window.alert(`${result.errorMessage}`)
-//             }
-//             else window.alert('submitted successfully!')
-//         })
-//         setSubmitting(false)
-//         formik.resetForm()
-//         handleClose()
+  const ReportSchema = Yup.object().shape({
+    file_type: Yup.string().required('Please select a file type'),
+    file_content: Yup.string().required('File content is required'),
+    project: Yup.string().required('Please select a project'),
+    overview: Yup.string().required('An overview is required'),
+  });
+  const formik = useFormik({
+    initialValues: {
+            file_type: '',
+            file_content:'',
+            project: '',
+            overview: '',
+    },
+    validationSchema: ReportSchema,
+    onSubmit: (values) => {
+      setTimeout(() => {
+        addNewProjectReport(values.project, 
+          {file_type:values.file_type, file_content:values.file_content, overview:values.overview}
+          ).then(result => {
+            if (!result.ok) {
+                window.alert(`${result.errorMessage}`)
+            }
+            else window.alert('submitted successfully!')
+        })
+        setSubmitting(false)
+        formik.resetForm()
+        handleClose()
         
-//       }, 3000);
-//     },
-//   });
+      }, 3000);
+    },
+  });
 
-//   const { errors, touched, handleSubmit, isSubmitting, getFieldProps,setSubmitting  } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps,setSubmitting  } = formik;
 
   const handleClose = () => {
     onCloseForm(false);
@@ -94,8 +98,7 @@ export default function ReportForm({onCloseForm, openForm}) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{py:4}}>
-          coming up
-          {/* <Box
+          <Box
             sx={{
                 width: 1000,
                 maxWidth: '100%',
@@ -104,21 +107,7 @@ export default function ReportForm({onCloseForm, openForm}) {
             <FormikProvider value={formik}>
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                     <Stack spacing={3}>
-                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                        <TextField
-                        fullWidth select
-                        label="Request Type"
-                        {...getFieldProps('request_type')}
-                        error={Boolean(touched.request_type && errors.request_type)}
-                        helperText={touched.request_type && errors.request_type}
-                        >
-                            {typeOptions?.map((option, index) => (
-                            <MenuItem key={option + index} value={option}>
-                            {capitalizeFirstLetter(option)}
-                            </MenuItem>
-                            ))}
-                        </TextField>
-                        <FormControl fullWidth>
+                    <FormControl fullWidth>
                         <InputLabel id="project-id">Project</InputLabel>
                         <Select
                             labelId="project-id"
@@ -130,25 +119,49 @@ export default function ReportForm({onCloseForm, openForm}) {
                             {projectList?.map(project => <MenuItem key={project.id} value={project.id}>{project.name}</MenuItem>)}
                         </Select>
                         </FormControl>
-                        
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                        <TextField
+                        fullWidth select
+                        label="File Type"
+                        {...getFieldProps('file_type')}
+                        error={Boolean(touched.file_type && errors.file_type)}
+                        helperText={touched.file_type && errors.file_type}
+                        >
+                            {fileTypeOptions?.map((option, index) => (
+                            <MenuItem key={option + index} value={option}>
+                            {capitalizeFirstLetter(option)}
+                            </MenuItem>
+                            ))}
+                        </TextField>
+                        <TextField
+                        fullWidth
+                        autoComplete="file_content"
+                        rows={3}
+                        type="text"
+                        label="File Content"
+                        {...getFieldProps('file_content')}
+                        error={Boolean(touched.file_content && errors.file_content)}
+                        helperText={touched.file_content && errors.file_content}
+                    />           
                     </Stack>
-
                     <TextField
                         fullWidth
-                        autoComplete="detail"
+                        autoComplete="overview"
+                        multiline
+                        rows={15}
                         type="text"
-                        label="Detail"
-                        {...getFieldProps('detail')}
-                        error={Boolean(touched.detail && errors.detail)}
-                        helperText={touched.detail && errors.detail}
+                        label="Overview"
+                        {...getFieldProps('overview')}
+                        error={Boolean(touched.overview && errors.overview)}
+                        helperText={touched.overview && errors.overview}
                     />
                     <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-                        Register
+                        Submit
                     </LoadingButton>
                     </Stack>
                 </Form>
             </FormikProvider>
-            </Box> */}
+            </Box>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
