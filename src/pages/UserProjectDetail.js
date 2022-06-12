@@ -43,11 +43,10 @@ export default function UserProjectDetail() {
     }, [id])
 
     const getProjectDetail = () => {
-
         getSingleUserProject(id).then(result => {
             setLoading(false)
             if (!result.ok) {
-                window.alert('error fetching project detail')
+                window.alert('error fetching project detail in user project detail component')
                 return
             }
             setProject(result.data)            
@@ -56,7 +55,7 @@ export default function UserProjectDetail() {
     const fetchProjectReports = () => {
         getAllProjectReports(id).then(result => {
             if (!result.ok) {
-                window.alert('error fetching project reports')
+                window.alert('error fetching project reports in user project detail component')
                 return
             }
             setProjectReports(result.data)
@@ -70,8 +69,8 @@ export default function UserProjectDetail() {
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} >
               <CircularProgress size={40} thickness={4} color="primary" />
             </Backdrop>
-        <Box sx={{background:'linear-gradient(to right, hotpink, hotpink)', backgroundSize:'cover', width:'100%', height:'400px'}}>
-            <Typography component='div' sx={{position:'absolute', paddingLeft:'24px', top:{xs:'35%', md:'40%', lg:'50%'}}}>
+        <Box sx={{background:'linear-gradient(to right, #0f3996, #0f3996)', backgroundSize:'cover', width:'100%', height:'400px'}}>
+            <Typography component='div' sx={{position:'absolute', paddingLeft:'24px', top:{xs:'35%', md:'40%', lg:'50%', color:'white'}}}>
 
                 <h1>{project?.name}</h1>
                 <p >{fDateTime(project?.createdAt)}</p> 
@@ -111,8 +110,7 @@ export default function UserProjectDetail() {
                 </Stack>
             </Box>
             </Container>
-            <RequestTable queryString={`project=${id}`} />
-
+            <RequestTable queryString={`project=${id}`} userComp projectId={id} />
             {<RequestForm openForm={openForm} onCloseForm={handleFormClose} />}
     </Page>
   );

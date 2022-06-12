@@ -15,7 +15,7 @@ import RequestMoreMenu  from './RequestMenuMore';
 
 // function
 import { getRequestStatusColor} from '../../../utils/getColor'
-import {getAllRequests} from '../../../services/api/request'
+import {getAllRequests, getAllUserProjectRequests} from '../../../services/api/request'
 
 // ----------------------------------------------------------------------
 
@@ -61,9 +61,11 @@ function applySortFilter(array, comparator, query) {
 
 RequestTable.propTypes = {
     queryString: PropTypes.string,
+    userComp : PropTypes.bool,
+    projectId: PropTypes.string
 }
 
-export default function RequestTable({queryString}) {
+export default function RequestTable({queryString, userComp, projectId}) {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -92,14 +94,26 @@ export default function RequestTable({queryString}) {
 
   
   const fetchRequests = (queryString) => {
+     if (userComp && projectId) {
+      getAllUserProjectRequests(projectId).then(result => {
+        if (!result.ok) {
+          // eslint-disable-next-line no-alert
+          window.alert('error')
+          return
+        }
+        setRequests(result.data)
+      })
+     }
+     else {
       getAllRequests(queryString).then(result => {
-      if (!result.ok) {
-        // eslint-disable-next-line no-alert
-        window.alert('error')
-        return
-      }
-      setRequests(result.data)
-    })
+        if (!result.ok) {
+          // eslint-disable-next-line no-alert
+          window.alert('error')
+          return
+        }
+        setRequests(result.data)
+      })
+     }
   }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom';
 // import mui base components
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -16,39 +15,43 @@ import  Divider  from '@mui/material/Divider';
 import Iconify from '../../../components/Iconify';
 
 // import utils functions
-import {getActiveColor, getPlanColor, getStatusColor} from '../../../utils/getColor'
+import { getRequestStatusColor} from '../../../utils/getColor'
 import {capitalizeFirstLetter} from '../../../utils/formatString'
 import { fDateTime } from '../../../utils/formatTime';
+import RequestDetail from '../../../components/RequestDetail';
 
-
-ProjectCard.propTypes = {
-    project: PropTypes.object.isRequired
+RequestCard.propTypes = {
+    request: PropTypes.object.isRequired
 }
 
-export default function ProjectCard ({project}) {
-  const navigate = useNavigate()
+export default function RequestCard ({request}) {
+  const [openDetail, setOpenDetail] = useState(false)
+
+  
+  const handleOpenDetail = () => {
+      setOpenDetail(true)
+  }
+  const handleCloseDetail = () => {
+    setOpenDetail(false)
+  }
   return (
-    <Card sx={{ maxWidth: 345, }}>
+    <><Card sx={{ maxWidth: 345, }}>
       <CardContent sx={{px:1}}>
         <Box sx={{display:'flex', justifyContent:'space-between'}}>
-            <Chip label={capitalizeFirstLetter(project?.plan)} color={getPlanColor(project?.plan)} size='small' /> 
-            <Chip label={capitalizeFirstLetter(project?.status)} color={getStatusColor(project?.status)} size='small' />
-            <Chip label={`${project?.active ? 'Active' : 'Inactive'}`} color={getActiveColor(project?.active)} size='small' />
+            <Chip label={capitalizeFirstLetter(request?.request_type)} color='info' size='small' /> 
+            <Chip label={capitalizeFirstLetter(request?.status)} color={getRequestStatusColor(request?.status)} size='small' />
         </Box>
         <Divider sx={{my:1}} />
         <Typography variant="h4" color="text.secondary" sx={{}}>
-          {project?.name.substr(0, 40)}...
+          {request?.project?.name.substr(0, 40)}...
         </Typography>
         <Typography component='p' color="text.secondary" sx={{fontSize:'12px', mt:1,'& > span': {fontWeight:'bold'}}} >
-            {fDateTime(project?.updatedAt)}
+            {fDateTime(request?.createdAt)}
         </Typography>
       </CardContent>
       <Divider sx={{mt:1}} />
       <CardActions disableSpacing >
-        <IconButton aria-label="Edit" sx={{color:'warning.main'}} >
-          <Iconify icon='bxs:edit' />
-        </IconButton>
-        <IconButton aria-label="view" sx={{color:'info.main'}} onClick={() => navigate(`/dashboard/user-projects/${project?.id}`)}>
+        <IconButton aria-label="view" sx={{color:'info.main'}} onClick={handleOpenDetail}>
           <Iconify icon='carbon:view-filled' />
         </IconButton>
         <IconButton sx={{ml:'auto', color:'error.main'}} >
@@ -56,5 +59,7 @@ export default function ProjectCard ({project}) {
         </IconButton>
       </CardActions>
     </Card>
+    {<RequestDetail open={openDetail} onCloseDetail={handleCloseDetail} request={request} />}
+    </>
   );
 }

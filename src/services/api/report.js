@@ -83,12 +83,11 @@ const getSingleReportByAdmin = async (reportId) => {
 const getAllProjectReports = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}projects/${projectId}/reports`, {
+        const res = await axios.get(`${baseUrl}user/profile/projects/${projectId}/reports`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
         })
-        console.log(res)
         return {ok: true, data: res.data.data}
     } catch (error) {
         return {ok: false}
@@ -99,7 +98,7 @@ const getAllProjectReports = async (projectId) => {
 const getSingleProjectReport = async (projectId, reportId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/projects/${projectId}/reports/${reportId}`, {
+        const res = await axios.get(`${baseUrl}user/profile/projects/${projectId}/reports/${reportId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

@@ -1,22 +1,15 @@
-import * as React from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types'
-import { useEffect } from 'react';
 // import mui base components
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import  Divider  from '@mui/material/Divider';
-
-
-// import project components
-import Iconify from '../../../components/Iconify';
-
+// other components
+import ReportPreview from '../../../components/ReportPreview'
 // import utils functions
-import {getActiveColor, getPlanColor, getStatusColor} from '../../../utils/getColor'
 import {capitalizeFirstLetter} from '../../../utils/formatString'
 import { fDateTime } from '../../../utils/formatTime';
 
@@ -25,11 +18,18 @@ ReportCard.propTypes = {
 }
 
 export default function ReportCard ({report}) {
-    useEffect(() => {
-        console.log(report)
-    }, [])
+  const [openPreview, setOpenPreview] = useState(false)
+
+  const handleOpenPreview = () => {
+      setOpenPreview(true)
+  }
+  const handleClosePreview = () => {
+    setOpenPreview(false)
+  }
   return (
-    <Card sx={{ maxWidth: 345, }}>
+   <>
+    <Card sx={{ maxWidth: 345, cursor:'pointer', transition:'transform 0.3s', '&:hover':{transform: 'translateY(-2px)'}}} 
+      onClick={handleOpenPreview}>
       <CardContent sx={{px:1}}>
         <Box sx={{display:'flex', justifyContent:'flex-right'}}>
             <Chip label='New' color='info' size='small' /> 
@@ -44,5 +44,7 @@ export default function ReportCard ({report}) {
         </Typography>
       </CardContent>
     </Card>
+    {<ReportPreview openPreview={openPreview} onClosePreview={handleClosePreview} report={report} />}
+    </> 
   );
 }

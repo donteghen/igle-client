@@ -2,23 +2,26 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 // material
-import {
-  Box,
-  Radio,
-  Stack,
-  Button,
-  Drawer,
-  Divider,
-  IconButton,
-  Typography,
-  RadioGroup,
-  FormControlLabel,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Radio from '@mui/material/Radio';
+import Stack from '@mui/material/Stack';
+import  Button from '@mui/material/Button';
+import  Drawer from '@mui/material/Drawer';
+import  Divider from '@mui/material/Divider';
+import  IconButton from '@mui/material/IconButton';
+import Typography  from '@mui/material/Typography';
+import RadioGroup from '@mui/material/RadioGroup';
+import  FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 // components
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import { capitalizeFirstLetter } from '../../../utils/formatString';
-
+// function
+import { getUserProjects } from '../../../services/api/project';
 
 // ----------------------------------------------------------------------
 
@@ -26,9 +29,9 @@ export const SORT_BY_OPTIONS = [
   { value: 'featured', label: 'Featured' },
   { value: 'newest', label: 'Newest' },
 ];
-export const FILTER_PLAN_OPTIONS = [ 'PRO', 'STANDARD', 'ENTERPRISE'];
-export const FILTER_ACTIVE_OPTIONS = [ true, false];
-export const FILTER_STATUS_OPTIONS = [ 'PENDING', 'APPROVED', 'COMPLETED'];
+export const FILTER_STATUS_OPTIONS = [ 'RECIEVED', 'IN_PROCESS', 'PROCESSED'];
+
+
 
 
 // ----------------------------------------------------------------------
@@ -41,14 +44,20 @@ ProjectFilterSidebar.propTypes = {
 
 export default function ProjectFilterSidebar({ isOpenFilter, onOpenFilter, onCloseFilter }) {
   const navigate = useNavigate()
-  const [options, setOptions] = useState({plan:'', status:''})
+  const [options, setOptions] = useState({project:'', status:''})
+  const [projectOptions, setProjectOptions] = useState([])
 
+  useEffect(() => {
+     getUserProjects().then(result => {
+         setProjectOptions(result.data)
+     })
+  }, [])
   useEffect(() => {
     let filterString = ''
     Object.entries(options).forEach(([key, value]) => {
       filterString = filterString.concat(`${key}=${value}&`)
     })
-    navigate(`/dashboard/user-projects?${filterString}`)
+    navigate(`/dashboard/user-requests?${filterString}`)
   }, [options])
 
   return (
@@ -78,22 +87,25 @@ export default function ProjectFilterSidebar({ isOpenFilter, onOpenFilter, onClo
 
         <Scrollbar>
           <Stack spacing={3} sx={{ p: 3 }}>
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                PLAN
-              </Typography>
-              <RadioGroup>
-                {FILTER_PLAN_OPTIONS.map((item) => (
-                  <FormControlLabel key={item} onChange={(e) => setOptions({...options, plan:e.target.value})} value={item} 
-                  control={<Radio />} label={capitalizeFirstLetter(item)} checked={options.plan === item} />
-                ))}
-              </RadioGroup>
-            </div>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+                <InputLabel id="project-label">Project</InputLabel>
+                <Select
+                labelId="project-label"
+                id="project-label-id"
+                value={options.project}
+                label="Project"
+                onChange={(e) => setOptions({...options, project:e.target.value})}
+                >
+                {projectOptions?.map(project => <MenuItem key={project.id} value={project.id}>{project.name}</MenuItem>)}
+                </Select>
+            </FormControl>
+            </Box>
 
             <div>
               <Typography variant="subtitle1" gutterBottom>
                 STATUS
-              </Typography>
+              </Typography>  
               <RadioGroup>
                 {FILTER_STATUS_OPTIONS.map((item) => (
                   <FormControlLabel key={item} onChange={(e) => setOptions({...options, status:e.target.value})} 

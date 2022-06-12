@@ -34,18 +34,18 @@ const getSingleProject = async (projectId) => {
     }
 }
 
-// get all projects with or without query string
-const getUserProjects = async () => {
+// get all user's projects
+const getUserProjects = async (queryString) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/projects`, {
+        const res = await axios.get(`${baseUrl}user/profile/projects?${queryString}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 

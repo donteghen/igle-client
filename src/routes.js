@@ -2,9 +2,8 @@ import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
-//
+// Common pages imports
 import Blog from './pages/Blog';
-
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
 import Register from './pages/Register';
@@ -15,7 +14,7 @@ import About from './pages/About';
 import Faqs from './pages/Faqs';
 import PrivacyPolicy from './pages/Privacy';
 import TermsOfUse from './pages/Terms';
-
+import Profile from './pages/Profile'
 // user protected imports
 import UserProjects from './pages/UserProject'
 import UserRequests from './pages/UserRequest';
@@ -23,7 +22,6 @@ import UserProjectDetail from './pages/UserProjectDetail'
 // admin protected imports
 import Users from './pages/User';
 import Projects from './pages/Project';
-
 import Requests from './pages/Request';
 import Testimonials from './pages/Testimonial';
 import Reports from './pages/Report';
@@ -37,6 +35,8 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
+        { path: 'profile', element: <Profile /> },
+
         { path: 'app', element: <DashboardApp /> },
         { path: 'user-projects/:id', element: <UserProjectDetail /> },
         { path: 'user-projects', element: <UserProjects /> },

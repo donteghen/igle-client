@@ -34,6 +34,21 @@ const getAllUserProjectRequests = async (projectId) => {
     }
 }
 
+// get all  current user's request list
+const getUserRequests = async (queryString) => {
+    console.log(queryString, 'in user request service')
+    try {
+        const token = localStorage.getItem('iUserToken')
+        const res = await axios.get(`${baseUrl}user/profile/requests?${queryString}`, {
+            headers:{
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        return {ok: true, data: res.data.data}
+    } catch (error) {
+        return {ok: false}
+    }
+}
 
 // get single user's specific project request detail
 const getSingleUserProjectRequest = async (projectId, requestId) => {
@@ -111,5 +126,5 @@ const deleteRequest = async (requestId) => {
 }
 export {
     addNewProjectRequest, getAllUserProjectRequests, getSingleUserProjectRequest, getAllRequests,
-    getSingleRequest, updateRequestStatus, deleteRequest
+    getSingleRequest, updateRequestStatus, deleteRequest, getUserRequests
 }

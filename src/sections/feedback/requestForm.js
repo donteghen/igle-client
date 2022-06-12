@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-useless-return */
 import  React, {useState, useEffect} from 'react';
 import * as Yup from 'yup';
@@ -36,7 +37,6 @@ export default function RequestForm({onCloseForm, openForm}) {
 
     useEffect(() => {
         getUserProjects().then(result => {
-            console.log(result)
             if (!result.ok || result.data?.length < 1) {
                 window.alert('No project availiable yet! Please add a project first.') 
             }
@@ -165,7 +165,7 @@ export default function RequestForm({onCloseForm, openForm}) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleClose} autoFocus variant='outlined'>
             Close
           </Button>
         </DialogActions>

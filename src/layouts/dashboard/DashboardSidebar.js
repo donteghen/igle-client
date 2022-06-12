@@ -55,10 +55,7 @@ DashboardSidebar.propTypes = {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-  useEffect(() => {
-    console.log(user)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+
   const renderContent = (
     <Scrollbar
       sx={{

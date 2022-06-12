@@ -72,7 +72,7 @@ function RequestDetail({onCloseDetail, open, request, user}) {
               {capitalizeFirstLetter(request?.status)}
               </Typography>
               </p>
-              {user.isAdmin && <div style={{margin:'20px 0'}}>
+              {user?.isAdmin && <div style={{margin:'20px 0'}}>
               <span>Update Status: </span>
               <ButtonGroup variant="contained" aria-label="outlined primary button group">
                 <Button color='inherit'>Recieved</Button>

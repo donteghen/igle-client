@@ -58,7 +58,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 ReportTable.propTypes = {
-    queryString: PropTypes.string,
+    queryString: PropTypes.string
 }
 
 export default function ReportTable({queryString}) {
