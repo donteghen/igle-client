@@ -1,10 +1,11 @@
 // material Imports
 import {Button, Grid,Paper, Box, Typography} from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import Iconify from './Iconify'
 
 const styles = {
     TextPaper : {
-         height:'350px', 
+         height:'450px', 
          width:'100%', 
          transform:{ md:'translate(40px, -50px)'},
          p:{xs:2, md:4},
@@ -12,7 +13,7 @@ const styles = {
          backgroundColor:'primary.main'
     },
     videoPaper : {
-        background:'linear-gradient(to left, rgba(0,0,0, 0.3), rgba(0,0,0, 0.6)),url(/static/preview.jpg)',
+        background:'linear-gradient(to left, rgba(0,0,0, 0.3), rgba(0,0,0, 0.6)),url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192516/Igle/general/about-3_jg2yvs.gif)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
          height:'500px', 
@@ -51,19 +52,20 @@ const styles = {
     }
 }
 export function IntroVideoWidget () {
+    const navigate = useNavigate()
     return (
-        <Box sx={{my:16, px:{xs:1, md:4}}}>
+        <Box sx={{mt:16, px:{xs:1, md:4}}}>
             <Grid container spacing={1} justifyContent='center'>
             <Grid item xs={12} md={4}>
                 <Paper elevation={12} sx={styles.TextPaper}>
-                    <h2 style={{marginBottom:'20px'}}>Our priority is saving your time and money.</h2>
-                    <p>Sagittis proident? Autem gravida mauris? Tincidunt voluptatibus accusamus molestias, sollicitudin vulputate veniam, quasi vehicula! Scelerisque repudiandae, sollicitudin quis, purus ullamcorper, felis.</p>
-                    <Button sx={styles.joinBtn} >Join Us Now</Button>
+                    <h2 style={{marginBottom:'20px'}}>Saving your time and money by providing you with enterprise grade inovative solutions is our priority.</h2>
+                    <p>No registration fee! No hidden payments! It's all prepaid project plan-based subscription, with plan upgrade options. You may also contact the client support for custom plans tailored to your specific needs.</p>
+                    <Button sx={styles.joinBtn} onClick={() => navigate('/register')}>Join Us Now</Button>
                 </Paper>
             </Grid>
             <Grid item xs={12} md={8} >
                 <Paper elevation={1} sx={styles.videoPaper}>
-                    {/* <img src='/static/preview.jpg' alt='video thumbnail' width='100%' height='100%' /> */}
+                    
                     <Typography component='div' sx={styles.playBtnContainer}>
                         <Iconify icon='ant-design:play-circle-filled' sx={styles.playBtn}  />
                     </Typography>

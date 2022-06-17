@@ -44,27 +44,28 @@ function RequestDetail({onCloseDetail, open, request, user}) {
         <DialogContent>
           <DialogContentText > 
           <p>The information below contains all the details of the selected request.</p>
-            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
+            {user?.isAdmin && <>
+            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'},'& > h6':{color:'primary.main',}, my:2}}>
               <h6>Sender's Name</h6>
               <p>{request?.sender.name}</p>
             </Typography>
-            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
+            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'},'& > h6':{color:'primary.main',}, my:2}}>
               <h6>Sender's Email</h6>
               <p>{request?.sender.email}</p>
-            </Typography>
-            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
+            </Typography></>}
+            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'},'& > h6':{color:'primary.main',}, my:2}}>
               <h6>Related Project</h6>
               <p>{request?.project.name}</p>
             </Typography>
-            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
+            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'},'& > h6':{color:'primary.main',}, my:2}}>
               <h6>Request Type</h6>
               <p>{request?.request_type}</p>
             </Typography>
-            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
+            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'},'& > h6':{color:'primary.main',}, my:2}}>
               <h6>Detail</h6>
               <p>{request?.detail}</p>
             </Typography>
-            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'}, my:2}}>
+            <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'},'& > h6':{color:'primary.main',}, my:2}}>
               <h6>Status</h6>
               <p>
               <Typography component='span' 

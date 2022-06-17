@@ -13,23 +13,23 @@ import Divider from '@mui/material/Divider'
 // other components
 import Iconify from '../Iconify'
 
-ErrorAlert.propTypes = {
+SuccessAlert.propTypes = {
     open: PropTypes.bool,
     onClosed: PropTypes.func,
     message:PropTypes.string,
     title: PropTypes.string,
 }
 
-export default function ErrorAlert ({ open, onClosed, message, title }) {
+export default function SuccessAlert ({ open, onClosed, message, title }) {
 
     return (
         <Dialog 
         open={open}
         onClose={() => onClosed(false)}
-        aria-describedby="error-alert-dialog-slide"
+        aria-describedby="success-alert-dialog-slide"
         >
             <DialogTitle>
-                <h1><Iconify icon='bxs:error-circle'  style={{color:'red', verticalAlign:'middle', fontSize:'30px'}} />{title}</h1>
+                <h1><Iconify icon='ep:success-filled'  style={{color:'green', verticalAlign:'middle', fontSize:'60px'}} />{title}</h1>
             </DialogTitle>
             <DialogContent>
                 <div>
@@ -38,7 +38,7 @@ export default function ErrorAlert ({ open, onClosed, message, title }) {
                 </div>
             </DialogContent>
             <DialogActions>
-            <Button onClick={() => onClosed(false)}>OK</Button>
+            <Button onClick={() => onClosed(false)} variant='outlined'>OK</Button>
             </DialogActions>
         </Dialog>
     )

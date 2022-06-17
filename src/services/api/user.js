@@ -13,7 +13,7 @@ const getAllUsers = async () => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -28,7 +28,7 @@ const getSingleUser = async (userId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -44,7 +44,7 @@ const deleteUser = async (userId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -54,7 +54,7 @@ const userPasswordReset = async(email) => {
         await axios.post(`${baseUrl}users/reset-password`, {email})
         return {ok: true}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -64,7 +64,7 @@ const userPasswordResetComfrimation = async(email, token, password) => {
         await axios.post(`${baseUrl}users/confirm-reset-password`, {email, token, password})
         return {ok: true}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -74,7 +74,7 @@ const verifyNewUserAccount = async (userId) => {
         await axios.patch(`${baseUrl}users/${userId}/verify`)
         return {ok:true}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 export {

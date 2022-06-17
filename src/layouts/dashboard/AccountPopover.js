@@ -14,16 +14,41 @@ import Iconify from '../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
+const AUTH_MENU_OPTIONS = [
   {
     label: 'Home',
     icon: 'ant-design:home-filled',
     linkTo: '/',
   },
   {
+    label: 'Dashboard',
+    icon: 'bxs:dashboard',
+    linkTo: '/dashboard',
+  },
+  {
     label: 'Profile',
     icon: 'eva:person-fill',
     linkTo: '/dashboard/profile',
+  },
+
+];
+
+const NON_AUTH_MENU_OPTIONS = [
+  {
+    label: 'Home',
+    icon: 'ant-design:home-filled',
+    linkTo: '/',
+  },
+  {
+    label: 'login',
+    icon: 'eva:log-in-outline',
+    linkTo: '/dashboard/login',
+  },
+  
+  {
+    label: 'register',
+    icon: 'eva:person-add-fill',
+    linkTo: '/dashboard/register',
   },
 
 ];
@@ -47,6 +72,41 @@ function AccountPopover({user}) {
     setOpen(null);
   };
 
+  const renderAuthOptions = () => (
+     <>
+      <Box sx={{ my: 1.5, px: 2.5 }}>
+            <Typography variant="subtitle2" noWrap>
+              {user?.name}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+              {user?.email}
+            </Typography>
+          </Box>
+
+          <Divider sx={{ borderStyle: 'dashed' }} />
+
+          <Stack sx={{ p: 1 }}>
+            {AUTH_MENU_OPTIONS.map((option) => (
+              <MenuItem key={option.label} to={option.linkTo} component={RouterLink} onClick={handleClose}>
+                <Iconify icon={option.icon} sx={{mr: 2}} /> {option.label}
+              </MenuItem>
+            ))}
+          </Stack>
+        </> 
+    )
+
+    const renderNonAuthOptions = () => (
+      <>
+           <Stack sx={{ p: 1 }}>
+             {NON_AUTH_MENU_OPTIONS.map((option) => (
+               <MenuItem key={option.label} to={option.linkTo} component={RouterLink} onClick={handleClose}>
+                 <Iconify icon={option.icon} sx={{mr: 2}} /> {option.label}
+               </MenuItem>
+             ))}
+           </Stack>
+         </> 
+     )
+  
   return (
     <>
       <IconButton
@@ -84,30 +144,13 @@ function AccountPopover({user}) {
           },
         }}
       >
-        <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
-            {user?.name}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.email}
-          </Typography>
-        </Box>
+        {(user && user?.id) ? renderAuthOptions() : renderNonAuthOptions() }
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} to={option.linkTo} component={RouterLink} onClick={handleClose}>
-              <Iconify icon={option.icon} sx={{mr: 2}} /> {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        {user && <MenuItem onClick={handleClose} sx={{ m: 1 }}>
           <Iconify icon='heroicons-outline:logout' sx={{mr:1}} /> Logout
-        </MenuItem>
+        </MenuItem>}
       </MenuPopover>
     </>
   );

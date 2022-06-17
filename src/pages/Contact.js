@@ -13,8 +13,9 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,1)),url(/static/preview.jpg)',
+    backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,0.3)),url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655193506/Igle/general/about-5_nzifrl.webp)',
     justifyContent: 'center',
+    marginTop:'100px',
     [theme.breakpoints.up('md')]: {
       alignItems: 'flex-start',
       padding: theme.spacing(0)

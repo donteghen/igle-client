@@ -1,7 +1,7 @@
 // Prop-types
 import PropTypes from 'prop-types'
 // Material Imports
-import {  styled, alpha } from '@mui/material/styles';
+import {  styled,} from '@mui/material/styles';
 import { Grid, Paper} from "@mui/material";
 
 import Iconify from "./Iconify";
@@ -37,18 +37,18 @@ GridItem.propTypes = {
 
 export function ValueWidgets() {
     return (
-        <Grid container spacing={2} justifyContent={{xs:'center', md:'space-between'}} sx={{px:{md:4, lg:16}}}>
+        <Grid container spacing={2} justifyContent={{xs:'center', md:'space-between'}} sx={{px:{md:4, lg:16}, py:2}}>
             <Grid item xs={5} md={3} lg={2}>
-                <GridItem iconName='gis:drone' title='Drone Monitoring' />
+                <GridItem iconName='dashicons:video-alt3' title='Video Report' />
             </Grid>
             <Grid item xs={5} md={3} lg={2}>
-                <GridItem iconName='gis:drone' title='Drone Monitoring' />
+                <GridItem iconName='ic:baseline-photo-library' title='Photo Report' />
             </Grid>
             <Grid item xs={5} md={3} lg={2}>
-                <GridItem iconName='gis:drone' title='Drone Monitoring' />
+                <GridItem iconName='teenyicons:360-solid' title='360 VR Report' />
             </Grid>
             <Grid item xs={5} md={3} lg={2}>
-                <GridItem iconName='gis:drone' title='Drone Monitoring' />
+                <GridItem iconName='bi:webcam-fill' title='Webcam Feed' />
             </Grid>
         </Grid>
     )

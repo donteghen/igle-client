@@ -30,7 +30,7 @@ const updateTestimonialShow = async (testimonialId) => {
         })
         return {ok: true, data:res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 

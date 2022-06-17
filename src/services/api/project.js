@@ -14,7 +14,7 @@ const getAllProjects = async (queryString) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -30,7 +30,7 @@ const getSingleProject = async (projectId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -61,7 +61,7 @@ const getSingleUserProject = async (projectId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -78,7 +78,7 @@ const createNewProject = async (projectDetails) => {
       
       return { ok: true, data: res.data.data };
     } catch (error) {
-      return { ok: false };
+      return { ok: false, errorMessage:error.response.data.error };
     }
   };
 
@@ -95,7 +95,7 @@ const updateProject = async (projectDetails, projectId) => {
       );
       return { ok: true, data: res.data.data };
     } catch (error) {
-      return { ok: false };
+      return { ok: false, errorMessage:error.response.data.error };
     }
   };
 
@@ -112,7 +112,7 @@ const upgradeProject = async (planDetail, projectId) => {
       );
       return { ok: true, data: res.data.data };
     } catch (error) {
-      return { ok: false };
+      return { ok: false, errorMessage:error.response.data.error };
     }
   };
 
@@ -129,7 +129,7 @@ const changeProjectStatus = async (statusDetail, projectId) => {
         );
         return { ok: true, data: res.data.data };
       } catch (error) {
-        return { ok: false };
+        return { ok: false, errorMessage:error.response.data.error };
       }
 }
 
@@ -146,7 +146,7 @@ const activateProject = async (projectId) => {
         );
         return { ok: true, data: res.data.data };
       } catch (error) {
-        return { ok: false };
+        return { ok: false, errorMessage:error.response.data.error };
       }
 }
 // activate Project
@@ -162,7 +162,7 @@ const deactivateProject = async (projectId) => {
         );
         return { ok: true, data: res.data.data };
       } catch (error) {
-        return { ok: false };
+        return { ok: false, errorMessage:error.response.data.error };
       }
 }
 
@@ -178,7 +178,7 @@ const deleteProject = async ( projectId ) => {
       });
       return { ok: true };
     } catch (error) {
-      return { ok: false };
+      return { ok: false, errorMessage:error.response.data.error };
     }
   };
 

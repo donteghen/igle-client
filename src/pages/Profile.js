@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-useless-return */
 // main imports
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import * as Yup from 'yup';
+import { useFormik, Form, FormikProvider } from 'formik';
 // mui components
 // import Box from "@mui/material/Box"
 import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import LinearProgress from "@mui/material/LinearProgress"
 import Paper from "@mui/material/Paper"
 import AppBar from "@mui/material/AppBar"
 import Tab from "@mui/material/Tab"
@@ -19,10 +19,15 @@ import Grid from "@mui/material/Grid"
 import CircularProgress from "@mui/material/CircularProgress"
 import Backdrop from "@mui/material/Backdrop"
 import Container from "@mui/material/Container"
+import Stack from "@mui/material/Stack"
+import Alert from "@mui/material/Alert"
+import { LoadingButton } from '@mui/lab';
+
 // other components
 import TabPanel, {a11yProps} from '../components/TabPanel'
 import Iconify from '../components/Iconify'
 import ErrorAlert from '../components/alerts/ErrorAlert'
+import SuccessAlert from '../components/alerts/SuccessAlert'
 import Page from '../components/Page'
 // functions
 import * as actions from '../redux/actions';
@@ -64,7 +69,7 @@ const styles = {
     }
 }
 Profile.propTypes = {
-    user: PropTypes.object,
+    user: PropTypes.object.isRequired,
     uploadAvatar: PropTypes.func,
     updateUser: PropTypes.func
 }
@@ -72,28 +77,54 @@ Profile.propTypes = {
 function  Profile ({user, uploadAvatar, updateUser}) {
   const [value, setValue] = useState(0);
 
-  const [apiError, setApiError] = useState({isError:false, title:'', message:''});
+  const [apiError, setApiError] = useState(false);
+  const [apiSuccess, setApiSuccess] = useState(false);
+
   const [loading, setLoading] = useState(false)
-   
-    const [values, setValues] = useState({
-      email:'',
-      name:'',
-      address_line:'',
-      phone_number:'',
-      city:'',
-      country:''
-    })
-    const [errors, setErrors] = useState({
-      email:'',
-      name:''
-    })
-    useEffect(() => {
-      if (user) {
-        setValues({name: user?.name, email:user?.email, address_line: user?.address?.address_line,
-        city:user?.address?.city, country:user?.address?.country, phone_number:user.phone_number})
-      }
-      
-    },[user])
+
+  
+  
+    
+
+    const RegisterSchema = Yup.object().shape({
+        name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Fullname is required'),
+        email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+        bio: Yup.string(),
+        phone_number: Yup.string(),
+        address_line: Yup.string(),
+        city: Yup.string(),
+        country: Yup.string(),
+      });
+
+      const formik = useFormik({
+        initialValues: {
+            name: user?.name, 
+            email:user?.email, 
+            address_line: user?.address?.address_line??'',
+            bio:user?.bio??'',
+            city:user?.address?.city??'',
+            country:user?.address?.country??'',
+            phone_number:user?.phone_number??''
+        },
+        validationSchema: RegisterSchema,
+        onSubmit: (formValues) => {
+            setLoading(true)
+            setTimeout(() => {
+            updateUser(formValues)
+            .then(result => {
+              setLoading(false)
+              if (!result.ok) {
+                setApiError(true)
+                return 
+              }
+              setSubmitting(false)
+              setApiSuccess(true)
+            }).catch(e => console.log('api error'))
+            }, 2500);
+        },
+      });
+    
+      const { touched, handleSubmit, isSubmitting, getFieldProps, setSubmitting, isValid, errors } = formik;
     
     const handleChangeAvatar = (e) => {
       setLoading(true)
@@ -103,34 +134,11 @@ function  Profile ({user, uploadAvatar, updateUser}) {
         uploadAvatar(formdata).then(result => {
           setLoading(false)
           if (!result.ok){
-            setApiError({
-                isError:true,
-                title: 'Profile Update',
-                message: result.errorMessage ? result.errorMessage : 'Avatar Upload!'
-            })
+            setApiError(true)
             return
           }
         })
       }, 2000);
-    }
-
-    const handleSubmit = () => {
-      const userInfo = {...values, address: {country:values.country, city:values.city, address_line:values.address_line}}
-      setLoading(true)
-      setTimeout(() => {
-      updateUser(user._id, userInfo)
-      .then(result => {
-        setLoading(false)
-        if (!result.ok) {
-          setApiError({
-              isError:true,
-              title: 'Profile Update',
-              message: result.errorMessage ? result.errorMessage : 'Update failed!'
-          })
-          return 
-        }
-      })
-      }, 2500);
     }
 
   const handleChange = (event, newValue) => {
@@ -160,7 +168,6 @@ function  Profile ({user, uploadAvatar, updateUser}) {
                 
                     <Grid item xs={12}>
                         <Paper style={{textAlign: 'center'}}>
-                        {loading && <div><LinearProgress color="secondary"  style={{zIndex:999, marginTop:'50px'}} /></div>}
                         <div style={{display:'flex', flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
                             <h2>Profile Avatar</h2>
                             <div style={{textAlign:'center'}}>
@@ -177,64 +184,84 @@ function  Profile ({user, uploadAvatar, updateUser}) {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper style={{textAlign: 'center'}}>
-                        {loading && <Backdrop
+                        <Backdrop
                             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                             open={loading}
                         >
                             <CircularProgress color="inherit" />
-                        </Backdrop>}
+                        </Backdrop>
                         <div>
                             <h2 style={{fontFamily:'Nunito, san serif'}}>Profile Details</h2>
                             <p style={{fontFamily:'Nunito, san serif'}}>Review and Update profile Information</p>
-                            <div>
-                            <TextField style={{width:'100%', margin:'20px 0'}}                      
-                                id="name"
-                                label="Name"
-                                value={values.name}
-                                variant="outlined"
-                                onChange={e => setValues({...values, name:e.target.value})} 
-                                />
-                                <TextField style={{width:'100%', margin:'20px 0'}}
-                                    id="email"
-                                    label="Email"
-                                    value={values.email}
-                                    variant="outlined"
-                                    onChange={e => setValues({...values, email:e.target.value})} 
-                                />
-                                <TextField style={{width:'100%', margin:'20px 0'}}
-                                    id="phone_number"
-                                    label="Phone Number"
-                                    value={values.phone_number}
-                                    variant="outlined"
-                                    onChange={e => setValues({...values, phone_number:e.target.value})} 
-                                />
-                                <TextField style={{width:'100%', margin:'20px 0'}}                 
-                                    id="country"
-                                    label="Country"
-                                    value={values.country}
-                                    variant="outlined"
-                                    onChange={e => setValues({...values, country:e.target.value})} 
-                                />
-                                <TextField style={{width:'100%', margin:'20px 0'}}
-                                    id="city"
-                                    label="City"
-                                    value={values.city}
-                                    variant="outlined"
-                                    onChange={e => setValues({...values, city:e.target.value})} 
-                                />
-                                <TextField style={{width:'100%', margin:'20px 0'}}
-                                    id="address_line"
-                                    label="Address Line"
-                                    value={values.address_line}
-                                    variant="outlined"
-                                    onChange={e => setValues({...values, address_line:e.target.value})} 
-                                />
-                                </div>
-                                <div >
-                                <Button sx={styles.btnSave} onClick={handleSubmit}> 
-                                    Save Changes  <Iconify icon='entypo:save' style={{verticalAlign:'middle'}} />
-                                </Button>
-                            </div>
+                            <FormikProvider value={formik}>
+                                <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+                                    <SuccessAlert open={apiSuccess} onClosed={setApiSuccess}
+                                    title='Profile Update Successful' message='Congrates! Your profile ahs been successfully updated.' />
+                                    <ErrorAlert open={apiSuccess.isSuccess} onClosed={setApiError}
+                                    title='Profile Update Error' message='Profile update request failed! Please check your connection and try again later.' />
+                                    <Stack spacing={3}>
+                                        <TextField
+                                        fullWidth
+                                        label="Full Name"
+                                        {...getFieldProps('name')}
+                                        error={Boolean(touched.name && errors.name)}
+                                        helperText={touched.name && errors.name}
+                                        />
+                                        <TextField
+                                        fullWidth
+                                        label="Email"
+                                        {...getFieldProps('email')}
+                                        error={Boolean(touched.email && errors.email)}
+                                        helperText={touched.email && errors.email}
+                                        />
+
+                                    <TextField
+                                        fullWidth
+                                        label="Phone number"
+                                        {...getFieldProps('phone_number')}
+                                        error={Boolean(touched.phone_number && errors.phone_number)}
+                                        helperText={touched.phone_number && errors.phone_number}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        label="Address Line"
+                                        {...getFieldProps('address_line')}
+                                        error={Boolean(touched.address_line && errors.address_line)}
+                                        helperText={touched.address_line && errors.address_line}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        label="City"
+                                        {...getFieldProps('city')}
+                                        error={Boolean(touched.city && errors.city)}
+                                        helperText={touched.city && errors.city}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        label="Country"
+                                        {...getFieldProps('country')}
+                                        error={Boolean(touched.country && errors.country)}
+                                        helperText={touched.country && errors.country}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        row={10}
+                                        label="Bio"
+                                        {...getFieldProps('bio')}
+                                        error={Boolean(touched.bio && errors.bio)}
+                                        helperText={touched.bio && errors.bio}
+                                    />
+
+                                    <LoadingButton fullWidth 
+                                    size="large" type="submit" variant="contained" 
+                                    loading={isSubmitting} disabled={!isValid}>
+                                        Save Changes
+                                    </LoadingButton>
+                                    </Stack>
+                                </Form>
+                                </FormikProvider>
+                            
                             </div>
                         </Paper>
                         </Grid>
@@ -242,7 +269,7 @@ function  Profile ({user, uploadAvatar, updateUser}) {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <div>
-                        coming up with settings
+                    <Alert severity="info">TNothing available yet— This page will develop over time!</Alert>
                     </div>
                 </TabPanel>
                 </div>
@@ -251,6 +278,6 @@ function  Profile ({user, uploadAvatar, updateUser}) {
   );
 };
 
-const mapStateToProps = ({user}) => ({user})
+// const mapStateToProps = ({user}) => ({user})
 
-export default connect(mapStateToProps, actions)(Profile)
+export default connect(null, actions)(Profile)

@@ -30,7 +30,7 @@ const getAllUserProjectRequests = async (projectId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -46,7 +46,7 @@ const getUserRequests = async (queryString) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -61,7 +61,7 @@ const getSingleUserProjectRequest = async (projectId, requestId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -76,7 +76,7 @@ const getAllRequests = async (queryString) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -91,7 +91,7 @@ const getSingleRequest = async (requestId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -106,7 +106,7 @@ const updateRequestStatus = async (requestId, newStatus) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -121,7 +121,7 @@ const deleteRequest = async (requestId) => {
         })
         return {ok: true}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 export {

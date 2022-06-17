@@ -30,7 +30,7 @@ const getAllReportsByAdmin = async (queryString) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -45,7 +45,7 @@ const getAllProjectsReportsByAdmin = async (projectId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -60,7 +60,7 @@ const previewReportByAdmin = async (reportId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -75,7 +75,7 @@ const getSingleReportByAdmin = async (reportId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -90,7 +90,7 @@ const getAllProjectReports = async (projectId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -105,7 +105,7 @@ const getSingleProjectReport = async (projectId, reportId) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -120,7 +120,7 @@ const dispatchReportUpdateAlert = async (reportId) => {
         })
         return {ok: true}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -135,7 +135,7 @@ const deleteReport = async ( reportId ) => {
       });
       return { ok: true };
     } catch (error) {
-      return { ok: false };
+      return { ok: false, errorMessage:error.response.data.error };
     }
   };
 

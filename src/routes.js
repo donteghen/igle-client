@@ -1,7 +1,9 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 // layouts
 import DashboardLayout from './layouts/dashboard';
-import LogoOnlyLayout from './layouts/LogoOnlyLayout';
+import LogoOnlyLayout from './layouts/logoOnly/LogoOnlyLayout';
 // Common pages imports
 import Blog from './pages/Blog';
 import Login from './pages/Login';
@@ -15,6 +17,8 @@ import Faqs from './pages/Faqs';
 import PrivacyPolicy from './pages/Privacy';
 import TermsOfUse from './pages/Terms';
 import Profile from './pages/Profile'
+import Home from './pages/Home';
+
 // user protected imports
 import UserProjects from './pages/UserProject'
 import UserRequests from './pages/UserRequest';
@@ -27,22 +31,26 @@ import Testimonials from './pages/Testimonial';
 import Reports from './pages/Report';
 import ContactMessages from './pages/ContactMessage';
 
+
 // ----------------------------------------------------------------------
 
-export default function Router() {
+Router.propTypes = {
+  user: PropTypes.object
+}
+ function Router({user}) {
   return useRoutes([
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { path: 'profile', element: <Profile /> },
+        { path: 'profile', element: <Profile user={user} /> },
 
         { path: 'app', element: <DashboardApp /> },
         { path: 'user-projects/:id', element: <UserProjectDetail /> },
         { path: 'user-projects', element: <UserProjects /> },
         { path: 'user-requests', element: <UserRequests /> },
-        { path: 'users', element: <Users /> },
 
+        { path: 'users', element: <Users /> },
         { path: 'projects', element: <Projects /> },
         { path: 'reports', element: <Reports /> },
         { path: 'requests', element: <Requests /> },
@@ -50,6 +58,7 @@ export default function Router() {
         { path: 'testimonials', element: <Testimonials /> },
         { path: 'products', element: <Products /> },
         { path: 'blogs', element: <Blog /> },
+        { path: '', element: <Navigate to="/dashboard/app" /> },
       ],
     },
     {
@@ -57,11 +66,12 @@ export default function Router() {
       element: <LogoOnlyLayout />,
       children: [
         {path: 'terms-of-use', element: <TermsOfUse />},
+        {path: 'home', element: <Home />},
         {path: 'privacy-policy', element: <PrivacyPolicy />},
         {path: 'faqs', element: <Faqs />},
         {path: 'about', element: <About />},
         {path: 'contact', element: <Contact />},
-        { path: '/', element: <Navigate to="/dashboard/app" /> },
+        { path: '/', element: <Navigate to="/home" /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: '404', element: <NotFound /> },
@@ -71,3 +81,6 @@ export default function Router() {
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
+
+const mapStateToProps = ({user}) => ({user})
+export default connect(mapStateToProps, null)(Router)

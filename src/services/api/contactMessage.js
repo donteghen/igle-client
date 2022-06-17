@@ -14,7 +14,7 @@ const postNewContactMessage = async (details) => {
         })
         return {ok: true}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -30,7 +30,7 @@ const markContactMessageAsReplied = async (contactMessageId) => {
         })
         return {ok: true, data:res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -46,7 +46,7 @@ const getAllContactMessage = async (queryString) => {
         })
         return {ok: true, data:res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -61,7 +61,7 @@ const getSingleContactMessage = async (contactMessageId) => {
         })
         return {ok: true, data:res.data.data}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 
@@ -76,7 +76,7 @@ const deleteContactMessage = async (contactMessageId) => {
         })
         return {ok: true}
     } catch (error) {
-        return {ok: false}
+        return {ok: false, errorMessage:error.response.data.error}
     }
 }
 export {

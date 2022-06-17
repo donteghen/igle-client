@@ -15,8 +15,9 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,1)), url(/static/preview.jpg)',
+    backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,0.5)), url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192508/Igle/general/about-2_ktrii8.gif)',
     justifyContent: 'center',
+    marginTop:'100px',
     [theme.breakpoints.up('md')]: {
       alignItems: 'flex-start',
       padding: theme.spacing(0)
@@ -26,7 +27,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
 
   const ContentStyle = styled('div')(({ theme }) => ({
       position:'relative',
-    marginTop:'70px',
+    marginTop:'30px',
     padding: theme.spacing(3),
     justifyContent: 'center',
     [theme.breakpoints.up('md')]: {
@@ -38,7 +39,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
   }));
 
   const overlayTextStyle = {
-    transform: 'translateY(300px)',
+    transform: 'translateY(125px)',
     paddingLeft: '20px'
   }
 
@@ -51,48 +52,52 @@ export default function About () {
             <ThumbnailStyle>
                 <Typography component='div' sx={overlayTextStyle}>
                     <Typography component='h2' 
-                    sx={{fontSize:`${mdUp ? '70px' : '36px'}`, lineHeight:'1.0', '& > span': {color:'primary.main'}}}>
+                    sx={{fontSize:`${mdUp ? '70px' : '36px'}`, lineHeight:'1.0',  '& > span': {color:'primary.main'}}}>
                         <span>Who</span><br/> we are?
                     </Typography>
-                    <Typography component='div' sx={{my:3}}>
-                        <p>We take care of the heavy lifting</p>
-                        <p>While You relax and monitor your work at your convinience</p>
+                    <Typography component='div' sx={{my:1}}>
+                        <p style={{margin: '10px 0'}}>YOUR CONSTRUCTION PROJECT FULLY CAPTURED, TOTALLY COVERED</p>
+                        <p style={{margin: '10px 0'}}>Construction Photos and Videos, 360 Image, UAV Services, and automated workflow solutions
+from the Global Leader in Construction Documentation.</p>
                     </Typography>
                 </Typography>
             </ThumbnailStyle>
             <ContentStyle>
                 <Typography component='div'  width={mdUp ? '45%' : '100%'} sx={{py:`${mdUp ? '10px' : '50px'}`}}>
-                    <img src='/static/preview.jpg' height='400px'  alt='igle' />
+                    <img src='https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192494/Igle/general/about-4_c1kyen.jpg' style={{height:'600px'}}  alt='igle' />
                 </Typography>
                 <Typography component='div'  width={mdUp ? '45%' : '100%'}  >
-                    <h1>What is minimal?</h1>
-                    <p>Our theme is the most advanced and user-friendly theme you will find on the market, we have documentation and video to help set your site really easily, pre-installed demos you can import in one click and everything from the theme options to page content can be edited from the front-end. This is the theme you are looking for.</p>
+                    <h1>What is igle?</h1>
+                    <p style={{margin: '10px 0'}}>Igle provides visual photo and video documentation solutions for construction projects of any size, across all verticals. Our visual documentation specialists are expertly trained to capture construction progress through inspection-grade photos, facility videos, drone and UAV (unmanned aerial vehicle) flights.</p>
+                    <p style={{margin: '10px 0'}}>Igle then preserves a perfect record of your project, at every stage of its lifecycle, by linking the visual records(reports) to an interactive set of the plans. Project stakeholders (owners) can review the inspection-grade imagery, streaming video feeds, and facility videos online for remote monitoring and inspection</p>
                         <Stack>
                             <Box width='100%'>
                                 <p>Monitoring</p>
-                                <LinearProgressWithLabel title='Develop Cost Reduction' value={20} />
+                                <LinearProgressWithLabel title='Added value' value={40} />
                             </Box>
                             <Box width='100%'>
-                                <LinearProgressWithLabel title='Time Saved' value={70} />
+                                <LinearProgressWithLabel title='Time Efficiency' value={70} />
                             </Box>
                             <Box width='100%'>
-                                <LinearProgressWithLabel title='Operation Speed Up' value={35} />
+                                <LinearProgressWithLabel title='Fraud Reduction' value={35} />
                             </Box>
                             <Box width='100%'>
-                                <LinearProgressWithLabel title='Satisfaction Rate' value={90} />
+                                <LinearProgressWithLabel title='Satisfaction' value={90} />
                             </Box>
                         </Stack>
                 </Typography>
             </ContentStyle>
             <ContentStyle>
-                <Typography component='div'  width={mdUp ? '45%' : '100%'} sx={{py:`${mdUp ? '10px' : '50px'}`}}>
-                <Typography component='h1' sx={{fontSize:'50px', '& > span':{color:'primary.main'}}}>
-                Why project developers choose <span >igle</span>?
-                </Typography>
+                <Typography component='div'  width={mdUp ? '45%' : '100%'} sx={{py:`${mdUp ? '10px' : '30px'}`}}>
+                    <Typography component='h1' sx={{fontSize:'50px', '& > span':{color:'primary.main'}}}>
+                    Why project stackholders choose <span >igle</span>?
+                    </Typography>
                 </Typography>
                 <Typography component='div'  width={mdUp ? '45%' : '100%'}  >
-                    <h1>What is minimal</h1>
-                    <p>Our theme is the most advanced and user-friendly theme you will find on the market, we have documentation and video to help set your site really easily, pre-installed demos you can import in one click and everything from the theme options to page content can be edited from the front-end. This is the theme you are looking for.</p>
+                    <h1>Why use Igle</h1>
+                    <p style={{margin: '10px 0'}}>Igle comprehensively captures your project site using state-of-the art construction technologies, including high-definition photography, measurable 3D Images, drones/UAV, professional video, or 360° virtual walkthroughs.</p>
+                    <p style={{margin: '10px 0'}}>Once the visual information is captured, Igle uploads and links the data into an interactive plan of the project in our robust, but intuitive, web-based platform.</p>
+                    <p style={{margin: '10px 0'}}>All that imply, total control over your project from anywhere and more informed decision made.</p>
                 </Typography>
             </ContentStyle>
             <ValueWidgets />
