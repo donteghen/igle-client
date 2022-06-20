@@ -15,6 +15,7 @@ const addNewProjectRequest = async (projectId, details) => {
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
+        console.log(error)
         return {ok: false, errorMessage:error.response.data.error}
     }
 }

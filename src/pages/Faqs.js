@@ -3,11 +3,21 @@ import {  useNavigate, Link } from "react-router-dom"
 import Page from "../components/Page"
 import Iconify from "../components/Iconify"
 
+const styles = {
+    mainBox: {
+        mx: { xs:'20px', md: '100px'}, 
+        mt:10,
+        py:10,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,0)), url(/static/bg/bg-1.webp)',
+    }
+}
 export default function Faqs () {
     const navigate = useNavigate()
     return (
        <Page title='FAQs'>
-            <Box sx={{mx: { xs:'20px', md: '100px'}, py:10,}} >
+            <Box sx={styles.mainBox} >
             <h1 style={{margin:'20px 0'}}>
             <Iconify icon='flat-color-icons:answers' sx={{verticalAlign:'middle', fontSize:'40px', marginRight:'5px'}} />
             Frequently Asked Questions </h1>

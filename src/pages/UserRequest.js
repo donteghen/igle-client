@@ -16,6 +16,7 @@ import Iconify from '../components/Iconify';
 import { RequestSort, RequestList, RequestFilterSidebar } from '../sections/@dashboard/user-requests';
 // api functions
 import {getUserRequests} from '../services/api/request'
+import RequestForm from '../sections/feedback/requestForm';
 
 
 
@@ -24,6 +25,15 @@ function UserRequests () {
     const [requests, setRequests] = useState([])
     const [updatedRequests, setUpdatedRequests] = useState([])
     const [loading, setLoading] = useState(false)
+
+    const [openForm, setOpenForm] = useState(false)
+
+    const handleFormOpen = () => {
+      setOpenForm(true)
+    }
+    const handleFormClose = () => {
+      setOpenForm(false)
+    }
 
     const location = useLocation()
     useEffect(() => {
@@ -88,7 +98,7 @@ function UserRequests () {
               <Typography variant="h4" sx={{ mb: 5 }}>
                 My Requests 
               </Typography>
-              <Button variant="contained"  startIcon={<Iconify icon="eva:plus-fill" />}>
+              <Button variant="contained" onClick={handleFormOpen}  startIcon={<Iconify icon="eva:plus-fill" />}>
               Add a Request
               </Button>
             </Stack>
@@ -103,11 +113,12 @@ function UserRequests () {
                 <RequestSort onSortList={sortList} />
               </Stack>
             </Stack>
-            {(requests && requests?.length > 0) ? 
-            <RequestList requests={updatedRequests} /> 
-            : 
-            <Alert severity="info">Ops! - No requests available.<br/> - Please check your connect and try again.<br/>- Please check your search filter<br/> - If you haven't added project requests yet, then,<br/>Add one now</Alert>}
+            {!loading && (!requests || !requests?.length > 0) ? 
+              <Alert severity="info">Ops! - No requests available.<br/> - Please check your connect and try again.<br/>- Please check your search filter<br/> - If you haven't added project requests yet, then,<br/>Add one now</Alert>
+              :
+            <RequestList requests={updatedRequests} />}            
           </Container>
+          <RequestForm openForm={openForm} onCloseForm={handleFormClose} />
         </Page>
     )
 }

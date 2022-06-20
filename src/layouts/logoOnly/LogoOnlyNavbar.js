@@ -49,7 +49,7 @@ const inActiveStyle = {
     margin:'0 20px',
     textDecoration: "none",
     color:'black',
-    '@media (max-width: 400px)': {
+    '@media (maxWidth: 400px)': {
         display:'none'
     }
   };

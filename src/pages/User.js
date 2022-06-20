@@ -2,21 +2,20 @@
 /* eslint-disable no-alert */
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
-// material
-import {
-  Card,
-  Table,
-  Stack,
-  Avatar,
-  Checkbox,
-  TableRow,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  TableContainer,
-  TablePagination,
-} from '@mui/material';
+// mui components
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import Checkbox from '@mui/material/Checkbox';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import LinearProgress from '@mui/material/LinearProgress';
 // components
 import Page from '../components/Page';
 import Label from '../components/Label';
@@ -83,6 +82,7 @@ export default function Users() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     fetchUsers()
     return () => {
@@ -91,13 +91,17 @@ export default function Users() {
   }, [])
   
   const fetchUsers = () => {
-    getAllUsers().then(result => {
-      if (!result.ok) {
-        window.alert(`${result.errorMessage}`)
-        return 
-      }
-      setUsers(result.data)
-    })
+    setLoading(true)
+    setTimeout(() => {
+      getAllUsers().then(result => {
+        setLoading(false)
+        if (!result.ok) {
+          window.alert(`${result.errorMessage}`)
+          return 
+        }
+        setUsers(result.data)
+      }).catch(e => setLoading(false))
+    }, 2000);
   }
 
   const handleRequestSort = (event, property) => {
@@ -152,6 +156,7 @@ export default function Users() {
   return (
     <Page title="Users">
       <Container>
+     {loading && <LinearProgress />}
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Users
@@ -212,7 +217,7 @@ export default function Users() {
                         </TableCell>
 
                         <TableCell align="right">
-                          <UserMoreMenu user={row}/>
+                          <UserMoreMenu user={row} onFetchUsers={fetchUsers} />
                         </TableCell>
                       </TableRow>
                     );

@@ -1,10 +1,11 @@
-/* eslint-disable no-alert */
 /* eslint-disable no-useless-return */
+import PropTypes from 'prop-types'
 import  React, {useState, useEffect} from 'react';
+// formik
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import PropTypes from 'prop-types'
-import Button from '@mui/material/Button';
+// mui 
+import IconButton from '@mui/material/IconButton';
 import {Stack, Select, InputLabel, FormControl } from '@mui/material'
 import { LoadingButton } from '@mui/lab';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,6 +18,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+// other components
+import ErrorAlert from '../../components/alerts/ErrorAlert';
+import SuccessAlert from '../../components/alerts/SuccessAlert';
+import Iconify from '../../components/Iconify';
+// functions
 import {capitalizeFirstLetter} from '../../utils/formatString'
 import {getUserProjects} from '../../services/api/project'
 import {addNewProjectRequest} from '../../services/api/request'
@@ -35,10 +41,24 @@ export default function RequestForm({onCloseForm, openForm}) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
+  const [openErrorAlert, setOpenErrorAlert] = useState(false)
+  const [errorMess, setErrorMess] = useState('')
+
+
+  const handleSuccessAlertClosed = () => {
+    setOpenSuccessAlert(false)
+    handleClose()
+  }
+  const handleErrorAlertClosed = () => {
+    setErrorMess('')
+    setOpenErrorAlert(false)
+  }
+
     useEffect(() => {
         getUserProjects().then(result => {
             if (!result.ok || result.data?.length < 1) {
-                window.alert('No project availiable yet! Please add a project first.') 
+                setErrorMess(result.errorMessage??'Your project list seems to be empty!')
             }
             setProjectList(result.data)
         })
@@ -47,7 +67,16 @@ export default function RequestForm({onCloseForm, openForm}) {
         setProjectList([])
       }
     }, [])
-    
+    useEffect(() => {
+      if (errorMess && errorMess.length > 0) {
+        setOpenErrorAlert(true)
+      }
+    }, [errorMess])
+
+    const handleClose = () => {
+      formik.resetForm()
+      onCloseForm(false);
+    };
   const RequestSchema = Yup.object().shape({
     request_type: Yup.string().required('Please select a request type'),
     project: Yup.string().required('Please select a project'),
@@ -64,23 +93,20 @@ export default function RequestForm({onCloseForm, openForm}) {
       setTimeout(() => {
         addNewProjectRequest(values.project, {request_type:values.request_type, detail:values.detail}).then(result => {
             if (!result.ok) {
-                window.alert(`${result.errorMessage}`)
+                setErrorMess(result.errorMessage)
+                setSubmitting(false)
+                return
             }
-            else window.alert('submitted successfully!')
-        })
-        setSubmitting(false)
-        formik.resetForm()
-        handleClose()
-        
+            setOpenSuccessAlert(true)
+            formik.resetForm()
+        }).catch(e => setSubmitting(false))
       }, 3000);
     },
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps,setSubmitting  } = formik;
 
-  const handleClose = () => {
-    onCloseForm(false);
-  };
+  
 
   return (
       <Dialog
@@ -91,6 +117,9 @@ export default function RequestForm({onCloseForm, openForm}) {
       >
         <DialogTitle id="responsive-dialog-title">
           {'Request Form'}
+          <IconButton aria-label="close" color="primary" sx={{float:'right'}} onClick={handleClose}>
+            <Iconify icon='carbon:close-filled' />
+          </IconButton>
         </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{py:4}}>
@@ -100,6 +129,12 @@ export default function RequestForm({onCloseForm, openForm}) {
                 maxWidth: '100%',
             }}
             >
+            <SuccessAlert open={openSuccessAlert} onClosed={handleSuccessAlertClosed}
+            title='Submission Successful' 
+            message='Your request has been successfully submitted. Someone from client support will be in touch soonest, Thanks!' />
+            <ErrorAlert open={openErrorAlert} onClosed={handleErrorAlertClosed}
+            title='Operation Failed' message={errorMess}
+            />
             <FormikProvider value={formik}>
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                     <Stack spacing={3}>
@@ -164,11 +199,6 @@ export default function RequestForm({onCloseForm, openForm}) {
             </Box>
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus variant='outlined'>
-            Close
-          </Button>
-        </DialogActions>
       </Dialog>
   )
 }

@@ -13,19 +13,34 @@ import Alert from '@mui/material/Alert';
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
+import ErrorAlert from '../components/alerts/ErrorAlert';
 import { ProjectSort, ProjectList, ProjectFilterSidebar } from '../sections/@dashboard/user-projects';
 // api functions
 import {getUserProjects} from '../services/api/project'
+import ProjectForm from '../sections/feedback/projectForm';
 
 
 
 function UserProjects () {
+  const location = useLocation()
+
     const [openFilter, setOpenFilter] = useState(false);
     const [projects, setProjects] = useState([])
     const [updatedProjects, setUpdatedProjects] = useState([])
     const [loading, setLoading] = useState(false)
 
-    const location = useLocation()
+    const [openErrorAlert, setOpenErrorAlert] = useState(false)
+    const [errorMess, setErrorMess] = useState('')
+
+    const [openForm, setOpenForm] = useState(false)
+    const handleFormOpen = () => {
+      setOpenForm(true)
+    }
+    const handleFormClose = () => {
+      setOpenForm(false)
+      fetchProjects()
+    }
+
     useEffect(() => {
       if (location.search) {
         fetchProjects(location.search.substring(1))
@@ -42,6 +57,17 @@ function UserProjects () {
     useEffect(() => {
       fetchProjects(location.search.substring(1))
     }, [location])
+    
+    useEffect(() => {
+      if (errorMess && errorMess.length > 0) {
+        setOpenErrorAlert(true)
+      }
+    }, [errorMess])
+
+    const handleErrorClosed = () => {
+      setErrorMess('')
+      setOpenErrorAlert(false)
+    }
 
     const sortList = (order) => {
       setLoading(true)
@@ -62,8 +88,7 @@ function UserProjects () {
         getUserProjects(queryString).then(result => {
         setLoading(false)
         if (!result.ok) {
-          // eslint-disable-next-line no-alert
-          window.alert('error')
+          setErrorMess(result.errorMessage)
           return
         }
         setProjects(result.data)
@@ -81,6 +106,9 @@ function UserProjects () {
     return (
         <Page title="User Profile">
           <Container>
+          <ErrorAlert open={openErrorAlert} onClosed={handleErrorClosed}
+          title='Registration Failed' message={errorMess}
+        />
           <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} >
               <CircularProgress color="inherit" />
             </Backdrop>
@@ -88,7 +116,7 @@ function UserProjects () {
               <Typography variant="h4" sx={{ mb: 5 }}>
                 My Projects 
               </Typography>
-              <Button variant="contained"  startIcon={<Iconify icon="eva:plus-fill" />}>
+              <Button variant="contained" onClick={handleFormOpen}  startIcon={<Iconify icon="eva:plus-fill" />}>
               New Project
               </Button>
             </Stack>
@@ -103,11 +131,12 @@ function UserProjects () {
                 <ProjectSort onSortList={sortList} />
               </Stack>
             </Stack>
-            {(projects && projects?.length > 0) ? 
+            {(!loading && (!projects || !projects?.length > 0)) ? 
+            <Alert severity="info">Ops! Seems you haven't created a projects yet. <br/>Create one now</Alert> :
             <ProjectList projects={updatedProjects} /> 
-            : 
-            <Alert severity="info">Ops! Seems you haven't created a projects yet. <br/>Create one now</Alert>}
+            }
           </Container>
+          {openForm && <ProjectForm openForm={openForm} onCloseForm={handleFormClose} /> }
         </Page>
     )
 }

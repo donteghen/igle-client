@@ -191,8 +191,12 @@ function  Profile ({user, uploadAvatar, updateUser}) {
                             <CircularProgress color="inherit" />
                         </Backdrop>
                         <div>
-                            <h2 style={{fontFamily:'Nunito, san serif'}}>Profile Details</h2>
-                            <p style={{fontFamily:'Nunito, san serif'}}>Review and Update profile Information</p>
+                        <Typography sx={{float :'right', p:'4px 2px', mr:'4px', mt:'4px', fontSize:'10px', bgcolor:`${user?.isVerified ? 'success.main': 'warning.main'}`, borderRadius:'4px'}}>
+                        {user?.isVerified ? 'Verified': 'Unverified'}
+                        </Typography>
+                            <h2 style={{fontFamily:'Nunito, san serif', margin:'20px 0'}}>Profile Details</h2>
+                            <p style={{fontFamily:'Nunito, san serif', margin:'20px 0'}}>Review and Update profile Information</p>
+                            
                             <FormikProvider value={formik}>
                                 <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                                     <SuccessAlert open={apiSuccess} onClosed={setApiSuccess}

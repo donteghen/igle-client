@@ -18,7 +18,9 @@ import PrivacyPolicy from './pages/Privacy';
 import TermsOfUse from './pages/Terms';
 import Profile from './pages/Profile'
 import Home from './pages/Home';
-
+// auth guard import 
+import RequiredUserAuth from './auth-guards/RequiredUserAuth';
+import LockAuthenticatedUser from './auth-guards/LockAuthenticatedUser';
 // user protected imports
 import UserProjects from './pages/UserProject'
 import UserRequests from './pages/UserRequest';
@@ -30,6 +32,9 @@ import Requests from './pages/Request';
 import Testimonials from './pages/Testimonial';
 import Reports from './pages/Report';
 import ContactMessages from './pages/ContactMessage';
+import AccountVerification from './pages/AccountVerification';
+import ResetPassword from './pages/ResetPassword';
+import ConfirmResetPassword from './pages/ConfirmResetPassword';
 
 
 // ----------------------------------------------------------------------
@@ -41,7 +46,9 @@ Router.propTypes = {
   return useRoutes([
     {
       path: '/dashboard',
-      element: <DashboardLayout />,
+      element: <RequiredUserAuth>
+              <DashboardLayout />
+              </RequiredUserAuth>,
       children: [
         { path: 'profile', element: <Profile user={user} /> },
 
@@ -71,9 +78,18 @@ Router.propTypes = {
         {path: 'faqs', element: <Faqs />},
         {path: 'about', element: <About />},
         {path: 'contact', element: <Contact />},
+        { path: '/confirm-reset-password', element: <ConfirmResetPassword /> },
+        { path: '/reset-password', element: <ResetPassword /> },
+        { path: '/account-verification', element: <AccountVerification /> },
         { path: '/', element: <Navigate to="/home" /> },
-        { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> },
+        { path: 'login', 
+        element: <LockAuthenticatedUser>
+                    <Login />
+                  </LockAuthenticatedUser> },
+        { path: 'register', 
+        element:<LockAuthenticatedUser>
+                  <Register />
+                </LockAuthenticatedUser>  },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" /> },
       ],

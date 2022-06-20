@@ -1,7 +1,10 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Card, Link, Container, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import Container from '@mui/material/Container';
+import  Typography  from '@mui/material/Typography';
+
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -60,7 +63,7 @@ export default function Register() {
   const smUp = useResponsive('up', 'sm');
 
   const mdUp = useResponsive('up', 'md');
-
+  
   return (
     <Page title="Register">
       <RootStyle>
@@ -69,7 +72,7 @@ export default function Register() {
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Already have an account? {''}
-              <Link variant="subtitle2" component={RouterLink} to="/login">
+              <Link variant="subtitle2" component={Link} to="/login">
                 Login
               </Link>
             </Typography>
@@ -79,7 +82,7 @@ export default function Register() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Manage the job more effectively with Minimal
+              Monitor your project's development more effectively with Igle
             </Typography>
             <img alt="register" src="/static/illustrations/illustration_register.png" />
           </SectionStyle>
@@ -91,32 +94,31 @@ export default function Register() {
               Get started absolutely free.
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
+            <Typography sx={{ color: 'text.secondary', mb: 5 }}>No credit card needed.</Typography>
 
             <AuthSocial />
 
             <RegisterForm />
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
-              <Link underline="always" color="text.primary" href="#">
+              By registering, I agree to Igle&nbsp;
+              <Link underline="always"  color="text.primary" to='/terms-of-use' style={{color:'black'}}>
                 Terms of Service
               </Link>
-              {''}and{''}
-              <Link underline="always" color="text.primary" href="#">
+              {' '}and{' '}
+              <Link underline="always"  color="text.primary" to="/privacy-policy" style={{color:'black'}}>
                 Privacy Policy
               </Link>
               .
             </Typography>
-
-            {!smUp && (
-              <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                Already have an account?{' '}
-                <Link variant="subtitle2" to="/login" component={RouterLink}>
-                  Login
-                </Link>
-              </Typography>
-            )}
+            
+            <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }} >
+              Already have an account?{' '}
+              <Link variant="subtitle2" to="/login" style={{color:'#0f3996'}}>
+                Login
+              </Link>
+            </Typography>
+            
           </ContentStyle>
         </Container>
       </RootStyle>

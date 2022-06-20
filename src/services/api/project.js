@@ -86,7 +86,7 @@ const createNewProject = async (projectDetails) => {
 const updateProject = async (projectDetails, projectId) => {
     try {
       const token = localStorage.getItem('iUserToken');
-      const res = await axios.patch(`${baseUrl}projects/${projectId}/update`, projectDetails,
+      const res = await axios.patch(`${baseUrl}user/profile/projects/${projectId}/update`, projectDetails,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -31,7 +31,7 @@ export const signupUser = (userDetails) => async (dispatch) => {
         dispatch({type:SIGN_UP_USER, payload:res.data.data.user})
         return {ok:true}
     } catch (error) {
-        return {ok:false}
+        return {ok:false, errorMessage:error.response.data.error}
     }
 }
 
@@ -42,7 +42,7 @@ export const loginUser = (loginDetails) => async (dispatch) => {
         dispatch({type:LOG_IN_USER, payload: res.data.data.user})
         return {ok: true}
     } catch (error) {
-        return {ok:false}
+        return {ok:false, errorMessage:error.response.data.error}
     }
 }
 
@@ -53,14 +53,14 @@ export const changeUserPassword = ({oldPasword, newPassword}) => async (dispatch
         dispatch({type:CHANGE_USER_PASSWORD, payload: res.data.data})
         return {ok: true}
     } catch (error) {
-        return {ok:false}
+        return {ok:false, errorMessage:error.response.data.error}
     }
 }
 
 export const logoutUser = () => async (dispatch) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.post(`${apiUrl}users/profile/logout`,{}, {
+        await axios.post(`${apiUrl}user/profile/logout`,{}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -69,6 +69,7 @@ export const logoutUser = () => async (dispatch) => {
         localStorage.removeItem('iUserToken')
         return {ok:true}
     } catch (error) {
+        
         return {ok:false}
     }
 }
@@ -86,7 +87,7 @@ export const uploadAvatar = (formData) => async (dispatch) => {
         dispatch({type : UPLOAD_USER_AVATAR, payload : res.data.data});
         return {ok:true}
     } catch (error) {
-        return {ok:false}
+        return {ok:false, errorMessage:error.response.data.error}
     }
 }
 
@@ -101,6 +102,6 @@ export const updateUser = (userDetails) => async (dispatch) => {
         dispatch({type : UPDATE_USER_PROFILE, payload : res.data.data})
         return {ok:true}
     } catch (error) {
-        return {ok:false}
+        return {ok:false, errorMessage:error.response.data.error}
     }
 }

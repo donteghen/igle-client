@@ -6,15 +6,15 @@ import { FETCH_USER, LOG_IN_USER, LOG_OUT_USER, SIGN_UP_USER, UPDATE_USER_PROFIL
 export function userReducer (state = null, action) {
     switch (action.type) {
         case FETCH_USER : 
-            return action.payload || state
+            return action.payload 
         case SIGN_UP_USER :
-            return action.payload || state
+            return action.payload 
         case LOG_IN_USER : 
-            return action.payload || state
+            return action.payload 
         case LOG_OUT_USER : 
-            return action.payload || state
+            return action.payload
         case CHANGE_USER_PASSWORD : 
-            return action.payload || state   
+            return action.payload   
         case UPDATE_USER_PROFILE :
             return action.payload || state
         case UPLOAD_USER_AVATAR :

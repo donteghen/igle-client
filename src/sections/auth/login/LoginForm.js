@@ -1,18 +1,34 @@
 import * as Yup from 'yup';
+import PropTypes from 'prop-types'
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
+import {connect} from 'react-redux'
 // material
-import { Link, Stack, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@mui/material';
+import Link from '@mui/material/Link';
+import  Stack from '@mui/material/Stack';
+import  Checkbox from '@mui/material/Checkbox';
+import  TextField from '@mui/material/TextField';
+import  IconButton from '@mui/material/IconButton';
+import  InputAdornment from '@mui/material/InputAdornment';
+import  FormControlLabel from '@mui/material/FormControlLabel';
 import { LoadingButton } from '@mui/lab';
+
 // component
 import Iconify from '../../../components/Iconify';
-
+import ErrorAlert from '../../../components/alerts/ErrorAlert';
+// functions
+import * as actions from '../../../redux/actions'
 // ----------------------------------------------------------------------
 
-export default function LoginForm() {
+LoginForm.propTypes = {
+  loginUser: PropTypes.func
+}
+
+function LoginForm({loginUser}) {
   const navigate = useNavigate();
 
+  const [openErrorAlert, setOpenErrorAlert] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -27,18 +43,34 @@ export default function LoginForm() {
       remember: true,
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (values) => {
+      setTimeout(() => {
+        loginUser(values).then(result => {
+          if (!result.ok) {
+            setOpenErrorAlert(true)
+            setSubmitting(false)
+            return
+          }
+          navigate('/profile')
+          setSubmitting(false)
+        }).catch(e => {
+          setSubmitting(false)
+        }) 
+       }, 2500);
     },
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, values, isSubmitting, handleSubmit, setSubmitting, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
 
   return (
+    <>
+      <ErrorAlert open={openErrorAlert} onClosed={setOpenErrorAlert}
+          title='Login Failed' message="The provided credentials don\'t match any acccount. Please verify the provided email & password and try again."
+        />
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
@@ -78,7 +110,7 @@ export default function LoginForm() {
             label="Remember me"
           />
 
-          <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
+          <Link component={RouterLink} variant="subtitle2" to="/reset-password" underline="hover">
             Forgot password?
           </Link>
         </Stack>
@@ -88,5 +120,8 @@ export default function LoginForm() {
         </LoadingButton>
       </Form>
     </FormikProvider>
+    </>
   );
 }
+
+export default connect(null, actions)(LoginForm)

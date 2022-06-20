@@ -1,4 +1,5 @@
-import * as React from 'react';
+/* eslint-disable no-useless-return */
+import {useState} from 'react';
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom';
 // import mui base components
@@ -10,26 +11,76 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import  Divider  from '@mui/material/Divider';
+import  Backdrop  from '@mui/material/Backdrop';
+import  CircularProgress  from '@mui/material/CircularProgress';
 
-
-// import project components
+// other components
 import Iconify from '../../../components/Iconify';
-
+import ErrorAlert from '../../../components/alerts/ErrorAlert';
+import SuccessAlert from '../../../components/alerts/SuccessAlert';
 // import utils functions
 import {getActiveColor, getPlanColor, getStatusColor} from '../../../utils/getColor'
 import {capitalizeFirstLetter} from '../../../utils/formatString'
 import { fDateTime } from '../../../utils/formatTime';
+import ProjectForm from '../../feedback/projectForm';
+import { deleteProject } from '../../../services/api/project';
+
 
 
 ProjectCard.propTypes = {
-    project: PropTypes.object.isRequired
+    project: PropTypes.object.isRequired,
 }
 
 export default function ProjectCard ({project}) {
   const navigate = useNavigate()
+
+  const [loading, setLoading] = useState(false)
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
+    const [openErrorAlert, setOpenErrorAlert] = useState(false)
+
+  const [openForm, setOpenForm] = useState(false)
+    const handleFormOpen = () => {
+      setOpenForm(true)
+    }
+    const handleFormClose = () => {
+      setOpenForm(false)
+    }
+
+    const handleSuccessAlertClosed = () => {
+      setOpenSuccessAlert(false)
+      navigate('/dashboard/user-projects')
+  }
+
+    const handleErrorAlertClosed = () => {
+      setOpenErrorAlert(false)
+    }
+
+    const handleDelete = () => {
+      setLoading(true)
+      setTimeout(() => {
+        deleteProject(project?.id).then(result => {
+          setLoading(false)
+          if (!result.ok) {
+            setOpenErrorAlert(true)
+            return
+          }
+          setOpenSuccessAlert(true)
+        })
+      }, 2000);
+    }
   return (
-    <Card sx={{ maxWidth: 345, }}>
-      <CardContent sx={{px:1}}>
+    <>
+    <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    <SuccessAlert open={openSuccessAlert} onClosed={handleSuccessAlertClosed}
+      title='Delete Operation successful' 
+      message='The project has been successfully deleted, thanks.'  />
+      <ErrorAlert open={openErrorAlert} onClosed={handleErrorAlertClosed}
+      title='Operation Failed' message='An Error occured please check you connection and try again!'
+      />
+    <Card sx={{ maxWidth: 345, height:300}}>
+      <CardContent sx={{px:1, height:'80%'}}>
         <Box sx={{display:'flex', justifyContent:'space-between'}}>
             <Chip label={capitalizeFirstLetter(project?.plan)} color={getPlanColor(project?.plan)} size='small' /> 
             <Chip label={capitalizeFirstLetter(project?.status)} color={getStatusColor(project?.status)} size='small' />
@@ -44,17 +95,19 @@ export default function ProjectCard ({project}) {
         </Typography>
       </CardContent>
       <Divider sx={{mt:1}} />
-      <CardActions disableSpacing >
-        <IconButton aria-label="Edit" sx={{color:'warning.main'}} >
+      <CardActions disableSpacing sx={{height:'15%'}}>
+        <IconButton aria-label="Edit" sx={{color:'warning.main'}} onClick={handleFormOpen}>
           <Iconify icon='bxs:edit' />
         </IconButton>
         <IconButton aria-label="view" sx={{color:'info.main'}} onClick={() => navigate(`/dashboard/user-projects/${project?.id}`)}>
           <Iconify icon='carbon:view-filled' />
         </IconButton>
-        <IconButton sx={{ml:'auto', color:'error.main'}} >
+        <IconButton sx={{ml:'auto', color:'error.main'}} onClick={handleDelete}>
           <Iconify icon='fluent:delete-24-filled'  />
         </IconButton>
       </CardActions>
     </Card>
+    {openForm && <ProjectForm openForm={openForm} onCloseForm={handleFormClose} project={project} />}
+    </>
   );
 }

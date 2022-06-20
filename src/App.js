@@ -17,15 +17,14 @@ import * as actions from './redux/actions'
 
 
 App.propTypes = {
-  fetchUser: PropTypes.func
+  fetchUser: PropTypes.func,
 }
 
  function App({fetchUser}) {
   useEffect(() => {
-    fetchUser().then(result => console.log(result))
+    fetchUser()
   }, [])
 
-  
   return (
     <ErrorBoundary>
       <ThemeProvider>
@@ -36,5 +35,6 @@ App.propTypes = {
     </ErrorBoundary>
   );
 }
+
 
 export default connect(null, actions)(App);

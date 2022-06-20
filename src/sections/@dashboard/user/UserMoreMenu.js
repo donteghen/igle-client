@@ -1,21 +1,36 @@
+/* eslint-disable no-useless-return */
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types'
 // material
-import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import MenuItem from '@mui/material/MenuItem';
+import Backdrop from '@mui/material/Backdrop';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import CircularProgress from '@mui/material/CircularProgress';
 // component
 import Iconify from '../../../components/Iconify';
 import UserDetail from '../../../components/UserDetail'
+// functions
+import {deleteUser} from '../../../services/api/user'
 // ----------------------------------------------------------------------
 
 UserMoreMenu.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  onFetchUsers: PropTypes.func.isRequired,
 }
 
-export default function UserMoreMenu({user}) {
+export default function UserMoreMenu({user, onFetchUsers}) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false)
+  const [loading, setLoading] = useState(false)
 
+  const [error, setError] = useState(false)
+  const [success, setSuccess] = useState(false)
   
   const handleOpenDetail = () => {
       setIsOpen(false)
@@ -25,11 +40,47 @@ export default function UserMoreMenu({user}) {
     setOpenDetail(false)
   }
 
+  const handleCloseSuccess = () => {
+    setSuccess(false)
+    onFetchUsers()
+  }
+  const handleCloseError = () => {
+    setError(false)
+  }
+  const handleDeleteUser = () => {
+    setIsOpen(false)
+    setLoading(true)
+    setTimeout(() => {
+      deleteUser(user?.id).then(result => {
+        setLoading(false)
+        if (!result.ok) {
+          setError(true)
+          return
+        }
+        setSuccess(true)
+      }).catch(e => setLoading(false))
+    }, 2500);
+  }
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>
         <Iconify icon="eva:more-vertical-fill" width={20} height={20} />
       </IconButton>
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} >
+              <CircularProgress size={40} thickness={4} color="primary" />
+        </Backdrop>
+
+        {error && 
+        <Alert severity="error" onClose={handleCloseError}>
+        <AlertTitle>Error</AlertTitle>
+        An error occured — <strong>Try again in a moment!</strong>
+      </Alert>}
+
+      {success && 
+        <Alert severity="success" onClose={handleCloseSuccess}>
+        <AlertTitle>Delete Successful</AlertTitle>
+        Delete operation completed — <strong>Click to close!</strong>
+      </Alert>}
 
       <Menu
         open={isOpen}
@@ -41,7 +92,7 @@ export default function UserMoreMenu({user}) {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem sx={{ color: 'text.secondary' }}>
+        <MenuItem sx={{ color: 'text.secondary' }} onClick={handleDeleteUser}>
           <ListItemIcon>
             <Iconify icon="eva:trash-2-outline" width={24} height={24} />
           </ListItemIcon>

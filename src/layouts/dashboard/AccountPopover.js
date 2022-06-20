@@ -1,16 +1,26 @@
+/* eslint-disable no-useless-return */
 import { useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 // @mui
 import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@mui/material';
+import  Box from '@mui/material/Box';
+import  Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import  Stack from '@mui/material/Stack';
+import   MenuItem from '@mui/material/MenuItem';
+import   Avatar from  '@mui/material/Avatar';
+import  CircularProgress  from '@mui/material/CircularProgress';
+import  Backdrop  from '@mui/material/Backdrop';
+import  IconButton  from '@mui/material/IconButton';
 
 // redux actions
 import * as actions from '../../redux/actions'
 // components
 import MenuPopover from '../../components/MenuPopover';
 import Iconify from '../../components/Iconify';
+import ErrorAlert from '../../components/alerts/ErrorAlert';
 
 // ----------------------------------------------------------------------
 
@@ -42,13 +52,13 @@ const NON_AUTH_MENU_OPTIONS = [
   {
     label: 'login',
     icon: 'eva:log-in-outline',
-    linkTo: '/dashboard/login',
+    linkTo: '/login',
   },
   
   {
     label: 'register',
     icon: 'eva:person-add-fill',
-    linkTo: '/dashboard/register',
+    linkTo: '/register',
   },
 
 ];
@@ -56,14 +66,18 @@ const NON_AUTH_MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 AccountPopover.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  logoutUser: PropTypes.func
 }
 
-function AccountPopover({user}) {
+function AccountPopover({user, logoutUser}) {
+  const navigate = useNavigate()
   const anchorRef = useRef(null);
 
   const [open, setOpen] = useState(null);
 
+  const [errorAlert, setErrorAlert] = useState(false)
+  const [loading, setLoading] = useState(false)
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -72,8 +86,27 @@ function AccountPopover({user}) {
     setOpen(null);
   };
 
+  const handleLogout = () => {
+    setLoading(true)
+    setTimeout(() => {
+      logoutUser().then(result => {
+        setLoading(false)
+        if (!result.ok) {
+          setErrorAlert(true)
+          return
+        }
+        navigate('/login')
+      }).catch(e => setLoading(false))
+    }, 2000);
+  }
   const renderAuthOptions = () => (
      <>
+     <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} >
+          <CircularProgress color="inherit" />
+      </Backdrop>
+     <ErrorAlert open={errorAlert} onClosed={setErrorAlert}
+            title='Operation Failed' message='Oops! something went wrong, try again!'
+            />
       <Box sx={{ my: 1.5, px: 2.5 }}>
             <Typography variant="subtitle2" noWrap>
               {user?.name}
@@ -148,7 +181,7 @@ function AccountPopover({user}) {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {user && <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        {user && <MenuItem sx={{ m: 1 }} onClick={handleLogout}>
           <Iconify icon='heroicons-outline:logout' sx={{mr:1}} /> Logout
         </MenuItem>}
       </MenuPopover>
