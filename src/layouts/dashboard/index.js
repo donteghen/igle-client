@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 //
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
+import TestimonialForm from '../../sections/feedback/testimonialForm';
 
 // ----------------------------------------------------------------------
 
@@ -35,12 +36,20 @@ const MainStyle = styled('div')(({ theme }) => ({
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
 
+  const [openForm, setOpenForm] = useState(false)
+  const handleOpenForm = () => {
+    setOpenForm(true)
+  }
+  const handleOpenClosed = () => {
+    setOpenForm(false)
+  }
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} onOpenForm={handleOpenForm} />
       <MainStyle>
         <Outlet />
+        <TestimonialForm onCloseForm={handleOpenClosed} openForm={openForm}  />
       </MainStyle>
     </RootStyle>
   );

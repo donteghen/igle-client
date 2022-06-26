@@ -73,7 +73,7 @@ function TestimonialSlidder() {
   };
 
   return (
-    <Box sx={{ width: '100%', background:'white', py:4}}>
+    <Box sx={{ width: '100%', background:'white', pt:4}}>
       <Paper
         square
         elevation={0}
@@ -88,7 +88,7 @@ function TestimonialSlidder() {
         <Typography component='h3' sx={{fontWeight:'bold',fontSize:''}}>
         {testimonials[activeStep].author}
         </Typography>
-        <Typography component='div' sx={{my:1}}>
+        <Typography component='div' sx={{py:2}}>
             <Rating value={testimonials[activeStep].rating} readOnly />
         </Typography>
       </Paper>
@@ -104,7 +104,7 @@ function TestimonialSlidder() {
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
                 component="p"
-                sx={{ maxHeight: 150, fontSize:'16px', textAlign:'center', px:2}} >{testimonial.comment}</Box>) :
+                sx={{ height: 150, fontSize:'16px', textAlign:'center', px:2, pt:3}} >{testimonial.comment}</Box>) :
                  null}
           </div>
         ))}

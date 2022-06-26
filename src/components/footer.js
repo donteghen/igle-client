@@ -12,7 +12,7 @@ const styles = {
 }
 function MobileFooter () {
     return (
-        <Box >
+        <Box sx={{bgcolor:'primary.main', color:'white', pb:12}}>
             <Grid container spacing={2} justifyContent='center' >
                 <img src='/static/logo.svg' alt='logo' width={32} height={32} />
             </Grid>
@@ -67,6 +67,7 @@ function MobileFooter () {
                     </Button></p>
                 </Grid>
                 <Grid item xs={12} textAlign='center' sx={{mb:2}}>
+                    <Divider sx={{borderColor:'white'}} />
                     <p>© 2022. All rights reserved</p>
                 </Grid>
             </Grid>
@@ -75,7 +76,7 @@ function MobileFooter () {
 }
 function DesktopFooter () {
     return (
-        <Box sx={{px:2}}>
+        <Box sx={{px:2, pb:3, bgcolor:'primary.main', color:'white'}}>
             <Divider sx={{my:4}} />
             <Grid container spacing={2} justifyContent='start-left' >
                 <img src='/static/logo.svg' alt='logo' width={64} height={64} style={{paddingLeft:'16px'}} />
@@ -83,8 +84,7 @@ function DesktopFooter () {
             <Grid container spacing={2} justifyContent='space-between'>
                 <Grid item xs={3} >
                     <Typography component='p' sx={{fontSize:'14px'}}>
-                    The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style.
-                    </Typography>
+                    Construction Photos and Videos, 360 Image, UAV Services, and automated workflow solutions from the Global Leader in Construction Documentation.                    </Typography>
                     <Typography component='div' sx={{justifyContent:'center', my:2, py:2}}>
                         <IconButton color="primary" sx={{padding:'6px'}}>
                          <Iconify icon='fa-brands:facebook-f' sx={{width:24, height:24, m:1}} />
@@ -139,7 +139,7 @@ function DesktopFooter () {
                     </div>
                 </Grid>
                 <Grid item xs={12} textAlign='center' sx={{mb:2}}>
-                    <Divider />
+                    <Divider sx={{borderColor:'white'}} />
                     <p>© 2022. All rights reserved</p>
                 </Grid>
             </Grid>

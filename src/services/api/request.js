@@ -5,7 +5,7 @@ const baseUrl = setBaseUrl()
 
 // add new project request
 const addNewProjectRequest = async (projectId, details) => {
-    console.log('posting request')
+   
     try {
         const token = localStorage.getItem('iUserToken')
         const res = await axios.post(`${baseUrl}projects/${projectId}/requests`, details, {
@@ -100,7 +100,7 @@ const getSingleRequest = async (requestId) => {
 const updateRequestStatus = async (requestId, newStatus) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.patch(`${baseUrl}requests/${requestId}/update-status`, {newStatus}, {
+        const res = await axios.patch(`${baseUrl}requests/${requestId}/update-status`, {status:newStatus}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

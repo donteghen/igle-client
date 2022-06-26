@@ -2,17 +2,20 @@
 import { NavLink } from 'react-router-dom';
 // material
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar,} from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 // components
 import AccountPopover from '../dashboard/AccountPopover';
-import LanguagePopover from '../dashboard/LanguagePopover';
+// import LanguagePopover from '../dashboard/LanguagePopover';
 import Logo from '../../components/Logo';
 
 
 
 // ----------------------------------------------------------------------
 
-const DRAWER_WIDTH = 280;
+// const DRAWER_WIDTH = 280;
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
 
@@ -72,7 +75,7 @@ export default function LogoOnlyNavbar() {
         </Stack>
         
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
+          {/* <LanguagePopover /> */}
           <AccountPopover />
         </Stack>
         

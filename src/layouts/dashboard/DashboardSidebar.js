@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
@@ -15,6 +15,7 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 //
 import {userNavConfig, adminNavConfig} from './NavConfig';
+import TestimonialForm from '../../sections/feedback/testimonialForm';
 
 
 // ----------------------------------------------------------------------
@@ -41,13 +42,15 @@ const AccountStyle = styled('div')(({ theme }) => ({
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
+  onOpenForm:PropTypes.func.isRequired
 };
 
- function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user }) {
+ function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, onOpenForm }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
+  
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -56,6 +59,12 @@ DashboardSidebar.propTypes = {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  const handleOpenForm = () => {
+    if (isOpenSidebar) {
+      onCloseSidebar();
+    }
+    onOpenForm()
+  }
   const renderContent = (
     <Scrollbar
       sx={{
@@ -104,9 +113,9 @@ DashboardSidebar.propTypes = {
             </Typography>
           </Box>
 
-          <Button href="https://material-ui.com/store/items/minimal-dashboard/" target="_blank" variant="contained">
-            Upgrade to Pro
-          </Button>
+          {!user?.isAdmin && <Button onClick={handleOpenForm} target="_blank" variant="contained" sx={{textTransform:'none'}}>
+            Leave a review 
+          </Button>}
         </Stack>
       </Box>
     </Scrollbar>

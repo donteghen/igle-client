@@ -1,28 +1,64 @@
-import {Card, CardMedia, CardContent, Typography, CardActions, Button} from '@mui/material'
+import ReactPlayer from 'react-player/vimeo'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
+// mui components
+import Card from '@mui/material/Card'
+import Box from '@mui/material/Box'
+import Skeleton from '@mui/material/Skeleton'
+import Alert from '@mui/material/Alert'
+import Paper from '@mui/material/Paper'
 
-export default function VideoReport ()  {
-    return (
-        <Card sx={{ maxWidth: 345 }}>
-        <CardMedia
-          component="video"
-          height="140"
-          image='https://vimeo.com/710299090'
+VideoReport.propTypes = {
+  videoUrl: PropTypes.string.isRequired,
+  overview: PropTypes.string.isRequired
+}
+
+export default function VideoReport ({videoUrl, overview})  {
+  const [loading, setLoading] = useState(true)
+  const [playerError, setPlayerError] = useState(false)
+  setTimeout(() => {
+    setLoading(false)
+  }, 1500); 
+  const renderVideoCard = () => (
+   <>
+   <Card sx={{ width:'100%', height:{xs: '200px', md: '100%'} }}>
+          {!loading ? <>
+          <ReactPlayer 
+          onReady={() => setLoading(false)}
+          onError={() => setPlayerError(true)}
           
-          autoPlay
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Share</Button>
-          <Button size="small">Learn More</Button>
-        </CardActions>
+          controls
+              width='100%'
+              height='100%'
+              url={videoUrl}
+              config={{
+                vimeo: {
+                  title: 'testing palyer'
+                },
+              }}
+            />
+            </> : <Box sx={{width: '100%', height:'100%'}}>
+              
+                <Skeleton variant="rectangular" sx={{width:'100%', height:'90%'}} />
+                
+            </Box>}
       </Card>
+      <Box sx={{my:2}}>
+              {!loading ? <Paper square sx={{bgcolor:'primary.main', p:1, color:'white'}}>
+              <h1 style={{textAlign:'center', margin:'10px 0'}}>Quick Overview</h1>
+              <p style={{fontSize:'14px'}}>{overview}</p>
+              </Paper> : <Skeleton variant="text" sx={{width:'100%', height:'10%'}} />}
+      </Box>
+      </>
+  )
+  const renderError = () => (
+    <Alert variant="filled" severity="error" onClose={() => setPlayerError(false)}>
+  Oops something went wrong — Please check your connection and try reloading the page!
+  </Alert>
+  )
+    return (
+       <>
+       {playerError ? renderError() : renderVideoCard()}
+       </> 
     )
 }

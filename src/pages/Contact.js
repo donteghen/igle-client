@@ -13,7 +13,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,0.3)),url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655193506/Igle/general/about-5_nzifrl.webp)',
+    backgroundImage: 'linear-gradient(to left, rgba(15, 57, 150, 0.5), rgba(15, 57, 150,0.8)), url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655193506/Igle/general/about-5_nzifrl.webp)',
     justifyContent: 'center',
     marginTop:'100px',
     [theme.breakpoints.up('md')]: {
@@ -48,10 +48,10 @@ export default function Contact () {
             <ThumbnailStyle>
                 <Typography component='div' sx={overlayTextStyle}>
                     <Typography component='h2' 
-                    sx={{fontSize:`${mdUp ? '70px' : '36px'}`, lineHeight:'1.0', '& > span': {color:'primary.main'}}}>
+                    sx={{color:'white', fontSize:`${mdUp ? '70px' : '36px'}`, lineHeight:'1.0', '& > span': {color:'primary.main'}}}>
                         <span>Where</span><br/> to find us?
                     </Typography>
-                    <Typography component='div' sx={{my:3}}>
+                    <Typography component='div' sx={{my:3, color:'white'}}>
                         <h2>Douala</h2>
                         <p>508 Bridle Avenue Newnan</p>
                         <p>GA 30263(239) 555-0108</p>

@@ -3,8 +3,21 @@ import PropTypes from 'prop-types'
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 // material
-import { Card, Table, Stack, Avatar,  Checkbox, TableRow, TableBody, TableCell, Container, Typography, 
-  TableContainer, TablePagination} from '@mui/material';
+import Card from '@mui/material/Card';
+import Table  from '@mui/material/Table';
+import Stack  from '@mui/material/Stack';
+import Avatar  from '@mui/material/Avatar';
+import Checkbox  from '@mui/material/Checkbox';
+import TableRow  from '@mui/material/TableRow';
+import TableBody  from '@mui/material/TableBody';
+import TableCell  from '@mui/material/TableCell';
+import Container  from '@mui/material/Container';
+import TablePagination  from '@mui/material/TablePagination';
+import Typography  from '@mui/material/Typography';
+import TableContainer  from '@mui/material/TableContainer';
+import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 // components
 import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
@@ -77,6 +90,17 @@ export default function ProjectTable({queryString}) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [loading, setLoading] = useState(false)
+
+  const [errorMess, setErrorMess] = useState('')
+  const [errorAlert, setErrorAlert] = useState(false)
+
+  useEffect(() => {
+    if (errorMess && errorMess.length > 0) {
+      setErrorAlert(true)
+    }
+  }, [errorMess])
+
   useEffect(() => {
     if (queryString) {
       fetchProjects(queryString)
@@ -86,15 +110,23 @@ export default function ProjectTable({queryString}) {
     }
   }, [])
 
+  const handleErrorAlertClosed = () => {
+    setErrorAlert(false)
+    setErrorMess('')
+  }
+
   const fetchProjects = (queryString) => {
-      getAllProjects(queryString).then(result => {
-      if (!result.ok) {
-        // eslint-disable-next-line no-alert
-        window.alert('error')
-        return
-      }
-      setProjects(result.data)
-    })
+      setLoading(true)
+      setTimeout(() => {
+        getAllProjects(queryString).then(result => {
+          setLoading(false)
+          if (!result.ok) {
+            setErrorMess(result.errorMessage)
+            return
+          }
+          setProjects(result.data)
+        }).catch(() => setLoading(false))
+      }, 2000);
   }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -147,7 +179,14 @@ export default function ProjectTable({queryString}) {
 
   return (
       <Container>
+     { errorAlert &&
+      <Alert severity="error" onClose={handleErrorAlertClosed}>
+        <AlertTitle>Error</AlertTitle>
+        {errorMess}
+      </Alert>
+     }
         <Card>
+        {loading && <LinearProgress />}
           <ProjectListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -203,7 +242,7 @@ export default function ProjectTable({queryString}) {
                           </Label>
                         </TableCell>
                         <TableCell align="right">
-                          <ProjectMoreMenu projectId={id} active={active} />
+                          <ProjectMoreMenu project={row} active={active} onFetchProjects={fetchProjects} />
                         </TableCell>
                       </TableRow>
                     );

@@ -14,16 +14,23 @@ const styles = {
     }
 }
 
+const DynamicConstants = {
+    nameFirstLetterCapitalized : 'Igle',
+    nameSmallLetters: 'igle',
+    email:'info@igle.com',
+    tel:'002376 79038819',
+    goal: 'cloud-based project develop monitoring and reporting service'
+}
 export default function TermsOfUse () {
     return (
        <Page title='Terms of Use'>
             <Box sx={styles.wrapper}>
-            <h1>Autobazar Privacy Policy</h1>
+            <h1>{DynamicConstants.nameFirstLetterCapitalized} Terms of Use</h1>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <h2>Chapter 1: General Terms</h2>
                     <h4>Article 1: General</h4>
-                    <p>Autobazar (hereinafter referred to as the "Company") operates a service named "autobazar" (hereinafter referred to as the "Service" and the website of the Service shall be hereinafter referred as the "Service Website"), an internet service to (i) provide vehicle data of used car parts （hereinafter referred to as the “ Product”）, (ii) provide an online shopping mall to permitted users of the Service (hereinafter referred to as the "User(s)") and (iii) receive orders from and sell to such Users. The Company hereby establishes the following rules and regulations (hereinafter referred to as the "Terms") for the User(s).</p>
+                    <p>{DynamicConstants.nameFirstLetterCapitalized} (hereinafter referred to as the "Company") operates a service named "{DynamicConstants.nameSmallLetters}" (hereinafter referred to as the "Service" and the website of the Service shall be hereinafter referred as the "Service Website"), an internet service to (i) provide {DynamicConstants.goal}（hereinafter referred to as the “ Product”）, (ii) provide an online shopping mall to permitted users of the Service (hereinafter referred to as the "User(s)") and (iii) receive orders from and sell to such Users. The Company hereby establishes the following rules and regulations (hereinafter referred to as the "Terms") for the User(s).</p>
                     <h4>Article 2: Scope of and Changes to the Terms</h4>
                     <ol>
                         <li>The Terms apply to User(s) of the Service. The User(s) shall strictly adhere, in good faith, to the Terms.</li>

@@ -92,7 +92,7 @@ function UserProjects () {
           return
         }
         setProjects(result.data)
-      }).catch(error => setLoading(false))
+      }).catch(() => setLoading(false))
       }, 2000);
     }
 
@@ -104,7 +104,7 @@ function UserProjects () {
         setOpenFilter(false);
       };
     return (
-        <Page title="User Profile">
+        <Page title="User Projects">
           <Container>
           <ErrorAlert open={openErrorAlert} onClosed={handleErrorClosed}
           title='Registration Failed' message={errorMess}

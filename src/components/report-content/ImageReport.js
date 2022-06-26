@@ -13,9 +13,11 @@ import Iconify from '../Iconify';
 // const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 ImageReport.propTypes = {
-  images:PropTypes.arrayOf(PropTypes.string).isRequired
+  images:PropTypes.arrayOf(PropTypes.string).isRequired,
+  overview: PropTypes.string.isRequired
 }
-export default function ImageReport({images}) {
+
+export default function ImageReport({images, overview}) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
@@ -45,7 +47,7 @@ export default function ImageReport({images}) {
           bgcolor: 'background.default',
         }}
       >
-        <Typography>{images[activeStep]}</Typography>
+        <Typography sx={{overflow:'auto'}}>{images[activeStep]}</Typography>
       </Paper>
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -53,7 +55,7 @@ export default function ImageReport({images}) {
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {images.map((image, index) => (
+        {images?.map((image, index) => (
           <div key={image + index}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
@@ -100,6 +102,12 @@ export default function ImageReport({images}) {
           </Button>
         }
       />
+      <Box sx={{my:2}}>
+        <Paper square sx={{bgcolor:'primary.main', p:1, color:'white'}}>
+        <h1 style={{textAlign:'center', margin:'10px 0'}}>Quick Overview</h1>
+         <p style={{fontSize:'14px'}}>{overview}</p>
+        </Paper>
+      </Box>
     </Box>
   );
 }

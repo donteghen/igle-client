@@ -1,7 +1,8 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-alert */
 /* eslint-disable consistent-return */
 /* eslint-disable no-useless-return */
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types'
 
 // mui components
@@ -20,6 +21,9 @@ import VideoReport from './report-content/VideoReport'
 import VirtualtourReport from './report-content/VirtualtourReport'
 import Iconify from './Iconify';
 
+// functions 
+import {fDateTime} from '../utils/formatTime'
+
 
 const Transition = React.forwardRef((props, ref) =>  <Slide direction="up" ref={ref} {...props} />);
 
@@ -31,23 +35,22 @@ ReportPreview.propTypes = {
 
 export default function ReportPreview({onClosePreview, openPreview, report}) {
 
-
   const handleClose = () => {
     onClosePreview();
   };
-  
+  const {file:{file_type, file_content}, overview, createdAt} = report
   const renderContent = () => {
       if (!report) {
           window.alert('no report to render!')
           return
       }
-      switch (report?.file?.file_type) {
+      switch (file_type) {
           case 'IMAGES' :
-              return <ImageReport images={report?.file.file_content} />
+              return <ImageReport images={file_content} overview={overview} />
           case 'VIDEO' :
-              return <VideoReport />
+              return <VideoReport videoUrl={file_content} overview={overview} />
           case '360VR' :
-              return <VirtualtourReport />
+              return <VirtualtourReport embbedSrc={file_content} title={fDateTime(createdAt)} overview={overview} />
           default :
               return     
       }

@@ -17,7 +17,7 @@ export default function Reports() {
     setOpenForm(true)
   }
 
-  const handleFormClose = () => {
+  const handleFormClose = () => { 
     setOpenForm(false)
   }
   return (

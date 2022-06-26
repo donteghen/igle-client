@@ -1,5 +1,5 @@
 // React
-import {useEffect} from 'react'
+
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -11,7 +11,7 @@ import Page from '../components/Page';
 import Logo from '../components/Logo';
 // sections
 import { LoginForm } from '../sections/auth/login';
-import AuthSocial from '../sections/auth/AuthSocial';
+// import AuthSocial from '../sections/auth/AuthSocial';
 
 // ----------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ export default function Login() {
     <Page title="Login">
       <RootStyle>
         <HeaderStyle>
-          <Logo />
+          {/* <Logo /> */}
 
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
@@ -96,7 +96,7 @@ export default function Login() {
 
             <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
 
-            <AuthSocial />
+            {/* <AuthSocial /> */}
 
             <LoginForm />
 

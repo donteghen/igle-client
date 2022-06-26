@@ -72,12 +72,14 @@ function UserRequests () {
         getUserRequests(queryString).then(result => {
         setLoading(false)
         if (!result.ok) {
-          // eslint-disable-next-line no-alert
-          window.alert('error')
+          if (!result.ok) {
+            return
+          }
+          setRequests(result.data)
           return
         }
         setRequests(result.data)
-      }).catch(error => setLoading(false))
+      }).catch(() => setLoading(false))
       }, 2000);
     }
 

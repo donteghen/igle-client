@@ -16,6 +16,8 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 // components
 import Page from '../components/Page';
 import Label from '../components/Label';
@@ -83,6 +85,16 @@ export default function Users() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [loading, setLoading] = useState(false)
+
+  const [errorMess, setErrorMess] = useState('')
+  const [errorAlert, setErrorAlert] = useState(false)
+
+  useEffect(() => {
+    if (errorMess && errorMess.length > 0) {
+      setErrorAlert(true)
+    }
+  }, [errorMess])
+
   useEffect(() => {
     fetchUsers()
     return () => {
@@ -90,17 +102,22 @@ export default function Users() {
     }
   }, [])
   
+  const handleErrorAlertClosed = () => {
+    setErrorAlert(false)
+    setErrorMess('')
+  }
+  
   const fetchUsers = () => {
     setLoading(true)
     setTimeout(() => {
       getAllUsers().then(result => {
         setLoading(false)
         if (!result.ok) {
-          window.alert(`${result.errorMessage}`)
+          setErrorMess(result.errorMessage)
           return 
         }
         setUsers(result.data)
-      }).catch(e => setLoading(false))
+      }).catch(() => setLoading(false))
     }, 2000);
   }
 
@@ -156,7 +173,13 @@ export default function Users() {
   return (
     <Page title="Users">
       <Container>
-     {loading && <LinearProgress />}
+     
+     { errorAlert &&
+      <Alert severity="error" onClose={handleErrorAlertClosed}>
+        <AlertTitle>Error</AlertTitle>
+        {errorMess}
+      </Alert>
+     }
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Users
@@ -164,6 +187,7 @@ export default function Users() {
         </Stack>
 
         <Card>
+        {loading && <LinearProgress />}
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>

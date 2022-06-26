@@ -1,5 +1,5 @@
 // main import 
-
+import { useState } from 'react'
 // mui components 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -13,10 +13,12 @@ import {styled} from '@mui/material/styles'
 import Page from '../components/Page'
 import TestimonialSlidder from '../components/TestimonialSlider'
 import Iconify from '../components/Iconify'
-// import imageIcon from '/static/mock-images/report/360vr-icon.png'
+import Plans from '../components/Plans'
+import VideoPlayerModal from '../components/VideoPlayerModal'
 // constants 
 import { services } from '../utils/constants/services'
 import { INDUSTRIES } from '../utils/constants/industries'
+
 
 
 const ThumbnailStyle = styled('div')(({ theme }) => ({
@@ -129,7 +131,14 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     }
 
 export default function Home () {
-    
+    const [openVideo, setOpenVideo] = useState(false)
+
+    const handleOpenVideo = () => {
+        setOpenVideo(true)
+    }
+    const handleCloseVideo = () => {
+        setOpenVideo(false)
+    }
     return (
         <Page title='Home'>
         <ThumbnailStyle>
@@ -141,6 +150,7 @@ export default function Home () {
                         Construction Photos and Videos, 360 Photo, Webcams, UAV Services, and automated workflow solutions from the Global Leader in Construction Documentation.
                     </Typography>
                     <Button variant='contained' size='large' color='primary' 
+                    onClick={handleOpenVideo}
                     sx={{maxWidth:'200px', mt:3}}>
                         WATCH VIDEO
                     </Button>
@@ -171,6 +181,7 @@ export default function Home () {
                     </Card>
                 ))}
             </ContentStyle>
+            <Plans />
             <IndustryStyle>
             <h2 style={{fontWeight:'bold',color:'white', paddingLeft:'30px', margin:'24px 0'}}>Industries</h2>
             <Box sx={{display: 'flex', flexWrap:'wrap', justifyContent:'space-between', alignContent:'center'}}>
@@ -184,6 +195,7 @@ export default function Home () {
                 ))}
             </Box>
             </IndustryStyle>
+            <VideoPlayerModal onClose={handleCloseVideo} open={openVideo} videoSrc='https://vimeo.com/710299090' />
         </Page>
     )
 }

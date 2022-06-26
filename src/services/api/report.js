@@ -113,7 +113,7 @@ const getSingleProjectReport = async (projectId, reportId) => {
 const dispatchReportUpdateAlert = async (reportId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.post(`${baseUrl}reports/${reportId}`, {
+        await axios.post(`${baseUrl}reports/${reportId}`, {}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -128,7 +128,7 @@ const dispatchReportUpdateAlert = async (reportId) => {
 const deleteReport = async ( reportId ) => {
     try {
       const token = localStorage.getItem('iUserToken');
-      await axios.delete(`${baseUrl}report/${reportId}`, {
+      await axios.delete(`${baseUrl}reports/${reportId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

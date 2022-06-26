@@ -68,7 +68,7 @@ export default function Register() {
     <Page title="Register">
       <RootStyle>
         <HeaderStyle>
-          <Logo />
+          {/* <Logo /> */}
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Already have an account? {''}
@@ -96,7 +96,7 @@ export default function Register() {
 
             <Typography sx={{ color: 'text.secondary', mb: 5 }}>No credit card needed.</Typography>
 
-            <AuthSocial />
+            {/* <AuthSocial /> */}
 
             <RegisterForm />
 

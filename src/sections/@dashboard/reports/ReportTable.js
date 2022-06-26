@@ -4,8 +4,18 @@ import { filter } from 'lodash';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
 // material
-import { Card, Table, Checkbox, TableRow, TableBody, TableCell, Container,
-  TableContainer, TablePagination} from '@mui/material';
+import TableContainer from '@mui/material/TableContainer'; 
+import Container from '@mui/material/Container';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
+import Checkbox from '@mui/material/Checkbox';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TablePagination from '@mui/material/TablePagination';
+import LinearProgress from '@mui/material/LinearProgress';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 // components
 import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
@@ -76,7 +86,16 @@ export default function ReportTable({queryString}) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [loading, setLoading] = useState(false)
 
+  const [errorMess, setErrorMess] = useState('')
+  const [errorAlert, setErrorAlert] = useState(false)
+
+  useEffect(() => {
+    if (errorMess && errorMess.length > 0) {
+      setErrorAlert(true)
+    }
+  }, [errorMess])
   useEffect(() => {
     if (queryString) {
         fetchReports(queryString)
@@ -86,15 +105,23 @@ export default function ReportTable({queryString}) {
     }
   }, [])
 
+  const handleErrorAlertClosed = () => {
+    setErrorAlert(false)
+    setErrorMess('')
+  }
+
   const fetchReports = (queryString) => {
-    getAllReportsByAdmin(queryString).then(result => {
-      if (!result.ok) {
-        // eslint-disable-next-line no-alert
-        window.alert('error')
-        return
-      }
-      setReports(result.data)
-    })
+    setLoading(true)
+    setTimeout(() => {
+      getAllReportsByAdmin(queryString).then(result => {
+        setLoading(false)
+        if (!result.ok) {
+          setErrorMess(result.errorMessage)
+          return
+        }
+        setReports(result.data) 
+      }).catch(() => setLoading(false))
+    }, 2000);
   }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -144,7 +171,14 @@ export default function ReportTable({queryString}) {
   return (
       <>
       <Container>
+      { errorAlert &&
+      <Alert severity="error" onClose={handleErrorAlertClosed}>
+        <AlertTitle>Error</AlertTitle>
+        {errorMess}
+      </Alert>
+     }
         <Card>
+        {loading && <LinearProgress />}
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -159,7 +193,7 @@ export default function ReportTable({queryString}) {
                 />
                 <TableBody>
                   {filteredReports.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, date, project:{name} , file:{file_type}, alert_dispatched } = row;
+                    const { id, date, project:{name} , file:{file_type}, alert_dispatch } = row;
                     const isItemSelected = selected.indexOf(id) !== -1;
 
                     return (
@@ -188,13 +222,13 @@ export default function ReportTable({queryString}) {
                             {name}
                         </TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={`${alert_dispatched ? 'success' : 'warning'}`}>
-                            {alert_dispatched ? 'Yes' : 'No'}
+                          <Label variant="ghost" color={`${alert_dispatch ? 'success' : 'warning'}`}>
+                            {alert_dispatch ? 'Yes' : 'No'}
                           </Label>
                         </TableCell>
 
                         <TableCell align="right">
-                          <ReportMoreMenu report={row} />
+                          <ReportMoreMenu report={row} onFetchReports={fetchReports} />
                         </TableCell>
                       </TableRow>
                     );

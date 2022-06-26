@@ -18,17 +18,23 @@ const styles = {
 
     }
 }
+const DynamicConstants = {
+    nameFirstLetterCapitalized : 'Igle',
+    nameSmallLetters: 'igle',
+    email:'info@igle.com',
+    tel:'002376 79038819',
+}
 export default function PrivacyPolicy () {
     return (
       <Page title='Privacy Policy'>
             <Box sx={styles.wrapper} >
-        <h1>Autobazar Privacy Policy</h1>
+        <h1>{DynamicConstants.nameFirstLetterCapitalized} Privacy Policy</h1>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <h2>1. Introduction</h2>
-                    <p>This Privacy Policy(the”Policy”) describes how Autobazar collect and process your information through the igle platform(”Our site”)</p>
-                    <p>when you use autobazar services (the “Services”) on Our site.</p>
-                    <p>When the Policy mentions Autobazar,” “we,” “us,” or “our,” it refers to the Igle.”</p>
+                    <p>This Privacy Policy(the”Policy”) describes how Igle collect and process your information through the igle platform(”Our site”)</p>
+                    <p>when you use {DynamicConstants.nameSmallLetters} services (the “Services”) on Our site.</p>
+                    <p>When the Policy mentions {DynamicConstants.nameFirstLetterCapitalized},” “we,” “us,” or “our,” it refers to the Igle.”</p>
                 </Grid>
                 <Grid item xs={12}>
                     <h2>2. Information We Collect</h2>
@@ -39,7 +45,7 @@ export default function PrivacyPolicy () {
                         <li>Information of your Account</li>
                         <li>Your email address and password</li>
                         <li>Profile Information</li>
-                        <li>Your name, gender, country, date of birth and phone number</li>
+                        <li>Your name, gender, country, date of birth and phone number in some cases</li>
                         <li>Picture of you</li>
                         <li>Payment Information</li>
                         <li>Your bank account information</li>
@@ -62,7 +68,7 @@ export default function PrivacyPolicy () {
                     <h3>2.3. Information We Collect from Third Parties</h3>
                     <Divider sx={{my:1}} />
                     <ul>
-                        <li>We may collect your information that Third Parties (the “Others”) or publicly available sources disclose in order to provide, improve and develop Our site, provide our Advertising and Marketing or keep you and us safe.</li>
+                        <li>We may collect your information that Third Parties (the “Others”) or publicly available sources disclose in order to provide, improve and develop our site, provide our Advertising and Marketing or keep you and us safe.</li>
                         <li>Besides necessary for the these purpose of providing you with the Service in question or for another legally permissible reason, during your use of the Services, we do not intentionally collect or use information of yours except for fraud detection, credit, illegal activity information.</li>
                     </ul>
                 </Grid>
@@ -71,7 +77,7 @@ export default function PrivacyPolicy () {
                     <h3>3.1. Provide, Improve, and Develop the Services</h3>
                     <Divider sx={{my:1}}/>
                     <ul>
-                        <li>Enable you to access and use the Services including login, vehicle search and purchase, and auction functionality</li>
+                        <li>Enable you to access and use the Services and various functionality</li>
                         <li>Enable you to access and use the payment functionality</li>        
                         <li>Provide customer service</li>        
                         <li>Respond to customer inquiries including complaints</li>        
@@ -100,7 +106,7 @@ export default function PrivacyPolicy () {
                 </Grid>
                 <Grid item xs={12}>
                     <h2>4. Your Choices</h2>
-                    <p>You may review, update, or delete information about you in your autobazar website account (“your account’) by accessing your 
+                    <p>You may review, update, or delete information about you in your {DynamicConstants.nameSmallLetters} website account (“your account’) by accessing your 
                         <Bluespan> profile page.</Bluespan>
                     </p>
                     <p>If you wish to obtain the disclosure or correction of your information we collect or termination of the processing of your information, contact us as ‘8. Contact’ indicates down below. However, depending on the circumstances around your information, we may not be able to accept your request</p>
@@ -115,7 +121,7 @@ export default function PrivacyPolicy () {
                 </Grid>
                 <Grid item xs={12}>
                     <h2>7. Contact</h2>
-                    <p>If you have any questions or complaints about this Policy, you may contact at info@autobazar.com</p>
+                    <p>If you have any questions or complaints about this Policy, you may contact at {DynamicConstants.email}</p>
                 </Grid>
             </Grid>
         </Box>

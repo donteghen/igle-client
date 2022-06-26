@@ -5,21 +5,14 @@ import PropTypes from 'prop-types'
 
 // mui components
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import Slide from '@mui/material/Slide';
 import Typography from '@mui/material/Typography';
-import  Box  from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { capitalizeFirstLetter } from '../utils/formatString';
 
@@ -34,13 +27,13 @@ import { RequestTable } from '../sections/@dashboard/requests';
 
 const Transition = React.forwardRef((props, ref) =>  <Slide direction="up" ref={ref} {...props} />);
 
-ReportPreview.propTypes = {
+UserDetail.propTypes = {
   open:PropTypes.bool,
   onCloseDetail: PropTypes.func,
   user: PropTypes.object, 
 }
 
-export default function ReportPreview({onCloseDetail, open, user}) {
+export default function UserDetail({onCloseDetail, open, user}) {
 
   const handleClose = () => {
     onCloseDetail();
@@ -117,8 +110,7 @@ export default function ReportPreview({onCloseDetail, open, user}) {
                 </Typography>
             </Typography>
          </Paper>
-         </Container>
-         <Typography component='div' sx={{px:0, py:6, my:4}}>
+         <Typography component='div' sx={{px:0, py:6, my:4}} >
             <h4 style={{paddingLeft:'24px'}}>User's Project List</h4>
             <ProjectTable queryString={`owner=${user?.id}`} />
          </Typography>
@@ -126,6 +118,8 @@ export default function ReportPreview({onCloseDetail, open, user}) {
             <h4 style={{paddingLeft:'24px'}}>User's Request List</h4>
             <RequestTable queryString={`sender=${user?.id}`} />
          </Typography>
+         </Container>
+         
         </DialogContent>
       </Dialog>
   )

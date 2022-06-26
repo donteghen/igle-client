@@ -2,8 +2,17 @@
 import { filter } from 'lodash';
 import { useEffect, useState } from 'react';
 // material
-import { Card, Table, Stack, Checkbox, TableRow, TableBody, TableCell, Container,
-  TableContainer, TablePagination} from '@mui/material';
+import Card from '@mui/material/Card';
+import Container from '@mui/material/Container';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import Table from '@mui/material/Table';
+import Stack from '@mui/material/Stack';
+import Checkbox from '@mui/material/Checkbox';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import LinearProgress from '@mui/material/LinearProgress';
 // components
 import Page from '../components/Page';
 import Label from '../components/Label';
@@ -72,21 +81,23 @@ export default function Testimonial() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     fetchTestimonials()
   }, [])
 
   const fetchTestimonials = (queryString) => {
-    getTestimonials(queryString).then(result => {
-      console.log(result)
-      if (!result.ok) {
-        // eslint-disable-next-line no-alert
-        window.alert('error')
-        return
-      }
-      setTestimonials(result.data)
-    })
+    setLoading(true)
+    setTimeout(() => {
+      getTestimonials(queryString).then(result => {
+        setLoading(false)
+          if (!result.ok) {
+            return
+          }
+          setTestimonials(result.data)
+      }).catch(() => setLoading(false))
+    }, 2000);
   }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -143,6 +154,7 @@ export default function Testimonial() {
         </Stack>
 
         <Card>
+        {loading && <LinearProgress />}
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -194,7 +206,7 @@ export default function Testimonial() {
                         </TableCell>
 
                         <TableCell align="right">
-                          <TestimonialMoreMenu testimonial={row} />
+                          <TestimonialMoreMenu testimonial={row} onFetchTestimonials={fetchTestimonials}/>
                         </TableCell>
                       </TableRow>
                     );

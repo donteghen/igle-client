@@ -11,7 +11,6 @@ import { LoadingButton } from '@mui/lab';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -99,7 +98,7 @@ export default function RequestForm({onCloseForm, openForm}) {
             }
             setOpenSuccessAlert(true)
             formik.resetForm()
-        }).catch(e => setSubmitting(false))
+        }).catch(() => setSubmitting(false))
       }, 3000);
     },
   });

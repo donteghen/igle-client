@@ -96,7 +96,7 @@ function AccountPopover({user, logoutUser}) {
           return
         }
         navigate('/login')
-      }).catch(e => setLoading(false))
+      }).catch(() => setLoading(false))
     }, 2000);
   }
   const renderAuthOptions = () => (
@@ -160,7 +160,8 @@ function AccountPopover({user, logoutUser}) {
           }),
         }}
       >
-        <Avatar src={user?.avatar} alt="avatar" />
+        {(user && user?.id) ? <Avatar src={user?.avatar??'/static/mock-images/avatars/avatar_default.jpg'} alt="avatar" /> :
+        <Avatar  /> }
       </IconButton>
 
       <MenuPopover

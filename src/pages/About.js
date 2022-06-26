@@ -15,7 +15,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundImage: 'linear-gradient(to left, rgba(96, 92, 92, 0), rgba(96, 92, 92,0.5)), url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192508/Igle/general/about-2_ktrii8.gif)',
+    backgroundImage: 'linear-gradient(to left, rgba(15, 57, 150, 0.5), rgba(15, 57, 150,0.8)), url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192508/Igle/general/about-2_ktrii8.gif)',
     justifyContent: 'center',
     marginTop:'100px',
     [theme.breakpoints.up('md')]: {
@@ -52,10 +52,10 @@ export default function About () {
             <ThumbnailStyle>
                 <Typography component='div' sx={overlayTextStyle}>
                     <Typography component='h2' 
-                    sx={{fontSize:`${mdUp ? '70px' : '36px'}`, lineHeight:'1.0',  '& > span': {color:'primary.main'}}}>
+                    sx={{ color:'white', fontSize:`${mdUp ? '70px' : '36px'}`, lineHeight:'1.0',  '& > span': {color:'primary.main'}}}>
                         <span>Who</span><br/> we are?
                     </Typography>
-                    <Typography component='div' sx={{my:1}}>
+                    <Typography component='div' sx={{my:1, color:'white'}}>
                         <p style={{margin: '10px 0'}}>YOUR CONSTRUCTION PROJECT FULLY CAPTURED, TOTALLY COVERED</p>
                         <p style={{margin: '10px 0'}}>Construction Photos and Videos, 360 Image, UAV Services, and automated workflow solutions
 from the Global Leader in Construction Documentation.</p>
@@ -64,7 +64,7 @@ from the Global Leader in Construction Documentation.</p>
             </ThumbnailStyle>
             <ContentStyle>
                 <Typography component='div'  width={mdUp ? '45%' : '100%'} sx={{py:`${mdUp ? '10px' : '50px'}`}}>
-                    <img src='https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192494/Igle/general/about-4_c1kyen.jpg' style={{height:'600px'}}  alt='igle' />
+                    <img src='https://res.cloudinary.com/dpyl8tyll/image/upload/v1655906647/Igle/general/20945877_kgtjny.jpg' style={{height:'600px'}}  alt='igle' />
                 </Typography>
                 <Typography component='div'  width={mdUp ? '45%' : '100%'}  >
                     <h1>What is igle?</h1>

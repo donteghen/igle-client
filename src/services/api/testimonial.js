@@ -23,7 +23,7 @@ const postNewTestimonial = async (details) => {
 const updateTestimonialShow = async (testimonialId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.patch(`${baseUrl}testimonials/${testimonialId}/show`, {
+        const res = await axios.patch(`${baseUrl}testimonials/${testimonialId}/show`, {}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

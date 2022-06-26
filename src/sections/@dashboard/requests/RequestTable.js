@@ -4,8 +4,16 @@ import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
 // material
-import { Card, Table, Checkbox, TableRow, TableBody, TableCell, Container,
-  TableContainer, TablePagination} from '@mui/material';
+import Table from '@mui/material/Table';
+import Checkbox from '@mui/material/Checkbox'; 
+import TableRow from '@mui/material/TableRow'; 
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import Container from '@mui/material/Container';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import LinearProgress from '@mui/material/LinearProgress';
+import Card from '@mui/material/Card';
 // components
 import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
@@ -80,7 +88,7 @@ export default function RequestTable({queryString, userComp, projectId}) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-
+  const [loading, setLoading] = useState(false)
 
 
   useEffect(() => {
@@ -94,26 +102,27 @@ export default function RequestTable({queryString, userComp, projectId}) {
 
   
   const fetchRequests = (queryString) => {
-     if (userComp && projectId) {
-      getAllUserProjectRequests(projectId).then(result => {
-        if (!result.ok) {
-          // eslint-disable-next-line no-alert
-          window.alert('error')
-          return
-        }
-        setRequests(result.data)
-      })
-     }
-     else {
-      getAllRequests(queryString).then(result => {
-        if (!result.ok) {
-          // eslint-disable-next-line no-alert
-          window.alert('error')
-          return
-        }
-        setRequests(result.data)
-      })
-     }
+     setLoading(true)
+     setTimeout(() => {
+      if (userComp && projectId) {
+        getAllUserProjectRequests(projectId).then(result => {
+          setLoading(false)
+          if (!result.ok) {
+            return
+          }
+          setRequests(result.data)
+        }).catch(() => setLoading(false))
+       }
+       else {
+        getAllRequests(queryString).then(result => {
+          setLoading(false)
+          if (!result.ok) {
+            return
+          }
+          setRequests(result.data)
+        }).catch(() => setLoading(false))
+       }
+     }, 2000);
   }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -162,8 +171,9 @@ export default function RequestTable({queryString, userComp, projectId}) {
 
   return (
     <>
-      <Container>
+      <Container>      
         <Card>
+        {loading && <LinearProgress />}
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -216,7 +226,7 @@ export default function RequestTable({queryString, userComp, projectId}) {
                         </TableCell>
 
                         <TableCell align="right">
-                          <RequestMoreMenu request={row} />
+                          <RequestMoreMenu request={row} onFetchRequests={fetchRequests} />
                         </TableCell>
                       </TableRow>
                     );

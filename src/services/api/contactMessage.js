@@ -23,7 +23,7 @@ const postNewContactMessage = async (details) => {
 const markContactMessageAsReplied = async (contactMessageId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.patch(`${baseUrl}contacts/${contactMessageId}/replied`, {
+        const res = await axios.patch(`${baseUrl}contacts/${contactMessageId}/replied`, {}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

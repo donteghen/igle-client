@@ -3,7 +3,15 @@
 import {  useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 // material
-import { Button, Container, Stack, Typography, CircularProgress, Backdrop, Box, Divider , Paper} from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import CircularProgress from '@mui/material/CircularProgress'
+import Backdrop from '@mui/material/Backdrop'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';

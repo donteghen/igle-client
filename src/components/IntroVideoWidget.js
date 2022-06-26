@@ -1,6 +1,9 @@
+import { useState } from 'react'
 // material Imports
 import {Button, Grid,Paper, Box, Typography} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+// other components
+import VideoPlayerModal from './VideoPlayerModal'
 import Iconify from './Iconify'
 
 const styles = {
@@ -13,7 +16,7 @@ const styles = {
          backgroundColor:'primary.main'
     },
     videoPaper : {
-        background:'linear-gradient(to left, rgba(0,0,0, 0.3), rgba(0,0,0, 0.6)),url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192516/Igle/general/about-3_jg2yvs.gif)',
+        background:'linear-gradient(to left, rgba(15, 57, 150, 0.5), rgba(15, 57, 150,0.8)),url(https://res.cloudinary.com/dpyl8tyll/image/upload/v1655192516/Igle/general/about-3_jg2yvs.gif)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
          height:'500px', 
@@ -53,6 +56,14 @@ const styles = {
 }
 export function IntroVideoWidget () {
     const navigate = useNavigate()
+    const [openVideo, setOpenVideo] = useState(false)
+
+    const handleOpenVideo = () => {
+        setOpenVideo(true)
+    }
+    const handleCloseVideo = () => {
+        setOpenVideo(false)
+    }
     return (
         <Box sx={{mt:16, px:{xs:1, md:4}}}>
             <Grid container spacing={1} justifyContent='center'>
@@ -66,12 +77,13 @@ export function IntroVideoWidget () {
             <Grid item xs={12} md={8} >
                 <Paper elevation={1} sx={styles.videoPaper}>
                     
-                    <Typography component='div' sx={styles.playBtnContainer}>
+                    <Typography component='div' sx={styles.playBtnContainer} onClick={handleOpenVideo}>
                         <Iconify icon='ant-design:play-circle-filled' sx={styles.playBtn}  />
                     </Typography>
                 </Paper>        
             </Grid>
         </Grid> 
+        <VideoPlayerModal onClose={handleCloseVideo} open={openVideo} videoSrc='https://vimeo.com/710299090' />
         </Box>
     )
 }
