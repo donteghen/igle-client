@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-useless-return */
-import  React, {useState} from 'react';
+import  React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types'
 // formik 
 import * as Yup from 'yup';
@@ -30,8 +31,12 @@ const planOptions = [
  'STANDARD', 'PRO', 'ENTERPRISE'
 ]
 
+const regionOptions = [
+  'ADAMAWA', 'CENTRE', 'EAST', 'FAR NORTH', 'LITTORAL', 'NORTH', 'NORTH WEST', 'WEST','SOUTH', 'SOUTH WEST'
+ ]
+
 ProjectForm.propTypes = {
-    openForm:PropTypes.object,
+    openForm:PropTypes.bool,
   onCloseForm: PropTypes.func,
   project:PropTypes.object
 }
@@ -42,16 +47,35 @@ export default function ProjectForm({onCloseForm, openForm, project}) {
 
  const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
   const [openErrorAlert, setOpenErrorAlert] = useState(false)
+  const [errorMess, setErrorMess] = useState('')
+
+  useEffect(() => {
+    
+    if (errorMess && errorMess.length > 1) {
+      setOpenErrorAlert(true)
+    }
+  }, [errorMess])
 
   const handleClosed = () => {
       onCloseForm()
   }
+  const handleCloseError = () => {
+    setErrorMess('')
+    setOpenErrorAlert(false)
+  }
+  const handleCloseSuccess = () => {
+    setOpenSuccessAlert(false)
+    handleClosed()
+  }
     
-  const ReportSchema = Yup.object().shape({
+  const ProjectSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     plan: Yup.string().required('Select a project plan'),
     description: Yup.string().required('Description is required'),
     detail: Yup.string().required('Detail is required'),
+    address_line: Yup.string().required('Address line is required'),
+    city: Yup.string().required('City is required'),
+    region: Yup.string().required('Region is required'),
   });
   const formik = useFormik({
     initialValues: {
@@ -59,30 +83,44 @@ export default function ProjectForm({onCloseForm, openForm, project}) {
         plan: project?.plan??'',
         description: project?.description??'',
         detail: project?.detail??'',
+        city: project?.location?.city??'',
+        region: project?.location?.region??'',
+        address_line: project?.location?.address_line??'',
     },
-    validationSchema: ReportSchema,
+    validationSchema: ProjectSchema,
     onSubmit: (values) => {
       setTimeout(() => {
         if (project && project?.id) {
-            updateProject(values, project.id).then(result => {
+          const {name, description, detail} = values
+            updateProject({name, description, detail}, project.id).then(result => {
                 if (!result.ok) {
-                    setOpenErrorAlert(true)
+                  setErrorMess(result.errorMessage)
                     return
                 }
                 setOpenSuccessAlert(true)
                 
-            }).catch(e => setSubmitting(false))
+            }).catch(() => setSubmitting(false))
             setSubmitting(false)
         }
         else {
-            createNewProject(values).then(result => {
+            const {name, description, detail, city, address_line, region, plan} = values
+            const details = {
+              location: {
+                city, address_line, region
+              }, 
+              name, 
+              description, 
+              detail,
+              plan
+            }
+            createNewProject(details).then(result => {
                 if (!result.ok) {
-                    setOpenErrorAlert(true)
+                    setErrorMess(result.errorMessage)
                     return
                 }
                 setOpenSuccessAlert(true)
                 formik.resetForm()
-            }).catch(e => setSubmitting(false))
+            }).catch(() => setSubmitting(false))
             setSubmitting(false)
         }
         
@@ -113,11 +151,11 @@ export default function ProjectForm({onCloseForm, openForm, project}) {
                 maxWidth: '100%',
             }}
             >            
-            <SuccessAlert open={openSuccessAlert} onClosed={handleClosed}
+            <SuccessAlert open={openSuccessAlert} onClosed={handleCloseSuccess}
             title={`${project?.id ? 'Project Update Successful' : 'Project Creation Successfull'}`} 
-            message={`${project?.id ? 'Your project was successfully updated' : 'Your has been created and is now pending approval'}`}  />
-            <ErrorAlert open={openErrorAlert} onClosed={setOpenErrorAlert}
-            title='Operation Failed' message='An Error occured please check you connection and make sure you provide valid details and also make sure your account is verified then, try again!'
+            message={`${project?.id ? 'Your project was successfully updated' : 'Your project has been successfully created and is now pending approval'}`}  />
+            <ErrorAlert open={openErrorAlert} onClosed={handleCloseError}
+            title='Operation Failed' message={errorMess}
             />
             
             <FormikProvider value={formik}>
@@ -132,7 +170,8 @@ export default function ProjectForm({onCloseForm, openForm, project}) {
                         error={Boolean(touched.name && errors.name)}
                         helperText={touched.name && errors.name}
                     />
-                    {!project && <FormControl fullWidth>
+                    {!project && <>
+                    <FormControl fullWidth>
                         <InputLabel id="plan-id">Plan</InputLabel>
                         <Select
                             labelId="plan-id"
@@ -143,7 +182,41 @@ export default function ProjectForm({onCloseForm, openForm, project}) {
                         >
                             {planOptions?.map((option, index) => <MenuItem key={option + index} value={option}>{capitalizeFirstLetter(option)}</MenuItem>)}
                         </Select>
-                        </FormControl>}
+                        </FormControl>
+
+                        <FormControl fullWidth>
+                        <InputLabel id="region-id">Region</InputLabel>
+                        <Select
+                            labelId="region-id"
+                            {...getFieldProps('region')}
+                            label="Region"
+                            error={Boolean(touched.region && errors.region)}
+                        helperText={touched.region && errors.region}
+                        >
+                            {regionOptions?.map((option, index) => <MenuItem key={option + index} value={option}>{capitalizeFirstLetter(option)}</MenuItem>)}
+                        </Select>
+                        </FormControl>
+
+                        <TextField
+                        fullWidth
+                        autoComplete="city"
+                        type="text"
+                        label="City"
+                        {...getFieldProps('city')}
+                        error={Boolean(touched.city && errors.city)}
+                        helperText={touched.city && errors.city}
+                        />
+
+                        <TextField
+                        fullWidth
+                        autoComplete="address_line"
+                        type="text"
+                        label="Address Line"
+                        {...getFieldProps('address_line')}
+                        error={Boolean(touched.address_line && errors.address_line)}
+                        helperText={touched.address_line && errors.address_line}
+                        />
+                        </>}
                     <TextField
                         fullWidth
                         autoComplete="description"
@@ -166,6 +239,7 @@ export default function ProjectForm({onCloseForm, openForm, project}) {
                         error={Boolean(touched.detail && errors.detail)}
                         helperText={touched.detail && errors.detail}
                     />
+                    
                     <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
                         Submit
                     </LoadingButton>

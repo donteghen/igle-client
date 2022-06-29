@@ -37,8 +37,8 @@ function UserProjects () {
       setOpenForm(true)
     }
     const handleFormClose = () => {
-      setOpenForm(false)
       fetchProjects()
+      setOpenForm(false)
     }
 
     useEffect(() => {
@@ -136,7 +136,7 @@ function UserProjects () {
             <ProjectList projects={updatedProjects} /> 
             }
           </Container>
-          {openForm && <ProjectForm openForm={openForm} onCloseForm={handleFormClose} /> }
+          {openForm && <ProjectForm openForm={openForm} onCloseForm={handleFormClose}  /> }
         </Page>
     )
 }

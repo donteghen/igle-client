@@ -61,6 +61,7 @@ export default function TestimonialForm({onCloseForm, openForm}) {
     }, [errorMess])
 
     const handleClose = () => {
+      setRating(0)
       formik.resetForm()
       onCloseForm(false);
     };

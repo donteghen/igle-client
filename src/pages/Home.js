@@ -1,5 +1,6 @@
 // main import 
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 // mui components 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -131,6 +132,8 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
     }
 
 export default function Home () {
+    const navigate = useNavigate()
+
     const [openVideo, setOpenVideo] = useState(false)
 
     const handleOpenVideo = () => {
@@ -162,10 +165,10 @@ export default function Home () {
                 </FancyHeading>
                 <TestimonialSlidder />
             </Box>
-            <h2 style={{fontWeight:'bold',  paddingLeft:'30px', marginTop:'100px'}}>Services</h2>
+            <h2 style={{fontWeight:'bold', textAlign:'center', margin:'25px 0', fontSize:'2.75rem'}}>Services</h2>
             <ContentStyle>
                 {services.map((service, index) => (
-                    <Card sx={{ maxWidth: 345, height:400, my: 1 }} key={service.name + index} >
+                    <Card sx={{ width:{xs:'100%', md:'45%'}, height:400, m:1 }} key={service.name + index} >
                         <CardMedia component="img" sx={{height:'50%'}} src={service.imgLink} alt={service.name} />
                         <CardContent sx={{height:'30%'}}>
                             <Typography variant="p" color="text.secondary">
@@ -173,7 +176,7 @@ export default function Home () {
                             </Typography>
                         </CardContent>
                         <CardActions disableSpacing sx={{height:'20%'}}>
-                            <Button aria-label="See more">
+                            <Button aria-label="See more" onClick={() => navigate(`${service.pageLink}`)}>
                                 LEARN MORE  <Iconify icon='bi:arrow-right-circle-fill' style={{marginLeft:'6px'}} />
                             </Button>
                         </CardActions>
@@ -183,7 +186,7 @@ export default function Home () {
             </ContentStyle>
             <Plans />
             <IndustryStyle>
-            <h2 style={{fontWeight:'bold',color:'white', paddingLeft:'30px', margin:'24px 0'}}>Industries</h2>
+            <h2 style={{fontWeight:'bold',color:'white', textAlign:'center', margin:'25px 0', fontSize:'2.75rem'}}>Industries</h2>
             <Box sx={{display: 'flex', flexWrap:'wrap', justifyContent:'space-between', alignContent:'center'}}>
                 {INDUSTRIES.map((industry, index) => (
                     <Box key={industry.title + index} component='div' sx={iconStyles}>

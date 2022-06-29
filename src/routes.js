@@ -35,6 +35,10 @@ import ContactMessages from './pages/ContactMessage';
 import AccountVerification from './pages/AccountVerification';
 import ResetPassword from './pages/ResetPassword';
 import ConfirmResetPassword from './pages/ConfirmResetPassword';
+import Photo360 from './pages/Photo360';
+import Photos from './pages/Photos';
+import Video from './pages/Video';
+import Webcam from './pages/Webcam';
 
 
 // ----------------------------------------------------------------------
@@ -74,6 +78,10 @@ Router.propTypes = {
       children: [
         {path: 'terms-of-use', element: <TermsOfUse />},
         {path: 'home', element: <Home />},
+        {path: '360-photo', element: <Photo360 />},
+        {path: 'photos', element: <Photos />},
+        {path: 'video', element: <Video />},
+        {path: 'webcam', element: <Webcam />},
         {path: 'privacy-policy', element: <PrivacyPolicy />},
         {path: 'faqs', element: <Faqs />},
         {path: 'about', element: <About />},

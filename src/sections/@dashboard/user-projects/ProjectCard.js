@@ -86,13 +86,15 @@ export default function ProjectCard ({project}) {
             <Chip label={capitalizeFirstLetter(project?.status)} color={getStatusColor(project?.status)} size='small' />
             <Chip label={`${project?.active ? 'Active' : 'Inactive'}`} color={getActiveColor(project?.active)} size='small' />
         </Box>
-        <Divider sx={{my:1}} />
-        <Typography variant="h4" color="text.secondary" sx={{}}>
-          {project?.name.substr(0, 40)}...
+        <Divider sx={{mt:1}} />
+        <Box component='div' sx={{background:'#0f3996', width:'100%', height:'100%', pt:3, pl:1}}>
+        <Typography variant="h4" color="white" sx={{}}>
+          {project?.name.substr(0, 80)}
         </Typography>
-        <Typography component='p' color="text.secondary" sx={{fontSize:'12px', mt:1,'& > span': {fontWeight:'bold'}}} >
+        <Typography component='p' color="white" sx={{fontSize:'12px','& > span': {fontWeight:'bold'}}} >
             {fDateTime(project?.updatedAt)}
         </Typography>
+        </Box>
       </CardContent>
       <Divider sx={{mt:1}} />
       <CardActions disableSpacing sx={{height:'15%'}}>

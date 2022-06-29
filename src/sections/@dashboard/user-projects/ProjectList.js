@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+
 // material
 import { Grid } from '@mui/material';
 import ProjectCard from './ProjectCard';
@@ -14,9 +14,7 @@ ProductList.propTypes = {
 };
 
 export default function ProductList({ projects, ...other }) {
-    useEffect(() => {
-        console.log(projects)
-    },[])
+
   return (
     <Grid container spacing={3} {...other}>
       {projects.map((project) => (
