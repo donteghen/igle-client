@@ -1,4 +1,4 @@
-
+import {useNavigate} from 'react-router-dom'
 // mui components
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
@@ -96,9 +96,9 @@ const overlayTextStyle = {
     padding: '20px'
 }
 export default function Photo360 () {
-
+    const navigate = useNavigate()
     const handleGetStarted = () => {
-
+        navigate('/login')
     }
     return (
         <Page title='360 Photos'>
