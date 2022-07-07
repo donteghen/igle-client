@@ -50,7 +50,7 @@ export default function ContactForm() {
         }
         setOpenSuccessAlert(true)
         setSubmitting(false)
-      }).catch(e => {
+      }).catch(() => {
         setSubmitting(false)
       }) 
      }, 2500);

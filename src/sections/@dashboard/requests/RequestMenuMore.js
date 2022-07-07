@@ -22,7 +22,7 @@ import {deleteRequest} from '../../../services/api/request'
 RequestMoreMenu.propTypes = {
   request: PropTypes.object.isRequired,
   user: PropTypes.object,
-  onFetchRequests:PropTypes.object.isRequired,
+  onFetchRequests:PropTypes.func.isRequired,
 }
 function RequestMoreMenu({request, user, onFetchRequests}) {
   const ref = useRef(null);

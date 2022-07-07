@@ -26,9 +26,7 @@ import {capitalizeFirstLetter} from '../../utils/formatString'
 import {getUserProjects} from '../../services/api/project'
 import {addNewProjectRequest} from '../../services/api/request'
 
-const typeOptions = [
- '360VR', 'PLAN UPGRADE', 'UPDATED REPORT', 'OTHERS'
-]
+const typeOptions = ['360VR', 'PLAN UPGRADE', 'UPDATED REPORT', 'WEBCAM', 'OTHERS']
 
 RequestForm.propTypes = {
     openForm:PropTypes.bool,
@@ -163,19 +161,7 @@ export default function RequestForm({onCloseForm, openForm}) {
                             {projectList?.map(project => <MenuItem key={project.id} value={project.id}>{project.name}</MenuItem>)}
                         </Select>
                         </FormControl>
-                        {/* <TextField
-                        fullWidth select
-                        label="Project"
-                        {...getFieldProps('project')}
-                        error={Boolean(touched.project && errors.project)}
-                        helperText={touched.project && errors.project}
-                        >
-                            {projectList?.map((option) => (
-                            <MenuItem key={option.id} value={option.id}>
-                            {option.name}
-                            </MenuItem>
-                            ))}
-                        </TextField> */}
+                       
                     </Stack>
 
                     <TextField

@@ -58,7 +58,7 @@ export default function UserMoreMenu({user, onFetchUsers}) {
           return
         }
         setSuccess(true)
-      }).catch(e => setLoading(false))
+      }).catch(() => setLoading(false))
     }, 2500);
   }
   return (

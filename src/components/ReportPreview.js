@@ -18,6 +18,7 @@ import { capitalizeFirstLetter } from '../utils/formatString';
 // components
 import ImageReport from './report-content/ImageReport'
 import VideoReport from './report-content/VideoReport'
+import WebcamReport from './report-content/WebcamReport'
 import VirtualtourReport from './report-content/VirtualtourReport'
 import Iconify from './Iconify';
 
@@ -39,9 +40,10 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
     onClosePreview();
   };
   const {file:{file_type, file_content}, overview, createdAt} = report
+
   const renderContent = () => {
       if (!report) {
-          window.alert('no report to render!')
+          
           return
       }
       switch (file_type) {
@@ -49,6 +51,8 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
               return <ImageReport images={file_content} overview={overview} />
           case 'VIDEO' :
               return <VideoReport videoUrl={file_content} overview={overview} />
+          case 'WEBCAM' :
+              return <WebcamReport feedUrl={file_content} overview={overview} />
           case '360VR' :
               return <VirtualtourReport embbedSrc={file_content} title={fDateTime(createdAt)} overview={overview} />
           default :
@@ -66,7 +70,7 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
       <AppBar sx={{ position: 'relative' }}>
           <Toolbar>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            {capitalizeFirstLetter(report?.file.file_type)} Report
+            {capitalizeFirstLetter(file_type)} Report {file_type === 'IMAGES' ? `Count (${file_content?.length})` : ''}
             </Typography>
             <IconButton
               edge="end"
@@ -78,7 +82,7 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <DialogContent>
+        <DialogContent sx={{p:0}}>
          {renderContent()}
         </DialogContent>
       </Dialog>

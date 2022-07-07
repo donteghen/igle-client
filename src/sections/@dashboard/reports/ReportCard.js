@@ -27,6 +27,8 @@ export default function ReportCard ({report}) {
     setOpenPreview(false)
   }
 
+  const isNew = () => (Date.now() - report?.date) <= 86400000
+  
   const getIcon = (type) => {
     switch (type) {
       case 'IMAGES':
@@ -35,18 +37,20 @@ export default function ReportCard ({report}) {
         return '/static/mock-images/reports/video-icon.png'
       case '360VR':
         return '/static/mock-images/reports/360vr-icon.png'
+      case 'WEBCAM':
+        return '/static/mock-images/reports/webcam-icon.png'
       default:
         return '';
     }
   }
   return (
    <>
-    <Card sx={{ maxWidth: 345, cursor:'pointer', transition:'transform 0.3s', '&:hover':{transform: 'translateY(-2px)'}}} 
+    <Card sx={{ maxWidth: 345, maxHeight:200, cursor:'pointer', transition:'transform 0.3s', '&:hover':{transform: 'translateY(-2px)'}}} 
       onClick={handleOpenPreview}>
       <CardContent sx={{px:1, py:'4px'}}>
-        <Box sx={{display:'flex', justifyContent:'flex-end'}}>
+        {isNew() && <Box sx={{display:'flex', justifyContent:'flex-end'}}>
             <Chip label='New' color='info' size='small' /> 
-        </Box>
+        </Box>}
         <Box sx={{display:'flex', justifyContent:'center'}}>
         <img src={getIcon(report?.file?.file_type)} style={{width:'100px', height:'100px'}}  alt={report?.file?.file_type}/> 
         </Box>

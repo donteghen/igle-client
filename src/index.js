@@ -1,6 +1,8 @@
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
+import './global.css'
+
 import ReactDOM from 'react-dom';
 import {StrictMode} from 'react'
 import { BrowserRouter } from 'react-router-dom';

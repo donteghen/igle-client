@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 // routes
@@ -9,6 +9,7 @@ import ThemeProvider from './theme';
 import ScrollToTop from './components/ScrollToTop';
 import { BaseOptionChartStyle } from './components/chart/BaseOptionChart';
 import ErrorBoundary from './components/errorboundary'
+import SplashScreen from './SplashScreen';
 // functions
 import * as actions from './redux/actions'
 
@@ -21,16 +22,30 @@ App.propTypes = {
 }
 
  function App({fetchUser}) {
+  const [appIsLoading, SetAppIsLoading] = useState(true)
+
   useEffect(() => {
-    fetchUser()
+    if (localStorage.getItem('iUserToken')) {
+      fetchUser()
+    }
+    
+    setTimeout(() => {
+      SetAppIsLoading(false)
+    }, 8000);
+
   }, [])
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary>       
       <ThemeProvider>
+      {appIsLoading ? 
+      <SplashScreen />
+      :
+      <>
         <ScrollToTop />
         <BaseOptionChartStyle />
         <Router />
+      </>}
       </ThemeProvider>
     </ErrorBoundary>
   );

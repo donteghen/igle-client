@@ -1,16 +1,20 @@
-import * as React from 'react';
+/* eslint-disable import/no-unresolved */
+import {  useState } from "react";
 import PropTypes from 'prop-types'
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import SwipeableViews from 'react-swipeable-views';
-// import { autoPlay } from 'react-swipeable-views-utils';
-import Iconify from '../Iconify';
+// Import Swiper React components
+import { FreeMode, Navigation, Thumbs } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-// const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
+
+// mui components
+import Box from '@mui/material/Box'
+import Skeleton from '@mui/material/Skeleton'
+import Paper from '@mui/material/Paper'
+
 
 ImageReport.propTypes = {
   images:PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -18,96 +22,45 @@ ImageReport.propTypes = {
 }
 
 export default function ImageReport({images, overview}) {
-  const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = images.length;
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleStepChange = (step) => {
-    setActiveStep(step);
-  };
-
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          height: 50,
-          pl: 2,
-          bgcolor: 'background.default',
+    <>
+      <Swiper
+        style={{
+          "--swiper-navigation-color": "#fff",
+          "--swiper-pagination-color": "#fff",
         }}
+        spaceBetween={0}
+        // navigation
+        thumbs={{ swiper: thumbsSwiper }}
+        modules={[FreeMode, Navigation, Thumbs]}
+        className="mainSlider"
       >
-        <Typography sx={{overflow:'auto'}}>{images[activeStep]}</Typography>
-      </Paper>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
+        {images?.map((img, index) => <SwiperSlide key={img + index}>
+          <img alt={img} src={img}  />
+        </SwiperSlide>)}
+      </Swiper>
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        spaceBetween={0}
+        slidesPerView={10}
+        freeMode
+        navigation
+        watchSlidesProgress
+        modules={[FreeMode, Navigation, Thumbs]}
+        className="thunbnailSlider"
       >
-        {images?.map((image, index) => (
-          <div key={image + index}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <Box
-                component="img"
-                sx={{
-                  height: {xs:'400px', md:'600px'},
-                  display: 'block',
-                  overflow: 'hidden',
-                  width: '100%',
-                }}
-                src={image}
-                alt={image}
-              />
-            ) : null}
-          </div>
-        ))}
-      </SwipeableViews>
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        activeStep={activeStep}
-        nextButton={
-          <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
-            Next
-            {theme.direction === 'rtl' ? (
-              <Iconify icon='bi:arrow-left-circle-fill' />
-            ) : (
-              <Iconify icon='bi:arrow-right-circle-fill' />
-            )}
-          </Button>
-        }
-        backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? (
-              <Iconify icon='bi:arrow-right-circle-fill' />
-            ) : (
-              <Iconify icon='bi:arrow-left-circle-fill' />
-            )}
-            Back
-          </Button>
-        }
-      />
+        {images?.map((img, index) => <SwiperSlide key={img + index}>
+          <img alt={img} src={img} />
+        </SwiperSlide>)}
+      </Swiper>
       <Box sx={{my:2}}>
-        <Paper square sx={{bgcolor:'primary.main', p:1, color:'white'}}>
-        <h1 style={{textAlign:'center', margin:'10px 0'}}>Quick Overview</h1>
-         <p style={{fontSize:'14px'}}>{overview}</p>
-        </Paper>
+          <Paper square sx={{bgcolor:'primary.main', p:1, color:'white'}}>
+            <h1 style={{textAlign:'center', margin:'10px 0'}}>Quick Overview</h1>
+            <p style={{fontSize:'14px'}}>{overview}</p>
+          </Paper>
       </Box>
-    </Box>
-  );
+    </>
+  )
 }

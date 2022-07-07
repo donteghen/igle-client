@@ -14,7 +14,6 @@ import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../../../components/Iconify';
 import ErrorAlert from '../../../components/alerts/ErrorAlert';
-import SuccessAlert from '../../../components/alerts/SuccessAlert';
 // functions
 import * as actions from '../../../redux/actions'
 // ----------------------------------------------------------------------
@@ -76,7 +75,7 @@ function RegisterForm({signupUser}) {
           }
           setSubmitting(false)
           navigate('/profile')
-        }).catch(e => {
+        }).catch(() => {
           setSubmitting(false)
         }) 
        }, 2500);

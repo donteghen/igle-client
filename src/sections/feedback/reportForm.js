@@ -30,7 +30,7 @@ import { addNewProjectReport } from '../../services/api/report';
 
 
 const fileTypeOptions = [
- 'IMAGES', 'VIDEO', '360VR'
+ 'IMAGES', 'VIDEO', '360VR', 'WEBCAM'
 ]
 
 ReportForm.propTypes = {
@@ -88,6 +88,8 @@ export default function ReportForm({onCloseForm, openForm}) {
         return values.file_content
       case '360VR' :
         return values.file_content
+      case 'WEBCAM' :
+        return values.file_content
       default :
         return values.file_content
     }
@@ -98,6 +100,8 @@ export default function ReportForm({onCloseForm, openForm}) {
         return 'Enter a comma separated list of image links. No Space after the comma!'
       case 'VIDEO' :
         return 'Enter a video link'
+      case 'WEBCAM' :
+        return 'Enter a webcam feed\'s link'
       case '360VR' :
         return 'Enter an iframe embed code'
       default :

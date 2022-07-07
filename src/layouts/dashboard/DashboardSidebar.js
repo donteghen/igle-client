@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-// mock
-import account from '../../_mock/account';
+
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 // components
@@ -15,7 +14,7 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 //
 import {userNavConfig, adminNavConfig} from './NavConfig';
-import TestimonialForm from '../../sections/feedback/testimonialForm';
+
 
 
 // ----------------------------------------------------------------------
@@ -56,7 +55,7 @@ DashboardSidebar.propTypes = {
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [pathname]);
 
   const handleOpenForm = () => {
@@ -84,9 +83,7 @@ DashboardSidebar.propTypes = {
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                 {user?.name}
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
-              </Typography>
+              
             </Box>
           </AccountStyle>
         </Link>
