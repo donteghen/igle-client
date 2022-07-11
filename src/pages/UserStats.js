@@ -1,10 +1,12 @@
 // import { faker } from '@faker-js/faker';
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 // @mui
 // import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-// import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
-import Alert from '@mui/material/Alert';
+import Container from '@mui/material/Container'
+// import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import Alert from '@mui/material/Alert'
 // components
 import Page from '../components/Page';
 // import Iconify from '../components/Iconify';
@@ -23,16 +25,18 @@ import Page from '../components/Page';
 
 // ----------------------------------------------------------------------
 
-export default function DashboardApp() {
+UserStats.propTypes = {
+    user: PropTypes.object.isRequired
+}
+function UserStats({user}) {
   // const theme = useTheme();
-
+    
   return (
-    <Page title="Dashboard">
+    <Page title="User Statistics">
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          Hi {user?.name}, Welcome back !
         </Typography>
-        
         <Alert severity="info" variant='outlined' sx={{py:'20px'}}>        
         <Typography>We are cooking something amazing! Just hang in there.</Typography>
         </Alert>
@@ -219,3 +223,6 @@ export default function DashboardApp() {
     </Page>
   );
 }
+
+const mapStateToProps = ({user}) => ({user})
+export default connect(mapStateToProps)(UserStats)

@@ -25,6 +25,7 @@ import LockAuthenticatedUser from './auth-guards/LockAuthenticatedUser';
 import UserProjects from './pages/UserProject'
 import UserRequests from './pages/UserRequest';
 import UserProjectDetail from './pages/UserProjectDetail'
+import UserStats from './pages/UserStats';
 // admin protected imports
 import Users from './pages/User';
 import Projects from './pages/Project';
@@ -56,11 +57,12 @@ Router.propTypes = {
       children: [
         { path: 'profile', element: <Profile user={user} /> },
 
-        { path: 'app', element: <DashboardApp /> },
+        { path: 'user-stats', element: <UserStats /> },
         { path: 'user-projects/:id', element: <UserProjectDetail /> },
         { path: 'user-projects', element: <UserProjects /> },
         { path: 'user-requests', element: <UserRequests /> },
 
+        { path: 'statistics', element: <DashboardApp /> },
         { path: 'users', element: <Users /> },
         { path: 'projects', element: <Projects /> },
         { path: 'reports', element: <Reports /> },
@@ -69,7 +71,7 @@ Router.propTypes = {
         { path: 'testimonials', element: <Testimonials /> },
         { path: 'products', element: <Products /> },
         { path: 'blogs', element: <Blog /> },
-        { path: '', element: <Navigate to="/dashboard/app" /> },
+        { path: '', element: <Navigate to="/dashboard/statistics" /> },
       ],
     },
     {

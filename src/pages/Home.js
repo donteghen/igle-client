@@ -1,5 +1,5 @@
 // main import 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 // mui components 
 import Box from '@mui/material/Box'
@@ -19,7 +19,7 @@ import VideoPlayerModal from '../components/VideoPlayerModal'
 // constants 
 import { services } from '../utils/constants/services'
 import { INDUSTRIES } from '../utils/constants/industries'
-
+import { getTestimonials } from '../services/api/testimonial'
 
 
 const ThumbnailStyle = styled('div')(({ theme }) => ({
@@ -135,6 +135,17 @@ export default function Home () {
     const navigate = useNavigate()
 
     const [openVideo, setOpenVideo] = useState(false)
+    const [testimonials, setTestimonials] = useState([])
+
+    useEffect(() => {
+        getTestimonials().then(result => {
+          if (!result.ok) {
+            return 
+          }
+          setTestimonials(result.data)
+          console.log(result.data)
+        }).catch(() => console.log('testimonial api fetch error'))
+      }, [])
 
     const handleOpenVideo = () => {
         setOpenVideo(true)
@@ -159,12 +170,12 @@ export default function Home () {
                     </Button>
                 </Typography>
             </ThumbnailStyle>
-            <Box sx={{width: '100%', my:2, px:2, backgroundColor:'#fdfdfd', py:2}}>
+            {(testimonials.length > 0) && <Box sx={{width: '100%', my:2, px:2, backgroundColor:'#fdfdfd', py:2}}>
                 <FancyHeading >
                     Our Clients
                 </FancyHeading>
-                <TestimonialSlidder />
-            </Box>
+                <TestimonialSlidder testimonials={testimonials}/>
+            </Box>}
             <h2 style={{fontWeight:'bold', textAlign:'center', margin:'25px 0', fontSize:'2.75rem'}}>Services</h2>
             <ContentStyle>
                 {services.map((service, index) => (

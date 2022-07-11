@@ -79,7 +79,7 @@ export default function ProjectCard ({project}) {
       <ErrorAlert open={openErrorAlert} onClosed={handleErrorAlertClosed}
       title='Operation Failed' message='An Error occured please check you connection and try again!'
       />
-    <Card sx={{ maxWidth: 345, height:300}}>
+    <Card sx={{ maxWidth: 345, height:300, cursor:'pointer', transition:'transform 0.5s linear', '&:hover':{transform:'translateY(-2px)'}}}>
       <CardContent sx={{px:1, height:'80%'}}>
         <Box sx={{display:'flex', justifyContent:'space-between'}}>
             <Chip label={capitalizeFirstLetter(project?.plan)} color={getPlanColor(project?.plan)} size='small' /> 
