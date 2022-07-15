@@ -170,7 +170,7 @@ export default function Home () {
                     </Button>
                 </Typography>
             </ThumbnailStyle>
-            {(testimonials.length > 0) && <Box sx={{width: '100%', my:2, px:2, backgroundColor:'#fdfdfd', py:2}}>
+            {(testimonials?.length > 0) && <Box sx={{width: '100%', my:2, px:2, backgroundColor:'#fdfdfd', py:2}}>
                 <FancyHeading >
                     Our Clients
                 </FancyHeading>
