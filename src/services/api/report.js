@@ -3,11 +3,15 @@ import { setBaseUrl } from "../../utils/setBaseUrl";
 
 const baseUrl = setBaseUrl()
 
+const customAxios = axios.create({
+    timeout:3000
+})
+
 // add new report for a project
 const addNewProjectReport = async (projectId, details) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.post(`${baseUrl}projects/${projectId}/reports`, details, {
+        const res = await customAxios.post(`${baseUrl}projects/${projectId}/reports`, details, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -23,7 +27,7 @@ const addNewProjectReport = async (projectId, details) => {
 const getAllReportsByAdmin = async (queryString) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}reports?${queryString}`, {
+        const res = await customAxios.get(`${baseUrl}reports?${queryString}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -38,7 +42,7 @@ const getAllReportsByAdmin = async (queryString) => {
 const getAllProjectsReportsByAdmin = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}projects/${projectId}/reports`, {
+        const res = await customAxios.get(`${baseUrl}projects/${projectId}/reports`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -53,7 +57,7 @@ const getAllProjectsReportsByAdmin = async (projectId) => {
 const previewReportByAdmin = async (reportId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}reports/${reportId}`, {
+        const res = await customAxios.get(`${baseUrl}reports/${reportId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -68,7 +72,7 @@ const previewReportByAdmin = async (reportId) => {
 const getSingleReportByAdmin = async (reportId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}reports/${reportId}`, {
+        const res = await customAxios.get(`${baseUrl}reports/${reportId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -83,7 +87,7 @@ const getSingleReportByAdmin = async (reportId) => {
 const getAllProjectReports = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/projects/${projectId}/reports`, {
+        const res = await customAxios.get(`${baseUrl}user/profile/projects/${projectId}/reports`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -98,7 +102,7 @@ const getAllProjectReports = async (projectId) => {
 const getSingleProjectReport = async (projectId, reportId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/projects/${projectId}/reports/${reportId}`, {
+        const res = await customAxios.get(`${baseUrl}user/profile/projects/${projectId}/reports/${reportId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -113,7 +117,7 @@ const getSingleProjectReport = async (projectId, reportId) => {
 const dispatchReportUpdateAlert = async (reportId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.post(`${baseUrl}reports/${reportId}`, {}, {
+        await customAxios.post(`${baseUrl}reports/${reportId}`, {}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -128,7 +132,7 @@ const dispatchReportUpdateAlert = async (reportId) => {
 const deleteReport = async ( reportId ) => {
     try {
       const token = localStorage.getItem('iUserToken');
-      await axios.delete(`${baseUrl}reports/${reportId}`, {
+      await customAxios.delete(`${baseUrl}reports/${reportId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

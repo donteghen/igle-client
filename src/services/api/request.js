@@ -3,19 +3,23 @@ import { setBaseUrl } from "../../utils/setBaseUrl";
 
 const baseUrl = setBaseUrl()
 
+const customAxios = axios.create({
+    timeout:3000
+})
+
 // add new project request
 const addNewProjectRequest = async (projectId, details) => {
    
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.post(`${baseUrl}projects/${projectId}/requests`, details, {
+        const res = await customAxios.post(`${baseUrl}projects/${projectId}/requests`, details, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
         })
         return {ok: true, data: res.data.data}
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return {ok: false, errorMessage:error.response.data.error}
     }
 }
@@ -24,7 +28,7 @@ const addNewProjectRequest = async (projectId, details) => {
 const getAllUserProjectRequests = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/projects/${projectId}/requests`, {
+        const res = await customAxios.get(`${baseUrl}user/profile/projects/${projectId}/requests`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -37,10 +41,10 @@ const getAllUserProjectRequests = async (projectId) => {
 
 // get all  current user's request list
 const getUserRequests = async (queryString) => {
-    console.log(queryString, 'in user request service')
+    // console.log(queryString, 'in user request service')
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/requests?${queryString}`, {
+        const res = await customAxios.get(`${baseUrl}user/profile/requests?${queryString}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -55,7 +59,7 @@ const getUserRequests = async (queryString) => {
 const getSingleUserProjectRequest = async (projectId, requestId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/projects/${projectId}/requests/${requestId}`, {
+        const res = await customAxios.get(`${baseUrl}user/profile/projects/${projectId}/requests/${requestId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -70,7 +74,7 @@ const getSingleUserProjectRequest = async (projectId, requestId) => {
 const getAllRequests = async (queryString) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}requests?${queryString}`, {
+        const res = await customAxios.get(`${baseUrl}requests?${queryString}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -85,7 +89,7 @@ const getAllRequests = async (queryString) => {
 const getSingleRequest = async (requestId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}requests/${requestId}`, {
+        const res = await customAxios.get(`${baseUrl}requests/${requestId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -100,7 +104,7 @@ const getSingleRequest = async (requestId) => {
 const updateRequestStatus = async (requestId, newStatus) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.patch(`${baseUrl}requests/${requestId}/update-status`, {status:newStatus}, {
+        const res = await customAxios.patch(`${baseUrl}requests/${requestId}/update-status`, {status:newStatus}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -115,7 +119,7 @@ const updateRequestStatus = async (requestId, newStatus) => {
 const deleteRequest = async (requestId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.delete(`${baseUrl}requests/${requestId}/delete`, {
+        await customAxios.delete(`${baseUrl}requests/${requestId}/delete`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

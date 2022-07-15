@@ -3,11 +3,15 @@ import { setBaseUrl } from "../../utils/setBaseUrl";
 
 const baseUrl = setBaseUrl()
 
+const customAxios = axios.create({
+    timeout:3000
+  })
+
 // add new project request
 const postNewContactMessage = async (details) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.post(`${baseUrl}contacts`, details, {
+        await customAxios.post(`${baseUrl}contacts`, details, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -23,7 +27,7 @@ const postNewContactMessage = async (details) => {
 const markContactMessageAsReplied = async (contactMessageId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.patch(`${baseUrl}contacts/${contactMessageId}/replied`, {}, {
+        const res = await customAxios.patch(`${baseUrl}contacts/${contactMessageId}/replied`, {}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -39,7 +43,7 @@ const markContactMessageAsReplied = async (contactMessageId) => {
 const getAllContactMessage = async (queryString) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}contacts?${queryString}`, {
+        const res = await customAxios.get(`${baseUrl}contacts?${queryString}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -54,7 +58,7 @@ const getAllContactMessage = async (queryString) => {
 const getSingleContactMessage = async (contactMessageId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}contacts/${contactMessageId}`, {
+        const res = await customAxios.get(`${baseUrl}contacts/${contactMessageId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -69,7 +73,7 @@ const getSingleContactMessage = async (contactMessageId) => {
 const deleteContactMessage = async (contactMessageId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.delete(`${baseUrl}contacts/${contactMessageId}`, {
+        await customAxios.delete(`${baseUrl}contacts/${contactMessageId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

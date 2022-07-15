@@ -3,11 +3,15 @@ import { setBaseUrl } from "../../utils/setBaseUrl";
 
 const baseUrl = setBaseUrl()
 
+const customAxios = axios.create({
+    timeout:3000
+})
+
 // add new testimonial
 const postNewTestimonial = async (details) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.post(`${baseUrl}testimonials`, details, {
+        await customAxios.post(`${baseUrl}testimonials`, details, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -23,7 +27,7 @@ const postNewTestimonial = async (details) => {
 const updateTestimonialShow = async (testimonialId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.patch(`${baseUrl}testimonials/${testimonialId}/show`, {}, {
+        const res = await customAxios.patch(`${baseUrl}testimonials/${testimonialId}/show`, {}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -39,7 +43,7 @@ const updateTestimonialShow = async (testimonialId) => {
 const getTestimonials = async (queryString) => {
     try {
         // const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}testimonials?${queryString}`)
+        const res = await customAxios.get(`${baseUrl}testimonials?${queryString}`)
         return {ok: true, data:res.data.data}
     } catch (error) {
         return {ok: false, errorMessage:error.response.data.error}
@@ -50,7 +54,7 @@ const getTestimonials = async (queryString) => {
 const getSingleTestimonial = async (testimonialId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}testimonials/${testimonialId}`, {
+        const res = await customAxios.get(`${baseUrl}testimonials/${testimonialId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -65,7 +69,7 @@ const getSingleTestimonial = async (testimonialId) => {
 const deleteTestimonial = async (testimonialId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.delete(`${baseUrl}testimonials/${testimonialId}`, {
+        await customAxios.delete(`${baseUrl}testimonials/${testimonialId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

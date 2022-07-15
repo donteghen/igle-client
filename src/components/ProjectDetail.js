@@ -23,6 +23,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import Chip from '@mui/material/Chip';
 
 // components
 import Iconify from './Iconify';
@@ -136,7 +137,7 @@ export default function ProjectDetail({onCloseDetail, openDetail, project, onFet
             </IconButton>
           </Toolbar>
         </AppBar>
-        <DialogContent sx={{p:0}}>
+        <DialogContent sx={{px:0, pt:0, pb:4}}>
         <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} >
               <CircularProgress size={40} thickness={4} color="primary" />
         </Backdrop>
@@ -145,8 +146,8 @@ export default function ProjectDetail({onCloseDetail, openDetail, project, onFet
             <Typography component='div' sx={{position:'absolute', paddingLeft:'24px', top:{xs:'35%', md:'40%', lg:'50%', color:'white'}}}>
 
                 <h1>{project?.name}</h1>
-                <p >{fDateTime(project?.createdAt)}</p> 
-                <Button disableElevation size='small' variant='contained' color={getActiveColor(project?.active)}  style={{textTransform:'none'}}>{project?.active ? ' Active' : 'Inactive'}</Button>                
+                <p style={{marginBottom:'10px'}}>{fDateTime(project?.createdAt)}</p> 
+                <Chip color={getActiveColor(project?.active)} label={project?.active ? 'Active' : 'Inactive'} />
             </Typography>
         </Box>
         <Divider />
@@ -163,21 +164,24 @@ export default function ProjectDetail({onCloseDetail, openDetail, project, onFet
             Update operation completed — <strong>Click to close!</strong>
           </Alert>}
             <Box sx={{my:{xs:3, md:4}}}>
-              <h4 style={{marginBottom:'10px'}}>Status <Button disableElevation size='small' variant='contained' color={getStatusColor(project?.status)} sx={{textTransform:'none'}} >{capitalizeFirstLetter(project?.status)}</Button></h4>
+              <h4>Actions Area</h4>
+              <Paper elevation={2} sx={{py:3, px:2}}>
+              <Box sx={{my:{xs:3, md:4}}}>
+              <h4 style={{marginBottom:'10px'}}>Status <Chip color={getStatusColor(project?.status)} label={capitalizeFirstLetter(project?.status)} /></h4>
               <Box>
               <span>Mark Status as </span>
-              <ButtonGroup size="large" aria-label="large button group">
+              <ButtonGroup size="small" aria-label="large button group">
                 <Button onClick={() => handleStatusChange('APPROVED')}>Approve</Button>
-                <Button onClick={() => handleStatusChange('COMPLETED')}>Completed</Button>
+                <Button onClick={() => handleStatusChange('COMPLETED')}>Completed</Button> 
                 <Button onClick={() => handleStatusChange('CANCELED')}>Cancel</Button>
               </ButtonGroup>
               </Box>
             </Box>
             <Box sx={{my:{xs:3, md:4}}}>
-              <h4 style={{marginBottom:'10px'}}>Plan <Button disableElevation size='small' variant='contained' color={getPlanColor(project?.plan)} sx={{textTransform:'none'}}>{capitalizeFirstLetter(project?.plan)}</Button></h4>
+              <h4 style={{marginBottom:'10px'}}>Plan <Chip label={capitalizeFirstLetter(project?.plan)} color={getPlanColor(project?.plan)} /></h4>
               <Box>
               <span>Upgrade Plan to</span>
-              <ButtonGroup size="large" aria-label="large button group">
+              <ButtonGroup size="small" aria-label="large button group">
                 <Button onClick={() => handlePlanUpgrade('STANDARD')}>Standard</Button>
                 <Button onClick={() => handlePlanUpgrade('PRO')}>Pro</Button>
                 <Button onClick={() => handlePlanUpgrade('ENTERPRISE')}>Enterprise</Button>
@@ -185,15 +189,17 @@ export default function ProjectDetail({onCloseDetail, openDetail, project, onFet
               </ButtonGroup>
               </Box>
             </Box>
+              </Paper>
+            </Box>
             <Box sx={{my:{xs:3, md:4}}}>
                 <h4 style={{}}>Description</h4>
-                <Paper sx={{py:3, px:2}} elevation={4}>
+                <Paper sx={{py:3, px:2}} elevation={2}>
                     <Typography>{project?.description}</Typography>
                 </Paper>
             </Box>
             <Box sx={{my:{xs:3, md:4}}}>
                 <h4 style={{}}>Detail</h4>
-                <Paper sx={{py:3, px:2}} elevation={4}>
+                <Paper sx={{py:3, px:2}} elevation={2}>
                     <Typography>{project?.detail}</Typography>
                 </Paper>
             </Box>

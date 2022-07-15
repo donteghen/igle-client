@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+
 // material
 import { Grid } from '@mui/material';
 import RequestCard from './RequestCard';
@@ -14,9 +14,7 @@ RequestList.propTypes = {
 };
 
 export default function RequestList({ requests, ...other }) {
-    useEffect(() => {
-        console.log(requests)
-    },[])
+
   return (
     <Grid container spacing={3} {...other}>
       {requests.map((request) => (

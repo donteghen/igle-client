@@ -3,10 +3,14 @@ import { setBaseUrl } from "../../utils/setBaseUrl";
 
 const baseUrl = setBaseUrl()
 
+const customAxios = axios.create({
+    timeout:3000
+})
+
 const getAllUsers = async () => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}users`, {
+        const res = await customAxios.get(`${baseUrl}users`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -21,7 +25,7 @@ const getAllUsers = async () => {
 const getSingleUser = async (userId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}users/${userId}`, {
+        const res = await customAxios.get(`${baseUrl}users/${userId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -37,7 +41,7 @@ const getSingleUser = async (userId) => {
 const deleteUser = async (userId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.delete(`${baseUrl}users/${userId}`, {
+        const res = await customAxios.delete(`${baseUrl}users/${userId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -51,7 +55,7 @@ const deleteUser = async (userId) => {
 // user pasword reset initiator function
 const userPasswordReset = async(email) => {
     try {
-        await axios.post(`${baseUrl}users/reset-password`, {email})
+        await customAxios.post(`${baseUrl}users/reset-password`, {email})
         return {ok: true}
     } catch (error) {
         return {ok: false, errorMessage:error.response.data.error}
@@ -61,7 +65,7 @@ const userPasswordReset = async(email) => {
 // user pasword reset confirmation function
 const userPasswordResetComfrimation = async(email, token, password) => {
     try {
-        await axios.post(`${baseUrl}users/confirm-reset-password`, {email, token, password})
+        await customAxios.post(`${baseUrl}users/confirm-reset-password`, {email, token, password})
         return {ok: true}
     } catch (error) {
         return {ok: false, errorMessage:error.response.data.error}
@@ -71,7 +75,7 @@ const userPasswordResetComfrimation = async(email, token, password) => {
 // verify newly registered account
 const verifyNewUserAccount = async (userId) => {
     try {
-        await axios.patch(`${baseUrl}users/${userId}/verify`)
+        await customAxios.patch(`${baseUrl}users/${userId}/verify`)
         return {ok:true}
     } catch (error) {
         return {ok: false, errorMessage:error.response.data.error}

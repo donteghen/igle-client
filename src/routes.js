@@ -42,12 +42,14 @@ import Video from './pages/Video';
 import Webcam from './pages/Webcam';
 
 
+
 // ----------------------------------------------------------------------
 
 Router.propTypes = {
   user: PropTypes.object
 }
  function Router({user}) {
+  
   return useRoutes([
     {
       path: '/dashboard',
@@ -71,7 +73,7 @@ Router.propTypes = {
         { path: 'testimonials', element: <Testimonials /> },
         { path: 'products', element: <Products /> },
         { path: 'blogs', element: <Blog /> },
-        { path: '', element: <Navigate to="/dashboard/statistics" /> },
+        { path: '', element: <Navigate to={user?.isAdmin ? '/dashboard/projects' : '/dashboard/user-projects'} /> },
       ],
     },
     {

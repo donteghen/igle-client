@@ -143,7 +143,7 @@ export default function Home () {
             return 
           }
           setTestimonials(result.data)
-          console.log(result.data)
+          
         }).catch(() => console.log('testimonial api fetch error'))
       }, [])
 

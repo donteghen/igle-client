@@ -21,7 +21,7 @@ import ProjectDetail from '../../../components/ProjectDetail';
 // ----------------------------------------------------------------------
 
 ProjectMoreMenu.propTypes = {
-  project: PropTypes.string.isRequired,
+  project: PropTypes.object.isRequired,
   user: PropTypes.object,
   active:PropTypes.bool,
   onFetchProjects: PropTypes.func.isRequired

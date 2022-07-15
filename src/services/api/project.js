@@ -3,11 +3,15 @@ import { setBaseUrl } from "../../utils/setBaseUrl";
 
 const baseUrl = setBaseUrl()
 
+const customAxios = axios.create({
+  timeout:3000
+})
+
 // get all projects with or without query string
 const getAllProjects = async (queryString) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}projects?${queryString}`, {
+        const res = await customAxios.get(`${baseUrl}projects?${queryString}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -23,7 +27,7 @@ const getAllProjects = async (queryString) => {
 const getSingleProject = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}projects/${projectId}`, {
+        const res = await customAxios.get(`${baseUrl}projects/${projectId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -38,7 +42,7 @@ const getSingleProject = async (projectId) => {
 const getUserProjects = async (queryString) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/projects?${queryString}`, {
+        const res = await customAxios.get(`${baseUrl}user/profile/projects?${queryString}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -50,11 +54,11 @@ const getUserProjects = async (queryString) => {
 }
 
 
-// get single project by project Id
+// get single user project by project Id
 const getSingleUserProject = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${baseUrl}user/profile/projects/${projectId}`, {
+        const res = await customAxios.get(`${baseUrl}user/profile/projects/${projectId}`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -70,7 +74,7 @@ const createNewProject = async (projectDetails) => {
 
     try {
       const token = localStorage.getItem('iUserToken');
-      const res = await axios.post(`${baseUrl}projects`, projectDetails, {
+      const res = await customAxios.post(`${baseUrl}projects`, projectDetails, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,7 +89,7 @@ const createNewProject = async (projectDetails) => {
 const updateProject = async (projectDetails, projectId) => {
     try {
       const token = localStorage.getItem('iUserToken');
-      const res = await axios.patch(`${baseUrl}user/profile/projects/${projectId}/update`, projectDetails,
+      const res = await customAxios.patch(`${baseUrl}user/profile/projects/${projectId}/update`, projectDetails,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,7 +106,7 @@ const updateProject = async (projectDetails, projectId) => {
 const upgradeProject = async (planDetail, projectId) => {
     try {
       const token = localStorage.getItem('iUserToken');
-      const res = await axios.patch(`${baseUrl}projects/${projectId}/upgrade-plan`, planDetail,
+      const res = await customAxios.patch(`${baseUrl}projects/${projectId}/upgrade-plan`, planDetail,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -119,7 +123,7 @@ const upgradeProject = async (planDetail, projectId) => {
 const changeProjectStatus = async (statusDetail, projectId) => {
     try {
         const token = localStorage.getItem('iUserToken');
-        const res = await axios.patch(`${baseUrl}projects/${projectId}/status-change`, statusDetail,
+        const res = await customAxios.patch(`${baseUrl}projects/${projectId}/status-change`, statusDetail,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -136,7 +140,7 @@ const changeProjectStatus = async (statusDetail, projectId) => {
 const activateProject = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken');
-        const res = await axios.patch(`${baseUrl}projects/${projectId}/activate`, {},
+        const res = await customAxios.patch(`${baseUrl}projects/${projectId}/activate`, {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -152,7 +156,7 @@ const activateProject = async (projectId) => {
 const deactivateProject = async (projectId) => {
     try {
         const token = localStorage.getItem('iUserToken');
-        const res = await axios.patch(`${baseUrl}projects/${projectId}/deactivate`, {},
+        const res = await customAxios.patch(`${baseUrl}projects/${projectId}/deactivate`, {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -170,7 +174,7 @@ const deactivateProject = async (projectId) => {
 const deleteProject = async ( projectId ) => {
     try {
       const token = localStorage.getItem('iUserToken');
-      await axios.delete(`${baseUrl}projects/${projectId}`, {
+      await customAxios.delete(`${baseUrl}projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

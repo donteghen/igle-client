@@ -5,13 +5,18 @@ import {FETCH_USER, LOG_IN_USER, LOG_OUT_USER, SIGN_UP_USER, UPDATE_USER_PROFILE
 
 import { setBaseUrl } from '../../utils/setBaseUrl'
 
+
 const apiUrl = setBaseUrl()
+
+const customAxios = axios.create({
+    timeout:3000
+})
 
 export const fetchUser = () => async (dispatch) => {
 
     try { 
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.get(`${apiUrl}user/profile`, {
+        const res = await customAxios.get(`${apiUrl}user/profile`, {
             headers:{
                 'Authorization': `Bearer ${token}`
             },
@@ -26,7 +31,7 @@ export const fetchUser = () => async (dispatch) => {
 
 export const signupUser = (userDetails) => async (dispatch) => {
     try {
-        const res = await axios.post(`${apiUrl}users/signup`, userDetails)
+        const res = await customAxios.post(`${apiUrl}users/signup`, userDetails)
         localStorage.setItem('iUserToken', res.data.data.generatedToken) 
         dispatch({type:SIGN_UP_USER, payload:res.data.data.user})
         return {ok:true}
@@ -37,7 +42,7 @@ export const signupUser = (userDetails) => async (dispatch) => {
 
 export const loginUser = (loginDetails) => async (dispatch) => {
     try {
-        const res = await axios.post(`${apiUrl}users/login`, loginDetails)
+        const res = await customAxios.post(`${apiUrl}users/login`, loginDetails)
         localStorage.setItem('iUserToken', res.data.data.token) 
         dispatch({type:LOG_IN_USER, payload: res.data.data.user})
         return {ok: true}
@@ -48,7 +53,7 @@ export const loginUser = (loginDetails) => async (dispatch) => {
 
 export const changeUserPassword = ({oldPasword, newPassword}) => async (dispatch) => {
     try {
-        const res = await axios.post(`${apiUrl}user/profile/change-password`, {oldPasword, newPassword})
+        const res = await customAxios.post(`${apiUrl}user/profile/change-password`, {oldPasword, newPassword})
         localStorage.setItem('iUserToken', res.data.data.token) 
         dispatch({type:CHANGE_USER_PASSWORD, payload: res.data.data})
         return {ok: true}
@@ -60,7 +65,7 @@ export const changeUserPassword = ({oldPasword, newPassword}) => async (dispatch
 export const logoutUser = () => async (dispatch) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        await axios.post(`${apiUrl}user/profile/logout`,{}, {
+        await customAxios.post(`${apiUrl}user/profile/logout`,{}, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
@@ -77,7 +82,7 @@ export const uploadAvatar = (formData) => async (dispatch) => {
     const token  = localStorage.getItem('iUserToken')
 
     try {
-        const res = await axios.post(`${apiUrl}user/profile/avatar`, formData, {
+        const res = await customAxios.post(`${apiUrl}user/profile/avatar`, formData, {
             headers:{
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
@@ -94,7 +99,7 @@ export const uploadAvatar = (formData) => async (dispatch) => {
 export const updateUser = (userDetails) => async (dispatch) => {
     try {
         const token = localStorage.getItem('iUserToken')
-        const res = await axios.patch(`${apiUrl}user/profile/update`, userDetails, {
+        const res = await customAxios.patch(`${apiUrl}user/profile/update`, userDetails, {
             headers:{
                 'Authorization': `Bearer ${token}`
             }

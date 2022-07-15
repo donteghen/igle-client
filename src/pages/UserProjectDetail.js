@@ -123,6 +123,7 @@ export default function UserProjectDetail() {
         <Container>
         <Box sx={{my:{xs:3, md:4}}}>
         <Typography component='h4' sx={{marginLeft:'10px',color:'text.secondary'}}>Location</Typography>
+                {!project?.active && <Alert severity='warning' sx={{py:2, my:4}} >This project is inactive. Should you desire to re-active the project, then contact support </Alert>}
                 <Paper sx={{py:3, px:2}} elevation={4}>
                     <Typography sx={{my:1}}>
                         <Typography component='span' sx={{mr:2, color:'text.secondary'}}>

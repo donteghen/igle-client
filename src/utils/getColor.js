@@ -1,29 +1,43 @@
 // Get  project plan color
 export const getPlanColor = (plan) => {
+    let color = 'default'
     switch (plan) {
         case 'STANDARD':
-            return 'default'
+            color ='default'
+            break;
         case 'PRO':
-            return 'primary'
+            color ='primary'
+            break;
         case 'ENTERPRISE':
-            return 'secondary'
+            color ='secondary'
+            break;
         default:
-            return 'default';
+            color ='default';
+            break;
     }
+    // console.log(color)
+    return color
 }
 
 // Get project status color
 export const getStatusColor = (status) => {
+    let color = 'default'
     switch (status) {
         case 'PENDING':
-            return 'default'
+            color = 'default'
+            break;
         case 'APPROVED':
-            return 'success'
+            color = 'success'
+            break;
         case 'COMPLETED':
-            return 'info'
+            color = 'info'
+            break;
         default:
-            return 'default';
+            color = 'default';
+            break;
     }
+    // console.log(color)
+    return color
 }
 
 // Get active project color
@@ -37,14 +51,21 @@ export const getActiveColor = (active) => {
 
 // Get project status color
 export const getRequestStatusColor = (status) => {
+    let color = 'default'
     switch (status) {
         case 'RECIEVED':
-            return 'default'
+            color = 'warning'
+            break;
         case 'IN_PROGRESS':
-            return 'success'
+            color = 'info'
+            break;
         case 'PROCESSED':
-            return 'info'
+            color = 'success'
+            break;
         default:
-            return 'default';
+            color = 'default';
+            break;
     }
+    // console.log(color)
+    return color
 }

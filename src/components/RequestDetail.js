@@ -16,10 +16,13 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
+import Chip from '@mui/material/Chip'
 // functions
 import { capitalizeFirstLetter } from '../utils/formatString';
 import {updateRequestStatus} from '../services/api/request'
+import { getRequestStatusColor } from '../utils/getColor';
 import Iconify from './Iconify';
+
 
 
 RequestDetail.propTypes = {
@@ -126,12 +129,7 @@ function RequestDetail({onCloseDetail, open, request, user, onRequestFetch}) {
             </Typography>
             <Typography component='div' sx={{'& > p':{fontSize:'14px', fontWeight:'bold'},'& > h6':{color:'primary.main',}, my:2}}>
               <h6>Status</h6>
-              <p>
-              <Typography component='span' 
-              sx={{padding: '4px 8px', backgroundColor:'primary.light', borderRadius:'4px'}}>
-              {capitalizeFirstLetter(request?.status)}
-              </Typography>
-              </p>
+              <p><Chip label={capitalizeFirstLetter(request?.status)} color={getRequestStatusColor(request?.status)} /></p>
               {user?.isAdmin && <div style={{margin:'20px 0'}}>
               <span>Update Status: </span>
               <ButtonGroup variant="contained" aria-label="outlined primary button group" >
