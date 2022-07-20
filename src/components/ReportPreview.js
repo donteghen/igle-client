@@ -47,13 +47,13 @@ export default function ReportPreview({onClosePreview, openPreview, report}) {
           return
       }
       switch (file_type) {
-          case 'IMAGES' :
+          case 'PHOTO' :
               return <ImageReport images={file_content} overview={overview} />
           case 'VIDEO' :
               return <VideoReport videoUrl={file_content} overview={overview} />
           case 'WEBCAM' :
               return <WebcamReport feedUrl={file_content} overview={overview} />
-          case '360VR' :
+          case '360VRWT' :
               return <VirtualtourReport embbedSrc={file_content} title={fDateTime(createdAt)} overview={overview} />
           default :
               return     

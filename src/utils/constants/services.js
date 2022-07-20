@@ -1,6 +1,6 @@
 export const services = [
     {
-        name:'360 PHOTO',
+        name:'PHOTO',
         description:'Professional construction photo documentation services',
         imgLink:'https://res.cloudinary.com/dpyl8tyll/image/upload/v1655398758/Igle/general/360vr_xiizuo.jpg',
         pageLink:'/photos '
@@ -12,10 +12,10 @@ export const services = [
         pageLink:'/video'
     },
     {
-        name:'PHOTO',
-        description:'We capture 360 photos of your entire job site. You use them to manage your project more efficiently',
+        name:'360VRWT',
+        description:'We capture & create perfect immersive 360 VRWalkthrough of your entire job site.',
         imgLink:'https://res.cloudinary.com/dpyl8tyll/image/upload/v1655398774/Igle/general/photo_v11rb6.jpg',
-        pageLink:'/360-photo'
+        pageLink:'/360vrwt'
     },
     {
         name:'WEBCAM',

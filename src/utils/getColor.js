@@ -1,21 +1,31 @@
+import { blue,} from '@mui/material/colors';
+
+const BLUEA100 = blue.A100;
+const BLUEA200 = blue.A200;
+const BLUEA400 = blue.A400;
+const BLUEA700 = blue.A700;
+
 // Get  project plan color
 export const getPlanColor = (plan) => {
     let color = 'default'
     switch (plan) {
-        case 'STANDARD':
-            color ='default'
+        case 'PHOTO':
+            color = BLUEA100
             break;
-        case 'PRO':
-            color ='primary'
+        case 'VIDEO':
+            color = BLUEA200
             break;
-        case 'ENTERPRISE':
-            color ='secondary'
+        case '360VRWT':
+            color = BLUEA400
+            break;
+        case 'WEBCAM':
+            color = BLUEA700
             break;
         default:
             color ='default';
             break;
     }
-    // console.log(color)
+    console.log(plan, color)
     return color
 }
 

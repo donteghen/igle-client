@@ -81,10 +81,10 @@ export default function ProjectCard ({project}) {
       />
     <Card sx={{ maxWidth: 345, height:300, cursor:'pointer', transition:'transform 0.5s linear', '&:hover':{transform:'translateY(-2px)'}}}>
       <CardContent sx={{px:1, height:'80%'}}>
-        <Box sx={{display:'flex', justifyContent:'space-between'}}>
-            <Chip label={capitalizeFirstLetter(project?.plan)} color={getPlanColor(project?.plan)} size='small' /> 
-            <Chip label={capitalizeFirstLetter(project?.status)} color={getStatusColor(project?.status)} size='small' />
-            <Chip label={`${project?.active ? 'Active' : 'Inactive'}`} color={getActiveColor(project?.active)} size='small' />
+        <Box sx={{display:'flex', justifyContent:'space-between',}}>
+            <Chip label={capitalizeFirstLetter(project?.plan)} sx={{bgcolor:`${getPlanColor(project?.plan)}`,  color:'white'}} size='small' /> 
+            <Chip label={capitalizeFirstLetter(project?.status)} color={getStatusColor(project?.status)} sx={{color:'white'}} size='small' />
+            <Chip label={`${project?.active ? 'Active' : 'Inactive'}`} color={getActiveColor(project?.active)} sx={{color:'white'}} size='small' />
         </Box>
         <Divider sx={{mt:1}} />
         <Box component='div' sx={{background:'#0f3996', width:'100%', height:'100%', pt:3, pl:1}}>

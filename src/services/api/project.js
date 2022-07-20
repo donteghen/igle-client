@@ -4,7 +4,7 @@ import { setBaseUrl } from "../../utils/setBaseUrl";
 const baseUrl = setBaseUrl()
 
 const customAxios = axios.create({
-  timeout:3000
+  timeout:5000
 })
 
 // get all projects with or without query string

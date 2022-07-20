@@ -57,7 +57,7 @@ export default function About () {
                     </Typography>
                     <Typography component='div' sx={{my:1, color:'white'}}>
                         <p style={{margin: '10px 0'}}>YOUR CONSTRUCTION PROJECT FULLY CAPTURED, TOTALLY COVERED</p>
-                        <p style={{margin: '10px 0'}}>Construction Photos and Videos, 360 Image, UAV Services, and automated workflow solutions
+                        <p style={{margin: '10px 0'}}>Construction Photos and Videos, 360 VR Walkthrough, UAV Services, and automated workflow solutions
 from the Global Leader in Construction Documentation.</p>
                     </Typography>
                 </Typography>
@@ -73,7 +73,7 @@ from the Global Leader in Construction Documentation.</p>
                         <Stack>
                             <Box width='100%'>
                                 <p>Monitoring</p>
-                                <LinearProgressWithLabel title='Added value' value={40} />
+                                <LinearProgressWithLabel title='Centralized Data' value={40} />
                             </Box>
                             <Box width='100%'>
                                 <LinearProgressWithLabel title='Time Efficiency' value={70} />

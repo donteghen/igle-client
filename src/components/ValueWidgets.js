@@ -48,7 +48,7 @@ export function ValueWidgets() {
                 <GridItem iconName='teenyicons:360-solid' title='360 VR Report' />
             </Grid>
             <Grid item xs={5} md={3} lg={2}>
-                <GridItem iconName='bi:webcam-fill' title='Webcam Feed' />
+                <GridItem iconName='bi:webcam-fill' title='Webcam Report' />
             </Grid>
         </Grid>
     )

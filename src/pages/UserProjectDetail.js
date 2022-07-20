@@ -82,7 +82,7 @@ export default function UserProjectDetail() {
                 return
             }
             setProject(result.data)            
-        })
+        }).catch(() => setLoading(false))
     }
     const fetchProjectReports = () => {
         getAllProjectReports(id).then(result => {
@@ -113,9 +113,9 @@ export default function UserProjectDetail() {
                 <h1>{project?.name}</h1>
                 <p >{fDateTime(project?.createdAt)}</p> 
                 <Stack direction="row" spacing={1}>
-                    <Chip label={project?.active ? ' Active' : 'Inactive'} color={getActiveColor(project?.active)??'default'} />
-                    <Chip label={capitalizeFirstLetter(project?.status)??''} color={getStatusColor(project?.status)??'default'} />
-                    <Chip label={capitalizeFirstLetter(project?.plan)??''} color={getPlanColor(project?.plan)??'default'} />
+                    <Chip label={project?.active ? ' Active' : 'Inactive'} color={getActiveColor(project?.active)??'default'} sx={{color:'white'}}  />
+                    <Chip label={capitalizeFirstLetter(project?.status)??''} color={getStatusColor(project?.status)??'default'} sx={{color:'white'}}  />
+                    <Chip label={capitalizeFirstLetter(project?.plan)??''} sx={{bgcolor:`${getPlanColor(project?.plan)}`, color:'white'}} />
                 </Stack>
             </Typography>
         </Box>

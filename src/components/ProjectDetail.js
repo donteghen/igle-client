@@ -106,6 +106,7 @@ export default function ProjectDetail({onCloseDetail, openDetail, project, onFet
       setTimeout(() => {
         upgradeProject({plan}, project?.id).then(result => {
           setLoading(false)
+          console.log(result)
           if (!result.ok) {
             setErrorMess(result.errorMessage)
             return
@@ -170,7 +171,7 @@ export default function ProjectDetail({onCloseDetail, openDetail, project, onFet
               <h4 style={{marginBottom:'10px'}}>Status <Chip color={getStatusColor(project?.status)} label={capitalizeFirstLetter(project?.status)} /></h4>
               <Box>
               <span>Mark Status as </span>
-              <ButtonGroup size="small" aria-label="large button group">
+              <ButtonGroup size="small" aria-label="large button group" sx={{ml:2}}>
                 <Button onClick={() => handleStatusChange('APPROVED')}>Approve</Button>
                 <Button onClick={() => handleStatusChange('COMPLETED')}>Completed</Button> 
                 <Button onClick={() => handleStatusChange('CANCELED')}>Cancel</Button>
@@ -178,14 +179,14 @@ export default function ProjectDetail({onCloseDetail, openDetail, project, onFet
               </Box>
             </Box>
             <Box sx={{my:{xs:3, md:4}}}>
-              <h4 style={{marginBottom:'10px'}}>Plan <Chip label={capitalizeFirstLetter(project?.plan)} color={getPlanColor(project?.plan)} /></h4>
+              <h4 style={{marginBottom:'10px'}}>Plan <Chip label={capitalizeFirstLetter(project?.plan)} sx={{bgcolor:`${getPlanColor(project?.plan)}`}} /></h4>
               <Box>
               <span>Upgrade Plan to</span>
-              <ButtonGroup size="small" aria-label="large button group">
-                <Button onClick={() => handlePlanUpgrade('STANDARD')}>Standard</Button>
-                <Button onClick={() => handlePlanUpgrade('PRO')}>Pro</Button>
-                <Button onClick={() => handlePlanUpgrade('ENTERPRISE')}>Enterprise</Button>
-                <Button onClick={() => handlePlanUpgrade('OTHERS')}>Custom</Button>
+              <ButtonGroup size="small" aria-label="large button group" sx={{ml:2}}>
+                <Button onClick={() => handlePlanUpgrade('PHOTO')}>Photo</Button>
+                <Button onClick={() => handlePlanUpgrade('VIDEO')}>Video</Button>
+                <Button onClick={() => handlePlanUpgrade('360VRWT')}>360 VR</Button>
+                <Button onClick={() => handlePlanUpgrade('WEBCAM')}>Webcam</Button>
               </ButtonGroup>
               </Box>
             </Box>

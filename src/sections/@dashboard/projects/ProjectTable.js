@@ -232,7 +232,7 @@ export default function ProjectTable({queryString}) {
                           </Label>                        
                         </TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={getPlanColor(plan)}>
+                          <Label variant="ghost" color='primary'>
                             {sentenceCase(plan)}
                           </Label>
                         </TableCell>

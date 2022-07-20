@@ -19,48 +19,42 @@ import Iconify from './Iconify';
 
 const tiers = [
   {
-    title: 'Standard',
-    price: '50,000',
+    step:'1',
+    title: 'Join',
     description: [
-      'Weekly Report',
-      'Image Report',
-      'Report Downloadable',
-      'On-demand Reporting',
-      'Email support',
+      'Browsse throught the',
+      'site and/or use',
+      'the search box',
+      'to find your',
+      'vehicle'
     ],
-    buttonText: 'Sign up for free',
-    buttonVariant: 'outlined',
-  },
-  {
-    title: 'Pro',
-    subheader: 'Most popular',
-    price: '80,000',
-    description: [
-        'Weekly Report',
-        'Image Report',
-        'Video Report',
-        'Report Downloadable',
-        'On-demand Reporting',
-        'Priority email support',
-
-    ],
-    buttonText: 'Get started',
+    buttonText: 'Start Search',
     buttonVariant: 'contained',
   },
   {
-    title: 'Enterprise',
-    price: '150,000',
+    step:'2',
+    title: 'Creation',
     description: [
-        'Weekly Report',
-        'Image Report',
-        'Video Report',
-        '360 VR Image Report',
-        'Report Downloadable',
-        'On-demand Reporting',
-        'Priority email support',
-        'Phone & email support',
+      'Get in touch',
+      'with us either',
+      'via email or',
+      'direct phone call',
+      'with the item ID'
     ],
-    buttonText: 'Contact us',
+    buttonText: 'Get In touch',
+    buttonVariant: 'outlined',
+  },
+  {
+    step:'3',
+    title: 'Payment',
+    description: [
+      'Come for a test',
+      'ride and final',
+      'arrangements for',
+      'your car to',
+      'be delivery'
+    ],
+    buttonText: 'Review',
     buttonVariant: 'outlined',
   },
 ];
@@ -83,12 +77,14 @@ function Plans({user}) {
             navigate('/register')
         }
     }
-    const getIcon = (title) => {
-        switch (title) {
-            case 'Pro' :
-                return <Iconify icon='ant-design:star-outlined' />
-            case 'Enterprise' : 
-                return <><Iconify icon='ant-design:star-outlined' /> <Iconify icon='ant-design:star-outlined' /></>  
+    const getIcon = (step) => {
+        switch (step) {
+            case '1' :
+                return <Iconify icon='icon-park-outline:open-an-account' style={{fontSize:'40px'}} />
+            case '2' : 
+                return <Iconify icon='ant-design:file-add-outlined' style={{fontSize:'40px'}} />  
+            case '3' : 
+                return <Iconify icon='material-symbols:payments-outline-rounded' style={{fontSize:'40px'}} /> 
             default : 
                 return null  
         }
@@ -105,13 +101,8 @@ function Plans({user}) {
           color="text.primary"
           gutterBottom
         >
-          Our Flexible Project Plans
+          How It Works
         </Typography>
-        {/* <Typography variant="h5" align="center" color="text.secondary" component="p">
-          Quickly build an effective pricing table for your potential customers with
-          this layout. It&apos;s built with default MUI components with little
-          customization.
-        </Typography> */}
       </Container>
       {/* End hero unit */}
       <Container maxWidth="md" component="main">
@@ -122,15 +113,14 @@ function Plans({user}) {
               item
               key={tier.title}
               xs={12}
-              sm={tier.title === 'Enterprise' ? 12 : 6}
               md={4}
             >
               <Card>
                 <CardHeader
-                  title={tier.title}
+                  title={getIcon(tier.step)}
                   subheader={tier.subheader}
                   titleTypographyProps={{ align: 'center' }}
-                  action={getIcon(tier.title)}
+                  
                   subheaderTypographyProps={{
                     align: 'center',
                   }}
@@ -151,11 +141,8 @@ function Plans({user}) {
                     }}
                   >
                     <Typography component="h2" variant="h4" color="text.primary">
-                      XAF {tier.price}
-                    </Typography>
-                    <Typography variant="h6" color="text.secondary">
-                      /mo
-                    </Typography>
+                    {tier.step}. {' '} {tier.title}
+                    </Typography>                    
                   </Box>
                   <ul>
                     {tier.description.map((line) => (

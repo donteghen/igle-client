@@ -28,7 +28,7 @@ import {createNewProject, updateProject} from '../../services/api/project'
 
 
 const planOptions = [
- 'STANDARD', 'PRO', 'ENTERPRISE'
+ 'PHOTO', 'VIDEO', '360VRWT', 'WEBCAM'
 ]
 
 const regionOptions = [
@@ -36,7 +36,7 @@ const regionOptions = [
  ]
 
 ProjectForm.propTypes = {
-    openForm:PropTypes.bool,
+  openForm:PropTypes.bool,
   onCloseForm: PropTypes.func,
   project:PropTypes.object
 }

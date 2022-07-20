@@ -138,12 +138,12 @@ export default function Home () {
     const [testimonials, setTestimonials] = useState([])
 
     useEffect(() => {
-        getTestimonials().then(result => {
+        getTestimonials('show=true').then(result => {
           if (!result.ok) {
             return 
           }
           setTestimonials(result.data)
-          
+          console.log(result.data)
         }).catch(() => console.log('testimonial api fetch error'))
       }, [])
 
@@ -161,7 +161,7 @@ export default function Home () {
                     YOUR CONSTRUCTION PROJECT FULLY CAPTURED, TOTALLY COVERED
                     </Typography>
                     <Typography component='p' sx={{my:1, fontSize:{xs:'15px', md:'20px'}}}>
-                        Construction Photos and Videos, 360 Photo, Webcams, UAV Services, and automated workflow solutions from the Global Leader in Construction Documentation.
+                        Construction Photos and Videos, 360 VR Walkthrough, Webcams, UAV Services, and automated workflow solutions from the Global Leader in Construction Documentation.
                     </Typography>
                     <Button variant='contained' size='large' color='primary' 
                     onClick={handleOpenVideo}

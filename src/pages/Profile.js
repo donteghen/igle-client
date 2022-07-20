@@ -108,18 +108,16 @@ function  Profile ({user, uploadAvatar, updateUser}) {
         },
         validationSchema: RegisterSchema,
         onSubmit: (formValues) => {
-            setLoading(true)
             setTimeout(() => {
             updateUser(formValues)
             .then(result => {
-              setLoading(false)
               if (!result.ok) {
                 setApiError(true)
                 return 
               }
               setSubmitting(false)
               setApiSuccess(true)
-            }).catch(e => console.log('api error'))
+            }).catch(() => setSubmitting(false))
             }, 2500);
         },
       });
@@ -137,7 +135,7 @@ function  Profile ({user, uploadAvatar, updateUser}) {
             setApiError(true)
             return
           }
-        })
+        }).catch(() => setLoading(false))
       }, 2000);
     }
 

@@ -8,12 +8,12 @@ export const PROCEDURE = [
     },
     {
         icon:'teenyicons:360-outline',
-        title:'2. WE CAPTURE 360 PHOTOS',
+        title:'2. WE CAPTURE & CREATE 360 VR WALKTHROUGH',
         description:`Professional ${siteNameCamel} photographers use HDR-enabled 360 cameras to capture comprehensive interior and exterior views of your entire job site.`
     },
     {
         icon:'teenyicons:floorplan-solid',
-        title:'3. PHOTOS MAPPED TO PLANS',
+        title:'3. PHOTOS MAPPED TO FLOOR PLANS',
         description:`Photos are made available to the entire project team via ${siteNameCamel}’s interactive floor plans or your preferred third-party integration.`
     },
     {

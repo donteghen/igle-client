@@ -28,7 +28,6 @@ export default function AccountVerification () {
         setLoading(true)
         setTimeout(() => {
             const userId = searchParam.get('userId')
-            console.log(userId)
             verifyNewUserAccount(userId).then(result => {
                 setLoading(false)
                 if (!result.ok) {
@@ -36,7 +35,7 @@ export default function AccountVerification () {
                     return
                 }
                 setCompleted(true)
-            }).catch(e => setLoading(false))
+            }).catch(()=> setLoading(false))
         }, 2000);
     }, [])
 
