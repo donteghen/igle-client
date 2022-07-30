@@ -124,7 +124,7 @@ const ThumbnailStyle = styled('div')(({ theme }) => ({
         textAlign:'center',
         backgroundColor:'white',
         my:{xs:1, md:2},
-        mx:{xs:1, md:2}, 
+        mx:{xs:'2px', sm:1, md:2}, 
         transition: 'transform 0.4s',
         '&:hover': {
             transform: 'scale(1.02)'

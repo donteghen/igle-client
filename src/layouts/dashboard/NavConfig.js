@@ -52,6 +52,12 @@ const adminNavConfig = [
   },
 
   {
+    title: 'payments',
+    path: '/dashboard/payments',
+    icon: getIcon('material-symbols:payments-outline-rounded'),
+  },
+
+  {
     title: 'contact-messages',
     path: '/dashboard/contact-messages',
     icon: getIcon('fluent:chat-mail-20-filled'),

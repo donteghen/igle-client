@@ -28,6 +28,7 @@ import { getActiveColor, getPlanColor, getStatusColor } from '../utils/getColor'
 import ReportList from '../sections/@dashboard/reports/ReportList';
 import { getAllProjectReports } from '../services/api/report';
 import { RequestTable } from '../sections/@dashboard/requests';
+import { PaymentTable } from '../sections/@dashboard/payments';
 import RequestForm from '../sections/feedback/requestForm';
 
 
@@ -58,6 +59,16 @@ export default function UserProjectDetail() {
     }
   }, [errorMess])
 
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+        getProjectDetail()
+        fetchProjectReports()
+    }, 2500);
+    return () => {
+        setProject({})
+    }
+}, [])
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
@@ -179,6 +190,16 @@ export default function UserProjectDetail() {
             </Container>
             
             <RequestTable queryString={`project=${id}`} userComp projectId={id} />
+            <Divider sx={{my:4}}/>
+            <Container>
+                <Box>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                        <h4>Project's Payment List</h4>
+                    </Stack>
+                    
+                </Box>
+            </Container>
+            <PaymentTable queryString={`project=${id}`} userComp projectId={id} />
             </>}
             {<RequestForm openForm={openForm} onCloseForm={handleFormClose} />}
     </Page>

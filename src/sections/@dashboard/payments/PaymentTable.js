@@ -1,42 +1,41 @@
+/* eslint-disable camelcase */
 import { filter } from 'lodash';
-import PropTypes from 'prop-types'
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types'
 // material
-import Card from '@mui/material/Card';
-import Table  from '@mui/material/Table';
-import Stack  from '@mui/material/Stack';
-import Avatar  from '@mui/material/Avatar';
-import Checkbox  from '@mui/material/Checkbox';
-import TableRow  from '@mui/material/TableRow';
-import TableBody  from '@mui/material/TableBody';
-import TableCell  from '@mui/material/TableCell';
-import Container  from '@mui/material/Container';
-import TablePagination  from '@mui/material/TablePagination';
-import Typography  from '@mui/material/Typography';
-import TableContainer  from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import Checkbox from '@mui/material/Checkbox'; 
+import TableRow from '@mui/material/TableRow'; 
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import Container from '@mui/material/Container';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
 import LinearProgress from '@mui/material/LinearProgress';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import Card from '@mui/material/Card';
 // components
 import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
-import  ProjectListHead from './ProjectListHead';
-import ProjectListToolbar from './ProjectListToolbar';
-import ProjectMoreMenu  from './ProjectMoreMenu';
+import PaymentListHead  from './PaymentListHead';
+import PaymentMoreMenu  from './PaymentMoreMenu';
+
 // function
-import {getPlanColor, getStatusColor, getActiveColor} from '../../../utils/getColor'
-import {getAllProjects} from '../../../services/api/project'
+import { getPaymentRefundedColor, getPlanColor} from '../../../utils/getColor'
+import {getAllPayments, getUserProjectPayments} from '../../../services/api/payment'
+import { fDateTime } from '../../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'owner', label: 'Owner', alignRight: false },
-  { id: 'active', label: 'Active', alignRight: false },
-  { id: 'Plan', label: 'Plan', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'sender', label: 'Owner', alignRight: false },
+  { id: 'project', label: 'Project', alignRight: false },
+  { id: 'plan', label: 'Plan', alignRight: false },
+  { id: 'createdAt', label: 'Date', alignRight: false },
+  { id: 'method', label: 'Method', alignRight: false },
+  { id: 'amount', label: 'Amount', alignRight: false },
+  { id: 'refunded', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
@@ -59,8 +58,8 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  const stabilizedThis = array?.map((el, index) => [el, index]);
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
@@ -68,19 +67,21 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(array, (_project) => _project.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 }
 
-ProjectTable.propTypes = {
-  queryString: PropTypes.string
+PaymentTable.propTypes = {
+    queryString: PropTypes.string,
+    userComp : PropTypes.bool,
+    projectId: PropTypes.string
 }
 
-export default function ProjectTable({queryString}) {
+export default function PaymentTable({queryString, userComp, projectId}) {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
 
-  const [projects, setProjects] = useState([])
+  const [payments, setPayments] = useState([])
 
   const [selected, setSelected] = useState([]);
 
@@ -92,46 +93,42 @@ export default function ProjectTable({queryString}) {
 
   const [loading, setLoading] = useState(false)
 
-  const [errorMess, setErrorMess] = useState('')
-  const [errorAlert, setErrorAlert] = useState(false)
-
-  useEffect(() => {
-    if (errorMess && errorMess.length > 0) {
-      setErrorAlert(true)
-    }
-  }, [errorMess])
 
   useEffect(() => {
     if (queryString) {
-      fetchProjects(queryString)
+        fetchPayments(queryString)
     }
     else {
-        fetchProjects()
-    }
-    return () => {
-      setProjects([])
+        fetchPayments()
     }
   }, [])
 
-  const handleErrorAlertClosed = () => {
-    setErrorAlert(false)
-    setErrorMess('')
-  }
-
-  const fetchProjects = (queryString) => {
-      setLoading(true)
-      setTimeout(() => {
-        getAllProjects(queryString).then(result => {
+  
+  const fetchPayments = (queryString) => {
+     setLoading(true)
+     setTimeout(() => {
+      if (userComp && projectId) {
+        getUserProjectPayments(projectId).then(result => {
           setLoading(false)
           if (!result.ok) {
-            setErrorMess(result.errorMessage)
             return
           }
-          setProjects(result.data)
+          console.log(result.data)
+          setPayments(result.data)
         }).catch(() => setLoading(false))
-      }, 2000);
+       }
+       else {
+        getAllPayments(queryString).then(result => {
+          setLoading(false)
+          if (!result.ok) {
+            return
+          }
+          setPayments(result.data)
+        }).catch(() => setLoading(false))
+       }
+     }, 2000);
   }
-  const handleRequestSort = (event, property) => {
+  const handlePaymentSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -139,7 +136,7 @@ export default function ProjectTable({queryString}) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = projects?.map((n) => n.name);
+      const newSelecteds = payments?.map((n) => n?.sender.name);
       setSelected(newSelecteds);
       return;
     }
@@ -170,43 +167,33 @@ export default function ProjectTable({queryString}) {
     setPage(0);
   };
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - payments?.length) : 0;
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - projects?.length) : 0;
+  const filteredPayments = applySortFilter(payments, getComparator(order, orderBy), filterName);
 
-  const filteredProjects = applySortFilter(projects, getComparator(order, orderBy), filterName);
-
-  const isProjectNotFound = filteredProjects.length === 0;
+  const isPaymentNotFound = filteredPayments?.length === 0;
 
   return (
-      <Container>
-     { errorAlert &&
-      <Alert severity="error" onClose={handleErrorAlertClosed}>
-        <AlertTitle>Error</AlertTitle>
-        {errorMess}
-      </Alert>
-     }
+    <>
+      <Container>      
         <Card>
         {loading && <LinearProgress />}
-          <ProjectListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <ProjectListHead
+                <PaymentListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={projects?.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
+                  rowCount={payments?.length}
+                  numSelected={selected?.length}
+                  onPaymentSort={handlePaymentSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredProjects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, owner:{email, avatar}, active, plan, status } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
+                  {filteredPayments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)?.map((row) => {
+                    const { id, project:{name, plan}, amount, refunded, sender, method, createdAt } = row;
+                    const isItemSelected = selected?.indexOf(id) !== -1;
 
                     return (
                       <TableRow
@@ -218,34 +205,42 @@ export default function ProjectTable({queryString}) {
                         aria-checked={isItemSelected}
                       >
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
-                        <TableCell align="left">{name}</TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={email} src={avatar} />
-                            <Typography variant="subtitle2" noWrap>
-                              {email}
-                            </Typography>
-                          </Stack>
+                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                         </TableCell>
                         <TableCell align="left">
-                        <Label variant="ghost" color={getActiveColor(active)}>
-                          {active ? 'Yes' : 'No'}
-                          </Label>                        
+                            {sender?.name}
                         </TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color='primary'>
-                            {sentenceCase(plan)}
+                            {name}
+                        </TableCell>
+                        <TableCell align="left">
+                          <Label variant="ghost" color='info' >
+                            {plan}
                           </Label>
                         </TableCell>
                         <TableCell align="left">
-                          <Label variant="ghost" color={getStatusColor(status)}>
-                            {sentenceCase(status)}
+                          <Label variant="ghost">
+                            {fDateTime(createdAt)}
                           </Label>
                         </TableCell>
+                        <TableCell align="left">
+                          <Label variant="ghost" color='warning' >
+                            {method}
+                          </Label>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Label variant="ghost" color='secondary'>
+                            {amount}
+                          </Label>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Label variant="ghost" color={getPaymentRefundedColor(refunded)}>
+                            {refunded ? 'Refunded' : 'Paid'}
+                          </Label>
+                        </TableCell>
+
                         <TableCell align="right">
-                          <ProjectMoreMenu project={row} active={active} onFetchProjects={fetchProjects} />
+                          <PaymentMoreMenu payment={row} onFetchPayments={fetchPayments} />
                         </TableCell>
                       </TableRow>
                     );
@@ -257,7 +252,7 @@ export default function ProjectTable({queryString}) {
                   )}
                 </TableBody>
 
-                {isProjectNotFound && (
+                {isPaymentNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -273,7 +268,7 @@ export default function ProjectTable({queryString}) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={projects?.length}
+            count={payments?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -281,5 +276,8 @@ export default function ProjectTable({queryString}) {
           />
         </Card>
       </Container>
+    </>
   );
 }
+
+

@@ -28,6 +28,7 @@ import UserProjectDetail from './pages/UserProjectDetail'
 import UserStats from './pages/UserStats';
 // admin protected imports
 import Users from './pages/User';
+import Payments from './pages/Payment'
 import Projects from './pages/Project';
 import Requests from './pages/Request';
 import Testimonials from './pages/Testimonial';
@@ -40,6 +41,7 @@ import Photo360 from './pages/Photo360';
 import Photos from './pages/Photos';
 import Video from './pages/Video';
 import Webcam from './pages/Webcam';
+
 
 
 
@@ -68,6 +70,7 @@ Router.propTypes = {
         { path: 'users', element: <Users /> },
         { path: 'projects', element: <Projects /> },
         { path: 'reports', element: <Reports /> },
+        { path: 'payments', element: <Payments /> },
         { path: 'requests', element: <Requests /> },
         { path: 'contact-messages', element: <ContactMessages /> },
         { path: 'testimonials', element: <Testimonials /> },

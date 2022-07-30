@@ -98,6 +98,9 @@ export default function RequestTable({queryString, userComp, projectId}) {
     else {
         fetchRequests()
     }
+    return () => {
+      setRequests([])
+    }
   }, [])
 
   

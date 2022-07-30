@@ -51,9 +51,14 @@ export const loginUser = (loginDetails) => async (dispatch) => {
     }
 }
 
-export const changeUserPassword = ({oldPasword, newPassword}) => async (dispatch) => {
+export const changeUserPassword = (details) => async (dispatch) => {
     try {
-        const res = await customAxios.post(`${apiUrl}user/profile/change-password`, {oldPasword, newPassword})
+        const token = localStorage.getItem('iUserToken')
+        const res = await customAxios.post(`${apiUrl}user/profile/change-password`, details, {
+            headers:{
+                'Authorization': `Bearer ${token}`
+            }
+        })
         localStorage.setItem('iUserToken', res.data.data.token) 
         dispatch({type:CHANGE_USER_PASSWORD, payload: res.data.data})
         return {ok: true}
@@ -80,7 +85,7 @@ export const logoutUser = () => async (dispatch) => {
 }
 export const uploadAvatar = (formData) => async (dispatch) => {
     const token  = localStorage.getItem('iUserToken')
-
+    
     try {
         const res = await customAxios.post(`${apiUrl}user/profile/avatar`, formData, {
             headers:{
@@ -89,6 +94,7 @@ export const uploadAvatar = (formData) => async (dispatch) => {
                 'Accept' : 'multipart/form-data'
             }
         });
+        
         dispatch({type : UPLOAD_USER_AVATAR, payload : res.data.data});
         return {ok:true}
     } catch (error) {

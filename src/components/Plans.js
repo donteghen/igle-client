@@ -22,39 +22,39 @@ const tiers = [
     step:'1',
     title: 'Join',
     description: [
-      'Browsse throught the',
-      'site and/or use',
-      'the search box',
-      'to find your',
-      'vehicle'
+      'After reading',
+      '& deciding which',
+      'what plan suites',
+      'your project, then',
+      'create an account'
     ],
-    buttonText: 'Start Search',
+    buttonText: 'Get Started',
     buttonVariant: 'contained',
   },
   {
     step:'2',
     title: 'Creation',
     description: [
-      'Get in touch',
-      'with us either',
-      'via email or',
-      'direct phone call',
-      'with the item ID'
+      'Once your account',
+      'has been verified',
+      'start creating a',
+      'project profile and',
+      'wait for confirmation'
     ],
-    buttonText: 'Get In touch',
+    buttonText: 'Create Project',
     buttonVariant: 'outlined',
   },
   {
     step:'3',
     title: 'Payment',
     description: [
-      'Come for a test',
-      'ride and final',
-      'arrangements for',
-      'your car to',
-      'be delivery'
+      'Pick a payment',
+      'method options',
+      'make your payment',
+      'submit a receipt ',
+      'via email & done'
     ],
-    buttonText: 'Review',
+    buttonText: 'Done',
     buttonVariant: 'outlined',
   },
 ];
@@ -66,7 +66,7 @@ Plans.propTypes = {
 function Plans({user}) {
     const navigate = useNavigate()
     const handleClicked = () => {
-        console.log('cliekds')
+        
         if (user?.id && !user?.isAdmin) {
             navigate('/dashboard/user-projects')
         }
@@ -159,7 +159,7 @@ function Plans({user}) {
                 </CardContent>
                 <CardActions>
                   <Button fullWidth variant={tier.buttonVariant} onClick={handleClicked}>
-                    Get Started
+                    {tier.buttonText}
                   </Button>
                 </CardActions>
               </Card>

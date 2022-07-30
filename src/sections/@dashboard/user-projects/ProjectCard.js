@@ -101,7 +101,7 @@ export default function ProjectCard ({project}) {
         <IconButton aria-label="Edit" sx={{color:'warning.main'}} onClick={handleFormOpen}>
           <Iconify icon='bxs:edit' />
         </IconButton>
-        <IconButton aria-label="view" sx={{color:'info.main'}} onClick={() => navigate(`/dashboard/user-projects/${project?.id}`)}>
+        <IconButton aria-label="view" sx={{color:'info.main'}} onClick={() => navigate(`/dashboard/user-projects/${project?.id}`, {replace:true})}>
           <Iconify icon='carbon:view-filled' />
         </IconButton>
         <IconButton sx={{ml:'auto', color:'error.main'}} onClick={handleDelete}>

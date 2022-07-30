@@ -107,7 +107,7 @@ function UserProjects () {
         <Page title="User Projects">
           <Container>
           <ErrorAlert open={openErrorAlert} onClosed={handleErrorClosed}
-          title='Registration Failed' message={errorMess}
+          title='Request Failed' message={errorMess}
         />
           <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} >
               <CircularProgress color="inherit" />
@@ -132,7 +132,7 @@ function UserProjects () {
               </Stack>
             </Stack>
             {(!loading && (!projects || !projects?.length > 0)) ? 
-            <Alert severity="info">Ops! Seems you haven't created a projects yet. <br/>Create one now</Alert> :
+            <Alert severity="info">{openErrorAlert ? errorMess : "Oops! Seems you haven't created a projects yet. <br/>Create one now"}</Alert> :
             <ProjectList projects={updatedProjects} /> 
             }
           </Container>

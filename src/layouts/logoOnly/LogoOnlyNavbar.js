@@ -1,15 +1,18 @@
 
 import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
 // material
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
 // components
 import AccountPopover from '../dashboard/AccountPopover';
 // import LanguagePopover from '../dashboard/LanguagePopover';
 import Logo from '../../components/Logo';
+import DemoContactForm from '../../sections/feedback/demoContactForm';
 
 
 
@@ -62,6 +65,11 @@ const inActiveStyle = {
 // };
 
 export default function LogoOnlyNavbar() {
+  const [openDemo, setOpenDemo] = useState(false)
+
+  const handleClosed = () => {
+    setOpenDemo(false)
+  }
   return (
     <RootStyle>
       <ToolbarStyle>
@@ -73,12 +81,12 @@ export default function LogoOnlyNavbar() {
          <NavLink to="about" style={({ isActive }) => isActive ? activeStyle : inActiveStyle}>About</NavLink>
          <NavLink to="faqs" style={({ isActive }) => isActive ? activeStyle : inActiveStyle}>FAQs</NavLink>
         </Stack>
-        
+        <Button variant='outlined' onClick={() => setOpenDemo(true)} sx={{mr:2}}>REQUEST DEMO</Button>
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {/* <LanguagePopover /> */}
           <AccountPopover />
         </Stack>
-        
+        <DemoContactForm open={openDemo} onClosed={handleClosed} />
       </ToolbarStyle>
     </RootStyle>
   );

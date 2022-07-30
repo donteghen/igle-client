@@ -25,7 +25,6 @@ export const getPlanColor = (plan) => {
             color ='default';
             break;
     }
-    console.log(plan, color)
     return color
 }
 
@@ -78,4 +77,13 @@ export const getRequestStatusColor = (status) => {
     }
     // console.log(color)
     return color
+}
+
+// Payment related //////////////////////////////////////////////////////////////////////
+
+export const getPaymentRefundedColor = (state) => {
+    if (!state) {
+        return 'success'
+    }
+    return 'warning'
 }

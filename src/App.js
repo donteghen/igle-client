@@ -26,12 +26,15 @@ App.propTypes = {
 
   useEffect(() => {
     if (localStorage.getItem('iUserToken')) {
-      fetchUser()
+      console.log(localStorage.getItem('iUserToken'))
+      fetchUser().then(result => {
+        console.log(result.data)
+      })
     }
     
     setTimeout(() => {
       SetAppIsLoading(false)
-    }, 8000);
+    }, 6000);
 
   }, [])
 

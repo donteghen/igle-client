@@ -23,7 +23,7 @@ const postNewTestimonial = async (details) => {
 }
 
 
-// update shoe property of a testimonial
+// update show property of a testimonial
 const updateTestimonialShow = async (testimonialId) => {
     try {
         const token = localStorage.getItem('iUserToken')

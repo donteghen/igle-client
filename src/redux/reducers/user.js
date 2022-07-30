@@ -12,13 +12,13 @@ export function userReducer (state = null, action) {
         case LOG_IN_USER : 
             return action.payload 
         case LOG_OUT_USER : 
-            return action.payload
+            return action.payload 
         case CHANGE_USER_PASSWORD : 
             return action.payload   
         case UPDATE_USER_PROFILE :
-            return action.payload || state
+            return action.payload
         case UPLOAD_USER_AVATAR :
-            return action.payload || state
+            return action.payload
         default :
             return state
     }
